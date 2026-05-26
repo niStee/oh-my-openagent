@@ -7,6 +7,7 @@ import { getPluginInfo } from "./system-plugin"
 import { getLatestPluginVersion, getLoadedPluginVersion, getSuggestedInstallTag } from "./system-loaded-version"
 import { parseJsonc } from "../../../shared"
 import { PUBLISHED_PACKAGE_NAME, PLUGIN_NAME, LEGACY_PLUGIN_NAME } from "../../../shared/plugin-identity"
+import { isSupportedLocalOpenCodeDevVersion } from "../../minimum-opencode-version"
 
 interface SystemCheckDeps {
   findOpenCodeBinary: typeof findOpenCodeBinary
@@ -96,6 +97,7 @@ export async function checkSystem(deps: SystemCheckDeps = defaultDeps): Promise<
 
   if (
     systemInfo.opencodeVersion &&
+    !isSupportedLocalOpenCodeDevVersion(systemInfo.opencodeVersion) &&
     !deps.compareVersions(systemInfo.opencodeVersion, MIN_OPENCODE_VERSION)
   ) {
     issues.push({

@@ -6,7 +6,7 @@ import { generateOmoConfig } from "../config-manager"
 import type { InstallConfig } from "../types"
 
 describe("generateOmoConfig - model fallback system", () => {
-  test("uses github-copilot sonnet fallback when only copilot available", () => {
+  test("uses only Copilot Student-supported models when only copilot is available", () => {
     //#given
     const config: InstallConfig = {
       hasClaude: false,
@@ -25,10 +25,18 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config)
 
     //#then
-    expect([
-      "github-copilot/claude-opus-4.7",
-      "github-copilot/claude-opus-4-7",
-    ]).toContain((result.agents as Record<string, { model: string }>).sisyphus.model)
+    const agents = result.agents as Record<string, { model: string }>
+    const categories = result.categories as Record<string, { model: string }>
+    const generatedConfig = JSON.stringify(result)
+
+    expect(agents.sisyphus).toBeUndefined()
+    expect(agents.explore.model).toBe("github-copilot/gpt-5-mini")
+    expect(categories.quick.model).toBe("github-copilot/gpt-5.4-mini")
+    expect(generatedConfig).toContain("github-copilot/claude-haiku-4.5")
+    expect(generatedConfig).not.toContain("github-copilot/claude-opus")
+    expect(generatedConfig).not.toContain("github-copilot/claude-sonnet")
+    expect(generatedConfig).not.toContain("github-copilot/gpt-5.5")
+    expect(generatedConfig).not.toContain("github-copilot/gpt-5-nano")
   })
 
   test("uses ultimate fallback when no providers configured", () => {

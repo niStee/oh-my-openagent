@@ -43,6 +43,9 @@ export const EXIT_CODES = {
 
 export const MIN_OPENCODE_VERSION = "1.4.0"
 
+// This local runtime is built from a pinned OpenCode development checkout.
+export const SUPPORTED_LOCAL_OPENCODE_DEV_VERSIONS = ["0.0.0-dev-202605251856"] as const
+
 export const PACKAGE_NAME = PUBLISHED_PACKAGE_NAME
 
 export const OPENCODE_BINARIES = ["opencode", "opencode-desktop"] as const

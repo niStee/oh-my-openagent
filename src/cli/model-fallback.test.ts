@@ -465,7 +465,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.hephaestus?.variant).toBe("medium")
     })
 
-    test("Hephaestus falls back to Copilot GPT-5.5 when only Copilot is available", () => {
+    test("Hephaestus is omitted when only Copilot Student is available", () => {
       // #given
       const config = createConfig({ hasCopilot: true })
 
@@ -473,10 +473,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.hephaestus).toEqual({
-        model: "github-copilot/gpt-5.5",
-        variant: "medium",
-      })
+      expect(result.agents?.hephaestus).toBeUndefined()
     })
 
     test("Hephaestus is created when OpenCode Zen is available (opencode provider connected)", () => {

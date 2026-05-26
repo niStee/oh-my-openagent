@@ -35,7 +35,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(sisyphus.requiresAnyModel).toBe(true)
 
     const primary = sisyphus.fallbackChain[0]
-    expect(primary.providers).toEqual(["anthropic", "github-copilot", "opencode", "vercel"])
+    expect(primary.providers).toEqual(["anthropic", "opencode", "vercel"])
     expect(primary.model).toBe("claude-opus-4-7")
     expect(primary.variant).toBe("max")
 
@@ -156,7 +156,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(tertiary.model).toBe("glm-4.6v")
 
     const last = multimodalLooker.fallbackChain[3]
-    expect(last.providers).toEqual(["openai", "github-copilot", "opencode", "vercel"])
+    expect(last.providers).toEqual(["openai", "opencode", "vercel"])
     expect(last.model).toBe("gpt-5-nano")
   })
 
@@ -172,7 +172,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
 
     const primary = prometheus.fallbackChain[0]
     expect(primary.model).toBe("claude-opus-4-7")
-    expect(primary.providers).toEqual(["anthropic", "github-copilot", "opencode", "vercel"])
+    expect(primary.providers).toEqual(["anthropic", "opencode", "vercel"])
     expect(primary.variant).toBe("max")
   })
 
@@ -188,7 +188,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
 
     const primary = metis.fallbackChain[0]
     expect(primary.model).toBe("claude-sonnet-4-6")
-    expect(primary.providers).toEqual(["anthropic", "github-copilot", "opencode", "vercel"])
+    expect(primary.providers).toEqual(["anthropic", "opencode", "vercel"])
     expect(primary.variant).toBeUndefined()
 
     const opusFallback = metis.fallbackChain[1]
@@ -197,7 +197,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
 
     const openAiFallback = metis.fallbackChain.find((entry) => entry.providers.includes("openai"))
     expect(openAiFallback).toEqual({
-      providers: ["openai", "github-copilot", "opencode", "vercel"],
+      providers: ["openai", "opencode", "vercel"],
       model: "gpt-5.5",
       variant: "high",
     })
@@ -239,7 +239,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
 
     const tertiary = atlas.fallbackChain[2]
     expect(tertiary).toEqual({
-      providers: ["openai", "github-copilot", "opencode", "vercel"],
+      providers: ["openai", "opencode", "vercel"],
       model: "gpt-5.5",
       variant: "medium",
     })
@@ -261,7 +261,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
 
     // then
     expect(openAiFallback).toEqual({
-      providers: ["openai", "github-copilot", "opencode", "vercel"],
+      providers: ["openai", "opencode", "vercel"],
       model: "gpt-5.5",
       variant: "medium",
     })
@@ -270,14 +270,14 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(bigPickleIndex).toBeGreaterThan(minimaxIndex)
   })
 
-  test("hephaestus supports openai, github-copilot, venice, and opencode providers", () => {
+  test("hephaestus does not activate for Copilot Student because GPT-5.5 is unavailable", () => {
     // #given - hephaestus agent requirement
     const hephaestus = AGENT_MODEL_REQUIREMENTS["hephaestus"]
 
     // #when - accessing hephaestus requirement
-    // #then - requiresProvider includes openai, github-copilot, venice, and opencode
+    // #then - requiresProvider omits Copilot because this local runtime targets Copilot Student
     expect(hephaestus).toBeDefined()
-    expect(hephaestus.requiresProvider).toEqual(["openai", "github-copilot", "venice", "opencode", "vercel"])
+    expect(hephaestus.requiresProvider).toEqual(["openai", "venice", "opencode", "vercel"])
     expect(hephaestus.requiresModel).toBeUndefined()
   })
 
@@ -349,7 +349,7 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
     expect(primary.variant).toBe("medium")
     expect(primary.model).toBe("gpt-5.5")
     expect(primary.providers).toContain("openai")
-    expect(primary.providers).toContain("github-copilot")
+    expect(primary.providers).not.toContain("github-copilot")
   })
 
   test("visual-engineering has valid fallbackChain with gemini-3.1-pro high as primary", () => {
@@ -401,6 +401,7 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
     const secondary = quick.fallbackChain[1]
     expect(secondary.model).toBe("claude-haiku-4-5")
     expect(secondary.providers).toContain("anthropic")
+    expect(secondary.providers).toContain("github-copilot")
   })
 
   test("unspecified-low has valid fallbackChain with claude-sonnet-4-6 as primary", () => {
@@ -431,12 +432,12 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
     const primary = unspecifiedHigh.fallbackChain[0]
     expect(primary.model).toBe("claude-opus-4-7")
     expect(primary.variant).toBe("max")
-    expect(primary.providers).toEqual(["anthropic", "github-copilot", "opencode", "vercel"])
+    expect(primary.providers).toEqual(["anthropic", "opencode", "vercel"])
 
     const secondary = unspecifiedHigh.fallbackChain[1]
     expect(secondary.model).toBe("gpt-5.5")
     expect(secondary.variant).toBe("high")
-    expect(secondary.providers).toEqual(["openai", "github-copilot", "opencode", "vercel"])
+    expect(secondary.providers).toEqual(["openai", "opencode", "vercel"])
   })
 
   test("artistry has valid fallbackChain with gemini-3.1-pro as primary", () => {
@@ -513,6 +514,34 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
         expect(entry.model.length).toBeGreaterThan(0)
       }
     }
+  })
+})
+
+describe("Copilot Student local routing policy", () => {
+  const unsupportedModels = new Set([
+    "claude-opus-4-7",
+    "claude-sonnet-4-6",
+    "gpt-5.3-codex",
+    "gpt-5.5",
+    "gpt-5-nano",
+  ])
+  const entries = [
+    ...Object.values(AGENT_MODEL_REQUIREMENTS).flatMap((requirement) => requirement.fallbackChain),
+    ...Object.values(CATEGORY_MODEL_REQUIREMENTS).flatMap((requirement) => requirement.fallbackChain),
+  ]
+
+  test("does not route Student-unavailable models through github-copilot", () => {
+    for (const entry of entries.filter((candidate) => unsupportedModels.has(candidate.model))) {
+      expect(entry.providers).not.toContain("github-copilot")
+    }
+  })
+
+  test("retains Student-supported Copilot routes", () => {
+    const quick = CATEGORY_MODEL_REQUIREMENTS.quick.fallbackChain
+
+    expect(quick.find((entry) => entry.model === "gpt-5.4-mini")?.providers).toContain("github-copilot")
+    expect(quick.find((entry) => entry.model === "claude-haiku-4-5")?.providers).toContain("github-copilot")
+    expect(quick.find((entry) => entry.model === "gemini-3-flash")?.providers).toContain("github-copilot")
   })
 })
 

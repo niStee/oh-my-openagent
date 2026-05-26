@@ -1418,125 +1418,40 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models when 
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "agents": {
     "atlas": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/gpt-5-nano",
     },
     "explore": {
       "model": "github-copilot/gpt-5-mini",
     },
-    "hephaestus": {
-      "model": "github-copilot/gpt-5.5",
-      "variant": "medium",
-    },
     "metis": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/gpt-5-nano",
     },
     "momus": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/gemini-3.1-pro-preview",
-          "variant": "high",
-        },
-      ],
-      "model": "github-copilot/gpt-5.5",
-      "variant": "xhigh",
+      "model": "github-copilot/gemini-3.1-pro-preview",
+      "variant": "high",
     },
     "multimodal-looker": {
-      "model": "github-copilot/gpt-5-nano",
+      "model": "opencode/gpt-5-nano",
     },
     "oracle": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gemini-3.1-pro-preview",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-      ],
-      "model": "github-copilot/gpt-5.5",
+      "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high",
     },
     "prometheus": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/gemini-3.1-pro-preview",
-        },
-      ],
-      "model": "github-copilot/claude-opus-4.7",
-      "variant": "max",
-    },
-    "sisyphus": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
-      "model": "github-copilot/claude-opus-4.7",
-      "variant": "max",
+      "model": "github-copilot/gemini-3.1-pro-preview",
     },
     "sisyphus-junior": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/gpt-5-nano",
     },
   },
   "categories": {
     "artistry": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-        },
-      ],
       "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high",
     },
     "deep": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/gemini-3.1-pro-preview",
-          "variant": "high",
-        },
-      ],
-      "model": "github-copilot/gpt-5.5",
-      "variant": "medium",
+      "model": "github-copilot/gemini-3.1-pro-preview",
+      "variant": "high",
     },
     "quick": {
       "fallback_models": [
@@ -1550,47 +1465,20 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models when 
       "model": "github-copilot/gpt-5.4-mini",
     },
     "ultrabrain": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-      ],
       "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high",
     },
     "unspecified-high": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gemini-3-flash-preview",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "github-copilot/gemini-3-flash-preview",
     },
     "unspecified-low": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gemini-3-flash-preview",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "github-copilot/gemini-3-flash-preview",
     },
     "visual-engineering": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-      ],
       "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high",
     },
     "writing": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
-      ],
       "model": "github-copilot/gemini-3-flash-preview",
     },
   },
@@ -1602,125 +1490,40 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models with 
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "agents": {
     "atlas": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/gpt-5-nano",
     },
     "explore": {
       "model": "github-copilot/gpt-5-mini",
     },
-    "hephaestus": {
-      "model": "github-copilot/gpt-5.5",
-      "variant": "medium",
-    },
     "metis": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/gpt-5-nano",
     },
     "momus": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/gemini-3.1-pro-preview",
-          "variant": "high",
-        },
-      ],
-      "model": "github-copilot/gpt-5.5",
-      "variant": "xhigh",
+      "model": "github-copilot/gemini-3.1-pro-preview",
+      "variant": "high",
     },
     "multimodal-looker": {
-      "model": "github-copilot/gpt-5-nano",
+      "model": "opencode/gpt-5-nano",
     },
     "oracle": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gemini-3.1-pro-preview",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-      ],
-      "model": "github-copilot/gpt-5.5",
+      "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high",
     },
     "prometheus": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/gemini-3.1-pro-preview",
-        },
-      ],
-      "model": "github-copilot/claude-opus-4.7",
-      "variant": "max",
-    },
-    "sisyphus": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
-      "model": "github-copilot/claude-opus-4.7",
-      "variant": "max",
+      "model": "github-copilot/gemini-3.1-pro-preview",
     },
     "sisyphus-junior": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/gpt-5-nano",
     },
   },
   "categories": {
     "artistry": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-        },
-      ],
       "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high",
     },
     "deep": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/gemini-3.1-pro-preview",
-          "variant": "high",
-        },
-      ],
-      "model": "github-copilot/gpt-5.5",
-      "variant": "medium",
+      "model": "github-copilot/gemini-3.1-pro-preview",
+      "variant": "high",
     },
     "quick": {
       "fallback_models": [
@@ -1734,49 +1537,20 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models with 
       "model": "github-copilot/gpt-5.4-mini",
     },
     "ultrabrain": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-      ],
       "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high",
     },
     "unspecified-high": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
-      ],
-      "model": "github-copilot/claude-opus-4.7",
-      "variant": "max",
+      "model": "opencode/gpt-5-nano",
     },
     "unspecified-low": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gemini-3-flash-preview",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "github-copilot/gemini-3-flash-preview",
     },
     "visual-engineering": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-      ],
       "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high",
     },
     "writing": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
-      ],
       "model": "github-copilot/gemini-3-flash-preview",
     },
   },
@@ -2201,17 +1975,8 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "agents": {
     "atlas": {
-      "fallback_models": [
-        {
-          "model": "openai/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "openai/gpt-5.5",
+      "variant": "medium",
     },
     "explore": {
       "fallback_models": [
@@ -2222,12 +1987,6 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
       "model": "openai/gpt-5.4-mini-fast",
     },
     "hephaestus": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
       "model": "openai/gpt-5.5",
       "variant": "medium",
     },
@@ -2240,32 +1999,11 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
       "model": "openai/gpt-5.4-mini-fast",
     },
     "metis": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
-          "model": "openai/gpt-5.5",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "openai/gpt-5.5",
+      "variant": "high",
     },
     "momus": {
       "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "xhigh",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
         {
           "model": "github-copilot/gemini-3.1-pro-preview",
           "variant": "high",
@@ -2279,9 +2017,6 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
         {
           "model": "openai/gpt-5-nano",
         },
-        {
-          "model": "github-copilot/gpt-5-nano",
-        },
       ],
       "model": "openai/gpt-5.5",
       "variant": "medium",
@@ -2289,16 +2024,8 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
     "oracle": {
       "fallback_models": [
         {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
-        {
           "model": "github-copilot/gemini-3.1-pro-preview",
           "variant": "high",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
         },
       ],
       "model": "openai/gpt-5.5",
@@ -2307,60 +2034,26 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
     "prometheus": {
       "fallback_models": [
         {
-          "model": "openai/gpt-5.5",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
-        {
           "model": "github-copilot/gemini-3.1-pro-preview",
         },
       ],
-      "model": "github-copilot/claude-opus-4.7",
-      "variant": "max",
+      "model": "openai/gpt-5.5",
+      "variant": "high",
     },
     "sisyphus": {
-      "fallback_models": [
-        {
-          "model": "openai/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
-      "model": "github-copilot/claude-opus-4.7",
-      "variant": "max",
+      "model": "openai/gpt-5.5",
+      "variant": "medium",
     },
     "sisyphus-junior": {
-      "fallback_models": [
-        {
-          "model": "openai/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "openai/gpt-5.5",
+      "variant": "medium",
     },
   },
   "categories": {
     "artistry": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "openai/gpt-5.5",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
         },
       ],
       "model": "github-copilot/gemini-3.1-pro-preview",
@@ -2368,14 +2061,6 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
     },
     "deep": {
       "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
         {
           "model": "github-copilot/gemini-3.1-pro-preview",
           "variant": "high",
@@ -2404,10 +2089,6 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
           "model": "github-copilot/gemini-3.1-pro-preview",
           "variant": "high",
         },
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
       ],
       "model": "openai/gpt-5.5",
       "variant": "xhigh",
@@ -2415,43 +2096,26 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
     "unspecified-high": {
       "fallback_models": [
         {
-          "model": "openai/gpt-5.3-codex",
-          "variant": "medium",
-        },
-        {
           "model": "github-copilot/gemini-3-flash-preview",
         },
       ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
     },
     "unspecified-low": {
       "fallback_models": [
         {
-          "model": "openai/gpt-5.3-codex",
-          "variant": "medium",
-        },
-        {
           "model": "github-copilot/gemini-3-flash-preview",
         },
       ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
     },
     "visual-engineering": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-      ],
       "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high",
     },
     "writing": {
-      "fallback_models": [
-        {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
-      ],
       "model": "github-copilot/gemini-3-flash-preview",
     },
   },
@@ -2694,18 +2358,11 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
     "atlas": {
       "fallback_models": [
         {
-          "model": "opencode/claude-sonnet-4-6",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-        {
           "model": "opencode/gpt-5.5",
           "variant": "medium",
         },
       ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/claude-sonnet-4-6",
     },
     "explore": {
       "fallback_models": [
@@ -2716,13 +2373,7 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
       "model": "opencode/claude-haiku-4-5",
     },
     "hephaestus": {
-      "fallback_models": [
-        {
-          "model": "opencode/gpt-5.5",
-          "variant": "medium",
-        },
-      ],
-      "model": "github-copilot/gpt-5.5",
+      "model": "opencode/gpt-5.5",
       "variant": "medium",
     },
     "librarian": {
@@ -2739,37 +2390,18 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
     "metis": {
       "fallback_models": [
         {
-          "model": "opencode/claude-sonnet-4-6",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
         },
         {
           "model": "opencode/gpt-5.5",
           "variant": "high",
         },
       ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/claude-sonnet-4-6",
     },
     "momus": {
       "fallback_models": [
-        {
-          "model": "opencode/gpt-5.5",
-          "variant": "xhigh",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
         {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
@@ -2783,16 +2415,13 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "variant": "high",
         },
       ],
-      "model": "github-copilot/gpt-5.5",
+      "model": "opencode/gpt-5.5",
       "variant": "xhigh",
     },
     "multimodal-looker": {
       "fallback_models": [
         {
           "model": "zai-coding-plan/glm-4.6v",
-        },
-        {
-          "model": "github-copilot/gpt-5-nano",
         },
         {
           "model": "opencode/gpt-5-nano",
@@ -2804,10 +2433,6 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
     "oracle": {
       "fallback_models": [
         {
-          "model": "opencode/gpt-5.5",
-          "variant": "high",
-        },
-        {
           "model": "github-copilot/gemini-3.1-pro-preview",
           "variant": "high",
         },
@@ -2816,28 +2441,16 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "variant": "high",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
       ],
-      "model": "github-copilot/gpt-5.5",
+      "model": "opencode/gpt-5.5",
       "variant": "high",
     },
     "prometheus": {
       "fallback_models": [
         {
-          "model": "opencode/claude-opus-4-7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
-        {
           "model": "opencode/gpt-5.5",
           "variant": "high",
         },
@@ -2848,21 +2461,13 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "model": "opencode/gemini-3.1-pro",
         },
       ],
-      "model": "github-copilot/claude-opus-4.7",
+      "model": "opencode/claude-opus-4-7",
       "variant": "max",
     },
     "sisyphus": {
       "fallback_models": [
         {
-          "model": "opencode/claude-opus-4-7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/kimi-k2.5",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
         },
         {
           "model": "opencode/gpt-5.5",
@@ -2878,18 +2483,11 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "model": "opencode/big-pickle",
         },
       ],
-      "model": "github-copilot/claude-opus-4.7",
+      "model": "opencode/claude-opus-4-7",
       "variant": "max",
     },
     "sisyphus-junior": {
       "fallback_models": [
-        {
-          "model": "opencode/claude-sonnet-4-6",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
         {
           "model": "opencode/gpt-5.5",
           "variant": "medium",
@@ -2898,7 +2496,7 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "model": "opencode/big-pickle",
         },
       ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/claude-sonnet-4-6",
     },
   },
   "categories": {
@@ -2909,15 +2507,8 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "variant": "high",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
         },
         {
           "model": "opencode/gpt-5.5",
@@ -2928,14 +2519,6 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
     },
     "deep": {
       "fallback_models": [
-        {
-          "model": "opencode/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
         {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
@@ -2949,7 +2532,7 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "variant": "high",
         },
       ],
-      "model": "github-copilot/gpt-5.5",
+      "model": "opencode/gpt-5.5",
       "variant": "medium",
     },
     "quick": {
@@ -2986,10 +2569,6 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "variant": "high",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
@@ -3000,9 +2579,6 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
     "unspecified-high": {
       "fallback_models": [
         {
-          "model": "opencode/claude-sonnet-4-6",
-        },
-        {
           "model": "opencode/gpt-5.3-codex",
           "variant": "medium",
         },
@@ -3013,14 +2589,11 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "model": "opencode/gemini-3-flash",
         },
       ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/claude-sonnet-4-6",
     },
     "unspecified-low": {
       "fallback_models": [
         {
-          "model": "opencode/claude-sonnet-4-6",
-        },
-        {
           "model": "opencode/gpt-5.3-codex",
           "variant": "medium",
         },
@@ -3031,7 +2604,7 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "model": "opencode/gemini-3-flash",
         },
       ],
-      "model": "github-copilot/claude-sonnet-4.6",
+      "model": "opencode/claude-sonnet-4-6",
     },
     "visual-engineering": {
       "fallback_models": [
@@ -3046,10 +2619,6 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
           "model": "opencode/glm-5",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
@@ -3061,9 +2630,6 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
       "fallback_models": [
         {
           "model": "opencode/gemini-3-flash",
-        },
-        {
-          "model": "github-copilot/claude-sonnet-4.6",
         },
         {
           "model": "opencode/claude-sonnet-4-6",
@@ -3082,17 +2648,10 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     "atlas": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
-        {
           "model": "opencode/claude-sonnet-4-6",
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "medium",
         },
         {
@@ -3122,10 +2681,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     "hephaestus": {
       "fallback_models": [
         {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-        {
           "model": "opencode/gpt-5.5",
           "variant": "medium",
         },
@@ -3153,17 +2708,10 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     "metis": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
-        {
           "model": "opencode/claude-sonnet-4-6",
         },
         {
           "model": "anthropic/claude-opus-4-7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
           "variant": "max",
         },
         {
@@ -3172,10 +2720,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "high",
         },
         {
@@ -3188,19 +2732,11 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     "momus": {
       "fallback_models": [
         {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "xhigh",
-        },
-        {
           "model": "opencode/gpt-5.5",
           "variant": "xhigh",
         },
         {
           "model": "anthropic/claude-opus-4-7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
           "variant": "max",
         },
         {
@@ -3236,9 +2772,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
           "model": "openai/gpt-5-nano",
         },
         {
-          "model": "github-copilot/gpt-5-nano",
-        },
-        {
           "model": "opencode/gpt-5-nano",
         },
       ],
@@ -3247,10 +2780,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     },
     "oracle": {
       "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
         {
           "model": "opencode/gpt-5.5",
           "variant": "high",
@@ -3272,10 +2801,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
           "variant": "max",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
@@ -3286,19 +2811,11 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     "prometheus": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "high",
         },
         {
@@ -3321,10 +2838,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     "sisyphus": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
@@ -3333,10 +2846,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "medium",
         },
         {
@@ -3359,17 +2868,10 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     "sisyphus-junior": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
-        {
           "model": "opencode/claude-sonnet-4-6",
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "medium",
         },
         {
@@ -3399,18 +2901,11 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
           "variant": "max",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
         {
           "model": "openai/gpt-5.5",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
         },
         {
           "model": "opencode/gpt-5.5",
@@ -3422,19 +2917,11 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     "deep": {
       "fallback_models": [
         {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-        {
           "model": "opencode/gpt-5.5",
           "variant": "medium",
         },
         {
           "model": "anthropic/claude-opus-4-7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
           "variant": "max",
         },
         {
@@ -3512,10 +2999,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
           "variant": "max",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
@@ -3525,9 +3008,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     },
     "unspecified-high": {
       "fallback_models": [
-        {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
         {
           "model": "opencode/claude-sonnet-4-6",
         },
@@ -3553,9 +3033,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
     },
     "unspecified-low": {
       "fallback_models": [
-        {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
         {
           "model": "opencode/claude-sonnet-4-6",
         },
@@ -3600,10 +3077,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
           "variant": "max",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
@@ -3621,9 +3094,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
         },
         {
           "model": "anthropic/claude-sonnet-4-6",
-        },
-        {
-          "model": "github-copilot/claude-sonnet-4.6",
         },
         {
           "model": "opencode/claude-sonnet-4-6",
@@ -3642,17 +3112,10 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     "atlas": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
-        {
           "model": "opencode/claude-sonnet-4-6",
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "medium",
         },
         {
@@ -3682,10 +3145,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     "hephaestus": {
       "fallback_models": [
         {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-        {
           "model": "opencode/gpt-5.5",
           "variant": "medium",
         },
@@ -3713,17 +3172,10 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     "metis": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
-        {
           "model": "opencode/claude-sonnet-4-6",
         },
         {
           "model": "anthropic/claude-opus-4-7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
           "variant": "max",
         },
         {
@@ -3732,10 +3184,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "high",
         },
         {
@@ -3748,19 +3196,11 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     "momus": {
       "fallback_models": [
         {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "xhigh",
-        },
-        {
           "model": "opencode/gpt-5.5",
           "variant": "xhigh",
         },
         {
           "model": "anthropic/claude-opus-4-7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
           "variant": "max",
         },
         {
@@ -3796,9 +3236,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
           "model": "openai/gpt-5-nano",
         },
         {
-          "model": "github-copilot/gpt-5-nano",
-        },
-        {
           "model": "opencode/gpt-5-nano",
         },
       ],
@@ -3807,10 +3244,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     },
     "oracle": {
       "fallback_models": [
-        {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "high",
-        },
         {
           "model": "opencode/gpt-5.5",
           "variant": "high",
@@ -3832,10 +3265,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
           "variant": "max",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
@@ -3846,19 +3275,11 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     "prometheus": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "high",
         },
         {
@@ -3881,10 +3302,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     "sisyphus": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
@@ -3893,10 +3310,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "medium",
         },
         {
@@ -3919,17 +3332,10 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     "sisyphus-junior": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
-        {
           "model": "opencode/claude-sonnet-4-6",
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "medium",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "medium",
         },
         {
@@ -3959,18 +3365,11 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
           "variant": "max",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
         {
           "model": "openai/gpt-5.5",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
         },
         {
           "model": "opencode/gpt-5.5",
@@ -3982,19 +3381,11 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     "deep": {
       "fallback_models": [
         {
-          "model": "github-copilot/gpt-5.5",
-          "variant": "medium",
-        },
-        {
           "model": "opencode/gpt-5.5",
           "variant": "medium",
         },
         {
           "model": "anthropic/claude-opus-4-7",
-          "variant": "max",
-        },
-        {
-          "model": "github-copilot/claude-opus-4.7",
           "variant": "max",
         },
         {
@@ -4072,10 +3463,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
           "variant": "max",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
@@ -4086,19 +3473,11 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     "unspecified-high": {
       "fallback_models": [
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
         {
           "model": "openai/gpt-5.5",
-          "variant": "high",
-        },
-        {
-          "model": "github-copilot/gpt-5.5",
           "variant": "high",
         },
         {
@@ -4120,9 +3499,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
     },
     "unspecified-low": {
       "fallback_models": [
-        {
-          "model": "github-copilot/claude-sonnet-4.6",
-        },
         {
           "model": "opencode/claude-sonnet-4-6",
         },
@@ -4167,10 +3543,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
           "variant": "max",
         },
         {
-          "model": "github-copilot/claude-opus-4.7",
-          "variant": "max",
-        },
-        {
           "model": "opencode/claude-opus-4-7",
           "variant": "max",
         },
@@ -4188,9 +3560,6 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
         },
         {
           "model": "anthropic/claude-sonnet-4-6",
-        },
-        {
-          "model": "github-copilot/claude-sonnet-4.6",
         },
         {
           "model": "opencode/claude-sonnet-4-6",

@@ -196,4 +196,30 @@ describe("system check", () => {
       expect(result.issues.some((issue) => issue.title === "Using legacy package name")).toBe(false)
     })
   })
+
+  describe("#given the pinned local OpenCode development runtime", () => {
+    it("does not report the version as below minimum", async () => {
+      //#given
+      mockGetOpenCodeVersion.mockResolvedValue("0.0.0-dev-202605251856")
+      mockCompareVersions.mockReturnValue(false)
+
+      //#when
+      const result = await checkSystem(createSystemDeps())
+
+      //#then
+      expect(result.issues.some((issue) => issue.title === "OpenCode version below minimum")).toBe(false)
+    })
+
+    it("still reports an unpinned development build as below minimum", async () => {
+      //#given
+      mockGetOpenCodeVersion.mockResolvedValue("0.0.0-dev-202605260001")
+      mockCompareVersions.mockReturnValue(false)
+
+      //#when
+      const result = await checkSystem(createSystemDeps())
+
+      //#then
+      expect(result.issues.some((issue) => issue.title === "OpenCode version below minimum")).toBe(true)
+    })
+  })
 })
