@@ -5,6 +5,7 @@ import { transformModelForProvider } from "../../shared/provider-model-id-transf
 import * as connectedProvidersCache from "../../shared/connected-providers-cache"
 import { log } from "../../shared/logger"
 import { parseModelString, parseVariantFromModelID } from "../../shared/model-string-parser"
+import { isProviderFailed } from "../../shared/provider-failure-state"
 
 function isExplicitHighModel(model: string): boolean {
   return /(?:^|\/)[^/]+-high$/.test(model)
@@ -189,6 +190,8 @@ export function resolveModelForDelegateTask(input: {
         const connectedSet = new Set(connectedProviders)
         for (const entry of fallbackChain) {
           for (const provider of entry.providers) {
+            if (isProviderFailed(provider)) continue
+
             if (connectedSet.has(provider)) {
               const transformedModelId = transformModelForProvider(provider, entry.model)
               log("[resolveModelForDelegateTask] fallback chain resolved via connected provider", {
@@ -201,16 +204,20 @@ export function resolveModelForDelegateTask(input: {
         }
         log("[resolveModelForDelegateTask] no connected provider found in fallback chain")
       } else {
-        const first = fallbackChain[0]
-        const provider = first?.providers?.[0]
-        if (provider) {
-          const transformedModelId = transformModelForProvider(provider, first.model)
-          return { model: `${provider}/${transformedModelId}`, variant: first.variant, fallbackEntry: first, matchedFallback: true }
+        for (const entry of fallbackChain) {
+          for (const provider of entry.providers) {
+            if (isProviderFailed(provider)) continue
+
+            const transformedModelId = transformModelForProvider(provider, entry.model)
+            return { model: `${provider}/${transformedModelId}`, variant: entry.variant, fallbackEntry: entry, matchedFallback: true }
+          }
         }
       }
     } else {
       for (const entry of fallbackChain) {
         for (const provider of entry.providers) {
+          if (isProviderFailed(provider)) continue
+
           const fullModel = `${provider}/${entry.model}`
           const match = fuzzyMatchModel(fullModel, input.availableModels, [provider])
           if (match) {
@@ -224,6 +231,9 @@ export function resolveModelForDelegateTask(input: {
 
         const crossProviderMatch = fuzzyMatchModel(entry.model, input.availableModels)
         if (crossProviderMatch) {
+          const matchedProvider = crossProviderMatch.split("/")[0]
+          if (matchedProvider && isProviderFailed(matchedProvider)) continue
+
           if (explicitHighModel && entry.variant === "high" && crossProviderMatch === explicitHighBaseModel) {
             return { model: explicitHighModel, fallbackEntry: entry, matchedFallback: true }
           }

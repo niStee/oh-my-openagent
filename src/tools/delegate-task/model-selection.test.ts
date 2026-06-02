@@ -3,6 +3,7 @@
 import { afterEach, beforeEach, describe, expect, mock, spyOn, test } from "bun:test"
 import { resolveModelForDelegateTask } from "./model-selection"
 import * as connectedProvidersCache from "../../shared/connected-providers-cache"
+import { markProviderFailed, clearAllProviderFailures } from "../../shared/provider-failure-state"
 
 describe("resolveModelForDelegateTask", () => {
 	let hasConnectedProvidersSpy: ReturnType<typeof spyOn> | undefined
@@ -10,6 +11,7 @@ describe("resolveModelForDelegateTask", () => {
 
 	beforeEach(() => {
 		mock.restore()
+		clearAllProviderFailures()
 	})
 
 	afterEach(() => {
@@ -418,6 +420,74 @@ describe("resolveModelForDelegateTask", () => {
 				})
 				readConnectedProvidersSpy.mockRestore()
 			})
+		})
+	})
+
+	describe("#given fallback chain with providers that have failed at runtime", () => {
+		beforeEach(() => {
+			hasConnectedProvidersSpy = spyOn(connectedProvidersCache, "hasConnectedProvidersCache").mockReturnValue(true)
+			hasProviderModelsSpy = spyOn(connectedProvidersCache, "hasProviderModelsCache").mockReturnValue(true)
+		})
+
+		test("#then skips the failed provider when availableModels is populated", () => {
+			markProviderFailed("anthropic")
+			
+			const result = resolveModelForDelegateTask({
+				fallbackChain: [
+					{ providers: ["anthropic"], model: "claude-sonnet-4-6" },
+					{ providers: ["openai"], model: "gpt-5.4" },
+				],
+				availableModels: new Set(["anthropic/claude-sonnet-4.6", "openai/gpt-5.4"]),
+			})
+
+			expect(result).toMatchObject({ model: "openai/gpt-5.4" })
+		})
+
+		test("#then skips the failed provider when resolving via crossProviderMatch", () => {
+			markProviderFailed("anthropic")
+			
+			const result = resolveModelForDelegateTask({
+				fallbackChain: [
+					{ providers: ["anthropic"], model: "claude-sonnet-4-6" },
+					{ providers: ["openai"], model: "gpt-5.4" },
+				],
+				availableModels: new Set(["anthropic/claude-sonnet-4.6", "opencode/gpt-5.4"]),
+			})
+
+			// It should skip anthropic and match gpt-5.4 on opencode instead
+			expect(result).toMatchObject({ model: "opencode/gpt-5.4" })
+		})
+
+		test("#then skips the failed provider when availableModels is empty and connectedProviders exist", () => {
+			const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["anthropic", "openai"])
+			markProviderFailed("anthropic")
+
+			const result = resolveModelForDelegateTask({
+				fallbackChain: [
+					{ providers: ["anthropic"], model: "claude-sonnet-4-6" },
+					{ providers: ["openai"], model: "gpt-5.4" },
+				],
+				availableModels: new Set(),
+			})
+
+			expect(result).toMatchObject({ model: "openai/gpt-5.4" })
+			readConnectedProvidersSpy.mockRestore()
+		})
+
+		test("#then skips the failed provider when availableModels is empty and no connectedProviders cache", () => {
+			const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(null)
+			markProviderFailed("anthropic")
+
+			const result = resolveModelForDelegateTask({
+				fallbackChain: [
+					{ providers: ["anthropic"], model: "claude-sonnet-4-6" },
+					{ providers: ["openai"], model: "gpt-5.4" },
+				],
+				availableModels: new Set(),
+			})
+
+			expect(result).toMatchObject({ model: "openai/gpt-5.4" })
+			readConnectedProvidersSpy.mockRestore()
 		})
 	})
 })
