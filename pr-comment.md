@@ -15,8 +15,10 @@
 **What we know**:
 - We have successfully centralized the model and provider constants into `packages/model-core/src/registry.ts`.
 - The TypeScript ecosystem (including `agent-model-requirements.ts` and `category-model-requirements.ts`) and all related test suites now consume these constants.
-- The test suite is fully passing (8656/8656 tests) indicating zero regressions in the current TypeScript refactor scope.
-- Hardcoded string values still reside in TOML configuration files and in some deeply nested legacy fallbacks that depend on literal parsing.
+- We performed a strict-typing audit by temporarily removing `(string & {})` from the union types, forcing the TypeScript compiler to flag unregistered strings. This successfully discovered and allowed us to add missing models (like `o3-mini`, `deepseek-v4-pro`) and providers (`openai-compatible`) to the registry.
+- To preserve test fidelity (tests explicitly verify fallback logic by passing fake strings like `"nonexistent-model"`) and external extensibility (for `omo-codex` or user config), we reached a consensus to retain the loose `(string & {})` typing in `registry.ts`. This provides IDE auto-complete while keeping the API flexible.
+- The test suite is fully passing indicating zero regressions in the current TypeScript refactor scope.
+- Hardcoded string values still reside in TOML configuration files.
 
 **What we don't know**:
 - We do not know if replacing TOML files entirely (Option C) is architecturally acceptable or if TOML is a hard requirement for the `omo-codex` ecosystem.
@@ -30,5 +32,6 @@ We hypothesize that `registry.ts` should become the absolute single source of tr
 
 ## Execution Handoff
 1. Review the current implementation of `registry.ts` and its integration in the TypeScript codebase.
-2. Decide whether to proceed with generating TOML configurations from `registry.ts` (Option B) or fully replacing TOML with TS (Option C).
-3. Once decided, implement the next phase and move the PR out of Draft state.
+2. Review the loose typing approach `(string & {})` that accommodates our testing framework and API extensibility.
+3. Decide whether to proceed with generating TOML configurations from `registry.ts` (Option B) or fully replacing TOML with TS (Option C).
+4. Once decided, implement the next phase and move the PR out of Draft state.
