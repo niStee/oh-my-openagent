@@ -27,6 +27,8 @@ import { buildGpt54SisyphusJuniorPrompt } from "./gpt-5-4"
 import { buildGpt55SisyphusJuniorPrompt } from "./gpt-5-5"
 import { buildGeminiSisyphusJuniorPrompt } from "./gemini"
 
+import { SUPPORTED_MODELS } from "@oh-my-opencode/model-core"
+
 const MODE: AgentMode = "subagent"
 
 // Core tools that Sisyphus-Junior must NEVER have access to
@@ -35,7 +37,7 @@ const BLOCKED_TOOLS = ["task"]
 const GPT_BLOCKED_TOOLS = ["task", "apply_patch"]
 
 export const SISYPHUS_JUNIOR_DEFAULTS = {
-  model: "anthropic/claude-sonnet-4-6",
+  model: SUPPORTED_MODELS.CLAUDE_SONNET_4_6,
   temperature: 0.1,
 } as const
 
