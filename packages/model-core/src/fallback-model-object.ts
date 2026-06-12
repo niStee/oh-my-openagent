@@ -1,5 +1,7 @@
+import type { SupportedModel } from "./registry";
+
 export type FallbackModelObject = {
-  readonly model: string
+  readonly model: SupportedModel
   readonly variant?: string
   readonly reasoningEffort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max"
   readonly temperature?: number
