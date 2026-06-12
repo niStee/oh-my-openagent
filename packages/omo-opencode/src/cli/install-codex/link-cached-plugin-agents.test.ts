@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference path="../../../../../bun-test.d.ts" />
 /// <reference types="bun-types" />
 
@@ -125,11 +126,11 @@ describe("linkCachedPluginAgents", () => {
     await mkdir(agentsDir, { recursive: true })
     await writeFile(
       join(pluginRoot, "components", "ulw-loop", "agents", "planner.toml"),
-      'name = "planner"\nmodel = "gpt-5.5"\nmodel_reasoning_effort = "xhigh"\n',
+      'name = "planner"\nmodel = SUPPORTED_MODELS.GPT_5_5\nmodel_reasoning_effort = "xhigh"\n',
     )
     await writeFile(
       join(agentsDir, "planner.toml"),
-      'name = "planner"\nmodel = "gpt-5.5"\nmodel_reasoning_effort = "high"\n',
+      'name = "planner"\nmodel = SUPPORTED_MODELS.GPT_5_5\nmodel_reasoning_effort = "high"\n',
     )
     const preservedReasoning = await capturePreservedAgentReasoning({ codexHome })
 
@@ -150,11 +151,11 @@ describe("linkCachedPluginAgents", () => {
     await mkdir(agentsDir, { recursive: true })
     await writeFile(
       join(pluginRoot, "components", "ulw-loop", "agents", "planner.toml"),
-      'name = "planner"\nmodel = "gpt-5.5"\nmodel_reasoning_effort = "xhigh"\nservice_tier = "fast"\n',
+      'name = "planner"\nmodel = SUPPORTED_MODELS.GPT_5_5\nmodel_reasoning_effort = "xhigh"\nservice_tier = "fast"\n',
     )
     await writeFile(
       join(agentsDir, "planner.toml"),
-      'name = "planner"\nmodel = "gpt-5.5"\nmodel_reasoning_effort = "xhigh"\n',
+      'name = "planner"\nmodel = SUPPORTED_MODELS.GPT_5_5\nmodel_reasoning_effort = "xhigh"\n',
     )
     const preservedServiceTier = await capturePreservedAgentServiceTier({ codexHome })
 
@@ -174,11 +175,11 @@ describe("linkCachedPluginAgents", () => {
     await mkdir(agentsDir, { recursive: true })
     await writeFile(
       join(pluginRoot, "components", "ultrawork", "agents", "codex-ultrawork-reviewer.toml"),
-      'name = "codex-ultrawork-reviewer"\nmodel = "gpt-5.5"\nmodel_reasoning_effort = "high"\n',
+      'name = "codex-ultrawork-reviewer"\nmodel = SUPPORTED_MODELS.GPT_5_5\nmodel_reasoning_effort = "high"\n',
     )
     await writeFile(
       join(agentsDir, "codex-ultrawork-reviewer.toml"),
-      'name = "codex-ultrawork-reviewer"\nmodel = "gpt-5.5"\nmodel_reasoning_effort = "xhigh"\n',
+      'name = "codex-ultrawork-reviewer"\nmodel = SUPPORTED_MODELS.GPT_5_5\nmodel_reasoning_effort = "xhigh"\n',
     )
     const preservedReasoning = await capturePreservedAgentReasoning({ codexHome })
 

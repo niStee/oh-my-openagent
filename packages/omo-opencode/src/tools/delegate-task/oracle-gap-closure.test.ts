@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 declare const require: NodeJS.Require
 
 const { describe, test, expect, beforeEach, afterEach, spyOn, mock } = require("bun:test")
@@ -7,7 +8,7 @@ import type { ParentContext } from "./executor-types"
 import * as executor from "./executor"
 
 const runtimeRequire = require as NodeJS.Require & { cache?: Record<string, unknown> }
-const MODEL = { providerID: "openai", modelID: "gpt-5.4" }
+const MODEL = { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4 }
 
 function clearRequireCache(modulePath: string): void {
   const resolvedPath = runtimeRequire.resolve(modulePath)

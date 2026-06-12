@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference types="bun-types" />
 
 import { afterEach, describe, expect, mock, spyOn, test } from "bun:test"
@@ -348,7 +349,7 @@ describe("createTeamIdleWakeHint", () => {
     const worker = runtimeState.members[0]
     if (!worker) throw new Error("worker member missing from fixture")
     worker.subagent_type = "atlas"
-    worker.model = { providerID: "anthropic", modelID: "claude-opus-4-7", variant: "high" }
+    worker.model = { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, variant: "high" }
     await seedRuntimeState(runtimeState, config)
     await seedUnreadMessage(teamRunId, config, randomUUID(), "hello", 100)
 
@@ -377,7 +378,7 @@ describe("createTeamIdleWakeHint", () => {
       throw new Error("expected wake hint prompt input")
     }
     expect(promptInput.body.agent).toBe("atlas")
-    expect(promptInput.body.model).toEqual({ providerID: "anthropic", modelID: "claude-opus-4-7" })
+    expect(promptInput.body.model).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 })
     expect(promptInput.body.variant).toBe("high")
   })
 
@@ -392,8 +393,8 @@ describe("createTeamIdleWakeHint", () => {
     worker.subagent_type = "Sisyphus-Junior"
     worker.category = "quick"
     worker.model = {
-      providerID: "openai",
-      modelID: "gpt-5.4",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
+      modelID: SUPPORTED_MODELS.GPT_5_4,
       variant: "medium",
       reasoningEffort: "high",
       temperature: 0.2,
@@ -429,7 +430,7 @@ describe("createTeamIdleWakeHint", () => {
       throw new Error("expected wake hint prompt input")
     }
     expect(promptInput.body.agent).toBe("Sisyphus-Junior")
-    expect(promptInput.body.model).toEqual({ providerID: "openai", modelID: "gpt-5.4" })
+    expect(promptInput.body.model).toEqual({ providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4 })
     expect(promptInput.body.variant).toBe("medium")
     expect(promptInput.body.temperature).toBe(0.2)
     expect(promptInput.body.topP).toBe(0.8)

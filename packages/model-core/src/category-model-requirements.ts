@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "./registry";
 import { SUPPORTED_PROVIDERS } from "./registry"
 import type { ModelRequirement } from "./model-requirement-types"
 
@@ -6,146 +7,146 @@ export const CATEGORY_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
     fallbackChain: [
       {
         providers: [SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gemini-3.1-pro",
+        model: SUPPORTED_MODELS.GEMINI_3_1_PRO,
         variant: "high",
       },
-      { providers: ["zai-coding-plan", SUPPORTED_PROVIDERS.OPENCODE, "bailian-coding-plan", SUPPORTED_PROVIDERS.VERCEL], model: "glm-5" },
+      { providers: [SUPPORTED_PROVIDERS.ZAI_CODING_PLAN, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.BAILIAN_CODING_PLAN, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.GLM_5 },
       {
         providers: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "claude-opus-4-7",
+        model: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
         variant: "max",
       },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "glm-5.1" },
-      { providers: ["kimi-for-coding"], model: "k2p5" },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.GLM_5_1 },
+      { providers: [SUPPORTED_PROVIDERS.KIMI_FOR_CODING], model: SUPPORTED_MODELS.KIMI_K2P5 },
     ],
   },
   ultrabrain: {
     fallbackChain: [
       {
         providers: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gpt-5.5",
+        model: SUPPORTED_MODELS.GPT_5_5,
         variant: "xhigh",
       },
       {
         providers: [SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gemini-3.1-pro",
+        model: SUPPORTED_MODELS.GEMINI_3_1_PRO,
         variant: "high",
       },
       {
         providers: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "claude-opus-4-7",
+        model: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
         variant: "max",
       },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "glm-5.1" },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.GLM_5_1 },
     ],
   },
   deep: {
     fallbackChain: [
       {
-        providers: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.GITHUB_COPILOT, "venice", SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gpt-5.5",
+        providers: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.VENICE, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
+        model: SUPPORTED_MODELS.GPT_5_5,
         variant: "medium",
       },
       {
         providers: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "claude-opus-4-7",
+        model: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
         variant: "max",
       },
       {
         providers: [SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gemini-3.1-pro",
+        model: SUPPORTED_MODELS.GEMINI_3_1_PRO,
         variant: "high",
       },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "kimi-k2.6" },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "glm-5.1" },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.KIMI_K2_6 },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.GLM_5_1 },
     ],
   },
   artistry: {
     fallbackChain: [
       {
         providers: [SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gemini-3.1-pro",
+        model: SUPPORTED_MODELS.GEMINI_3_1_PRO,
         variant: "high",
       },
       {
         providers: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "claude-opus-4-7",
+        model: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
         variant: "max",
       },
-      { providers: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL], model: "gpt-5.5" },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "kimi-k2.6" },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "glm-5.1" },
+      { providers: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.GPT_5_5 },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.KIMI_K2_6 },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.GLM_5_1 },
     ],
   },
   quick: {
     fallbackChain: [
       {
         providers: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gpt-5.4-mini",
+        model: SUPPORTED_MODELS.GPT_5_4_MINI,
       },
       {
         providers: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.VERCEL],
-        model: "claude-haiku-4-5",
+        model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5,
       },
       {
         providers: [SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gemini-3-flash",
+        model: SUPPORTED_MODELS.GEMINI_3_FLASH,
       },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "minimax-m3" },
-      { providers: ["minimax-coding-plan", "minimax-cn-coding-plan"], model: "MiniMax-M3" },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "minimax-m2.7" },
-      { providers: [SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL], model: "gpt-5-nano" },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.MINIMAX_M3 },
+      { providers: [SUPPORTED_PROVIDERS.MINIMAX_CODING_PLAN, SUPPORTED_PROVIDERS.MINIMAX_CN_CODING_PLAN], model: SUPPORTED_MODELS.MINIMAX_M3_CAP },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.MINIMAX_M2_7 },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.GPT_5_NANO },
     ],
   },
   "unspecified-low": {
     fallbackChain: [
       {
         providers: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "claude-sonnet-4-6",
+        model: SUPPORTED_MODELS.CLAUDE_SONNET_4_6,
       },
       {
         providers: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gpt-5.5",
+        model: SUPPORTED_MODELS.GPT_5_5,
         variant: "medium",
       },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "kimi-k2.6" },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.KIMI_K2_6 },
       {
         providers: [SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gemini-3-flash",
+        model: SUPPORTED_MODELS.GEMINI_3_FLASH,
       },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "minimax-m3" },
-      { providers: ["minimax-coding-plan", "minimax-cn-coding-plan"], model: "MiniMax-M3" },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "minimax-m2.7" },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.MINIMAX_M3 },
+      { providers: [SUPPORTED_PROVIDERS.MINIMAX_CODING_PLAN, SUPPORTED_PROVIDERS.MINIMAX_CN_CODING_PLAN], model: SUPPORTED_MODELS.MINIMAX_M3_CAP },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.MINIMAX_M2_7 },
     ],
   },
   "unspecified-high": {
     fallbackChain: [
       {
         providers: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "claude-opus-4-7",
+        model: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
         variant: "max",
       },
       {
         providers: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gpt-5.5",
+        model: SUPPORTED_MODELS.GPT_5_5,
         variant: "high",
       },
-      { providers: ["zai-coding-plan", SUPPORTED_PROVIDERS.OPENCODE, "bailian-coding-plan", SUPPORTED_PROVIDERS.VERCEL], model: "glm-5" },
-      { providers: ["kimi-for-coding"], model: "k2p5" },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "glm-5.1" },
-      { providers: [SUPPORTED_PROVIDERS.OPENCODE, "bailian-coding-plan", SUPPORTED_PROVIDERS.VERCEL], model: "kimi-k2.5" },
+      { providers: [SUPPORTED_PROVIDERS.ZAI_CODING_PLAN, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.BAILIAN_CODING_PLAN, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.GLM_5 },
+      { providers: [SUPPORTED_PROVIDERS.KIMI_FOR_CODING], model: SUPPORTED_MODELS.KIMI_K2P5 },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.GLM_5_1 },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.BAILIAN_CODING_PLAN, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.KIMI_K2_5 },
       {
         providers: [
           SUPPORTED_PROVIDERS.OPENCODE,
-          "bailian-coding-plan",
-          "moonshotai",
-          "moonshotai-cn",
-          "firmware",
-          "ollama-cloud",
-          "aihubmix",
+          SUPPORTED_PROVIDERS.BAILIAN_CODING_PLAN,
+          SUPPORTED_PROVIDERS.MOONSHOTAI,
+          SUPPORTED_PROVIDERS.MOONSHOTAI_CN,
+          SUPPORTED_PROVIDERS.FIRMWARE,
+          SUPPORTED_PROVIDERS.OLLAMA_CLOUD,
+          SUPPORTED_PROVIDERS.AIHUBMIX,
           SUPPORTED_PROVIDERS.VERCEL,
         ],
-        model: "kimi-k2.5",
+        model: SUPPORTED_MODELS.KIMI_K2_5,
       },
     ],
   },
@@ -153,16 +154,16 @@ export const CATEGORY_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
     fallbackChain: [
       {
         providers: [SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "gemini-3-flash",
+        model: SUPPORTED_MODELS.GEMINI_3_FLASH,
       },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "kimi-k2.6" },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.KIMI_K2_6 },
       {
         providers: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GITHUB_COPILOT, SUPPORTED_PROVIDERS.OPENCODE, SUPPORTED_PROVIDERS.VERCEL],
-        model: "claude-sonnet-4-6",
+        model: SUPPORTED_MODELS.CLAUDE_SONNET_4_6,
       },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "minimax-m3" },
-      { providers: ["minimax-coding-plan", "minimax-cn-coding-plan"], model: "MiniMax-M3" },
-      { providers: ["opencode-go", SUPPORTED_PROVIDERS.VERCEL], model: "minimax-m2.7" },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.MINIMAX_M3 },
+      { providers: [SUPPORTED_PROVIDERS.MINIMAX_CODING_PLAN, SUPPORTED_PROVIDERS.MINIMAX_CN_CODING_PLAN], model: SUPPORTED_MODELS.MINIMAX_M3_CAP },
+      { providers: [SUPPORTED_PROVIDERS.OPENCODE_GO, SUPPORTED_PROVIDERS.VERCEL], model: SUPPORTED_MODELS.MINIMAX_M2_7 },
     ],
   },
 };

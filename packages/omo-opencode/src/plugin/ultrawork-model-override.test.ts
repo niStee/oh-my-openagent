@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
 import * as sharedModule from "../shared"
 import * as dbOverrideModule from "./ultrawork-db-model-override"
@@ -87,7 +88,7 @@ describe("resolveUltraworkOverride", () => {
     const result = resolveUltraworkOverride(config, "sisyphus", output)
 
     //#then
-    expect(result).toEqual({ providerID: "anthropic", modelID: "claude-opus-4-7", variant: "max" })
+    expect(result).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, variant: "max" })
   })
 
   test("should return null when no keyword detected", () => {
@@ -123,7 +124,7 @@ describe("resolveUltraworkOverride", () => {
     const result = resolveUltraworkOverride(config, undefined, output)
 
     //#then
-    expect(result).toEqual({ providerID: "anthropic", modelID: "claude-opus-4-7", variant: undefined })
+    expect(result).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, variant: undefined })
   })
 
   test("should return null when agents config is missing", () => {
@@ -173,7 +174,7 @@ describe("resolveUltraworkOverride", () => {
     const result = resolveUltraworkOverride(config, "sisyphus", output)
 
     //#then
-    expect(result).toEqual({ providerID: "openai", modelID: "gpt-5.5/codex", variant: undefined })
+    expect(result).toEqual({ providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5.5/codex", variant: undefined })
   })
 
   test("should return null when model string has no slash", () => {
@@ -197,7 +198,7 @@ describe("resolveUltraworkOverride", () => {
     const result = resolveUltraworkOverride(config, "Sisyphus - Ultraworker", output)
 
     //#then
-    expect(result).toEqual({ providerID: "anthropic", modelID: "claude-opus-4-7", variant: "max" })
+    expect(result).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, variant: "max" })
   })
 
   test("should handle multiple text parts by joining them", () => {
@@ -216,7 +217,7 @@ describe("resolveUltraworkOverride", () => {
     const result = resolveUltraworkOverride(config, "sisyphus", output)
 
     //#then
-    expect(result).toEqual({ providerID: "anthropic", modelID: "claude-opus-4-7", variant: undefined })
+    expect(result).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, variant: undefined })
   })
 
   test("should use session agent when input and message agents are undefined", () => {
@@ -231,7 +232,7 @@ describe("resolveUltraworkOverride", () => {
 
     //#then
     expect(getSessionAgentSpy).toHaveBeenCalledWith("ses_test")
-    expect(result).toEqual({ providerID: "anthropic", modelID: "claude-opus-4-7", variant: "max" })
+    expect(result).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, variant: "max" })
 
     getSessionAgentSpy.mockRestore()
   })
@@ -298,7 +299,7 @@ describe("applyUltraworkModelOverrideOnMessage", () => {
     //#then - variant should NOT be applied without SDK validation
     expect(dbOverrideSpy).toHaveBeenCalledWith(
       "msg_123",
-      { providerID: "anthropic", modelID: "claude-opus-4-7" },
+      { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 },
       undefined,
     )
   })
@@ -320,7 +321,7 @@ describe("applyUltraworkModelOverrideOnMessage", () => {
     //#then - existing variant preserved, not overridden to "extended"
     expect(dbOverrideSpy).toHaveBeenCalledWith(
       "msg_123",
-      { providerID: "anthropic", modelID: "claude-opus-4-7" },
+      { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 },
       undefined,
     )
     expect(output.message["variant"]).toBe("max")
@@ -329,7 +330,7 @@ describe("applyUltraworkModelOverrideOnMessage", () => {
 
   test("should NOT mutate output.message.model when message ID present", () => {
     //#given
-    const sonnetModel = { providerID: "anthropic", modelID: "claude-sonnet-4-6" }
+    const sonnetModel = { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 }
     const config = createConfig("sisyphus", { model: "anthropic/claude-opus-4-7" })
     const output = createOutput("ultrawork do something", {
       existingModel: sonnetModel,
@@ -354,7 +355,7 @@ describe("applyUltraworkModelOverrideOnMessage", () => {
     applyUltraworkModelOverrideOnMessage(config, "sisyphus", output, tui)
 
     //#then - model is set but variant is NOT applied without SDK validation
-    expect(output.message.model).toEqual({ providerID: "anthropic", modelID: "claude-opus-4-7" })
+    expect(output.message.model).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 })
     expect(output.message["variant"]).toBeUndefined()
     expect(dbOverrideSpy).not.toHaveBeenCalled()
   })
@@ -390,7 +391,7 @@ describe("applyUltraworkModelOverrideOnMessage", () => {
   test("should log the model transition with deferred DB tag", () => {
     //#given
     const config = createConfig("sisyphus", { model: "anthropic/claude-opus-4-7" })
-    const existingModel = { providerID: "anthropic", modelID: "claude-sonnet-4-6" }
+    const existingModel = { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 }
     const output = createOutput("ultrawork do something", {
       existingModel,
       messageId: "msg_123",
@@ -437,7 +438,7 @@ describe("applyUltraworkModelOverrideOnMessage", () => {
     //#then
     expect(dbOverrideSpy).toHaveBeenCalledWith(
       "msg_123",
-      { providerID: "anthropic", modelID: "claude-opus-4-7" },
+      { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 },
       undefined,
     )
   })
@@ -446,7 +447,7 @@ describe("applyUltraworkModelOverrideOnMessage", () => {
     //#given
     const config = createConfig("sisyphus", { model: "anthropic/claude-opus-4-7", variant: "max" })
     const output = createOutput("ultrawork do something", {
-      existingModel: { providerID: "anthropic", modelID: "claude-opus-4-7" },
+      existingModel: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 },
       messageId: "msg_123",
     })
     let toastCalled = false
@@ -472,7 +473,7 @@ describe("applyUltraworkModelOverrideOnMessage", () => {
     const mockClient = {
       provider: {
         list: async () => ({
-          data: { all: [{ id: "anthropic", models: { "claude-opus-4-7": { variants: { max: {} } } } }] },
+          data: { all: [{ id: SUPPORTED_PROVIDERS.ANTHROPIC, models: { [SUPPORTED_MODELS.CLAUDE_OPUS_4_7]: { variants: { max: {} } } } }] },
         }),
       },
     }
@@ -483,7 +484,7 @@ describe("applyUltraworkModelOverrideOnMessage", () => {
     //#then - SDK confirmed max exists, so variant is applied
     expect(dbOverrideSpy).toHaveBeenCalledWith(
       "msg_123",
-      { providerID: "anthropic", modelID: "claude-opus-4-7" },
+      { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 },
       "max",
     )
   })
@@ -496,7 +497,7 @@ describe("applyUltraworkModelOverrideOnMessage", () => {
     const mockClient = {
       provider: {
         list: async () => ({
-          data: { all: [{ id: "anthropic", models: { "claude-haiku-4-5": { variants: { high: {} } } } }] },
+          data: { all: [{ id: SUPPORTED_PROVIDERS.ANTHROPIC, models: { [SUPPORTED_MODELS.CLAUDE_HAIKU_4_5]: { variants: { high: {} } } } }] },
         }),
       },
     }

@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference types="bun-types" />
 
 import { afterAll, afterEach, beforeEach, describe, expect, mock, test } from "bun:test"
@@ -21,7 +22,7 @@ import {
 
 const resolveMemberMock = mock(async (member: TeamSpec["members"][number]) => ({
   agentToUse: `${member.name}-agent`,
-  model: { providerID: "openai", modelID: "gpt-5.4-mini" },
+  model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4_MINI },
   fallbackChain: undefined,
   systemContent: `system:${member.name}`,
 }))
@@ -198,9 +199,9 @@ describe("createTeamRun", () => {
       subagent_type: member.subagent_type,
       model: member.model,
     }))).toEqual([
-      { name: "member-1", subagent_type: "member-1-agent", model: { providerID: "openai", modelID: "gpt-5.4-mini" } },
-      { name: "member-2", subagent_type: "member-2-agent", model: { providerID: "openai", modelID: "gpt-5.4-mini" } },
-      { name: "member-3", subagent_type: "member-3-agent", model: { providerID: "openai", modelID: "gpt-5.4-mini" } },
+      { name: "member-1", subagent_type: "member-1-agent", model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4_MINI } },
+      { name: "member-2", subagent_type: "member-2-agent", model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4_MINI } },
+      { name: "member-3", subagent_type: "member-3-agent", model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4_MINI } },
     ])
   })
 

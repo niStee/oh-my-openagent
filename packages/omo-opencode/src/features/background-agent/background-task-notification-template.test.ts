@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { describe, expect, test } from "bun:test"
 import { buildBackgroundTaskNotificationText } from "./background-task-notification-template"
 import { unsafeTestValue } from "../../../../../test-support/unsafe-test-value"
@@ -216,7 +217,7 @@ Use \`background_output(task_id="<id>")\` to retrieve each result.
               attemptNumber: 1,
               sessionId: "ses-primary",
               providerId: "genai-proxy-openai",
-              modelId: "gpt-5.4-mini",
+              modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
               status: "error",
               error: "Forbidden: Selected provider is forbidden",
             },
@@ -224,7 +225,7 @@ Use \`background_output(task_id="<id>")\` to retrieve each result.
               attemptId: "att-2",
               attemptNumber: 2,
               sessionId: "ses-fallback",
-              providerId: "anthropic",
+              providerId: SUPPORTED_PROVIDERS.ANTHROPIC,
               modelId: "claude-haiku-4.5",
               status: "completed",
             },
@@ -245,7 +246,7 @@ Use \`background_output(task_id="<id>")\` to retrieve each result.
                 attemptNumber: 1,
                 sessionId: "ses-primary",
                 providerId: "genai-proxy-openai",
-                modelId: "gpt-5.4-mini",
+                modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
                 status: "error",
                 error: "Forbidden: Selected provider is forbidden",
               },
@@ -253,7 +254,7 @@ Use \`background_output(task_id="<id>")\` to retrieve each result.
                 attemptId: "att-2",
                 attemptNumber: 2,
                 sessionId: "ses-fallback",
-                providerId: "anthropic",
+                providerId: SUPPORTED_PROVIDERS.ANTHROPIC,
                 modelId: "claude-haiku-4.5",
                 status: "completed",
               },

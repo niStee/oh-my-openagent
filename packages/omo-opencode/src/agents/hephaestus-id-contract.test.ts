@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference types="bun-types" />
 
 import { describe, expect, test } from "bun:test"
@@ -8,8 +9,8 @@ import { buildGpt55HephaestusPrompt } from "./hephaestus/gpt-5-5"
 describe("Hephaestus background task ID guidance", () => {
   const promptBuilders = [
     ["gpt", () => buildGptHephaestusPrompt()],
-    ["gpt-5.4", () => buildGpt54HephaestusPrompt()],
-    ["gpt-5.5", () => buildGpt55HephaestusPrompt([])],
+    [SUPPORTED_MODELS.GPT_5_4, () => buildGpt54HephaestusPrompt()],
+    [SUPPORTED_MODELS.GPT_5_5, () => buildGpt55HephaestusPrompt([])],
   ] as const
 
   for (const [name, buildPrompt] of promptBuilders) {

@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 const {
   describe: bunDescribe,
   test: bunTest,
@@ -259,8 +260,8 @@ bunDescribe("sendSyncPrompt", () => {
       },
       systemContent: undefined,
       categoryModel: {
-        providerID: "openai",
-        modelID: "gpt-5.4",
+        providerID: SUPPORTED_PROVIDERS.OPENAI,
+        modelID: SUPPORTED_MODELS.GPT_5_4,
         variant: "medium",
       },
       toastManager: null,
@@ -274,8 +275,8 @@ bunDescribe("sendSyncPrompt", () => {
     bunExpect(promptAsync).toHaveBeenCalled()
     bunExpect(promptArgs.body.agent).toBe("sisyphus-junior")
     bunExpect(promptArgs.body.model).toEqual({
-      providerID: "openai",
-      modelID: "gpt-5.4",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
+      modelID: SUPPORTED_MODELS.GPT_5_4,
     })
     bunExpect(promptArgs.body.variant).toBe("medium")
   })
@@ -300,8 +301,8 @@ bunDescribe("sendSyncPrompt", () => {
       },
       systemContent: undefined,
       categoryModel: {
-        providerID: "openai",
-        modelID: "gpt-5.4",
+        providerID: SUPPORTED_PROVIDERS.OPENAI,
+        modelID: SUPPORTED_MODELS.GPT_5_4,
         variant: "low",
         reasoningEffort: "high",
         temperature: 0.4,
@@ -325,8 +326,8 @@ bunDescribe("sendSyncPrompt", () => {
     //#then
     bunExpect(promptWithModelSuggestionRetry).toHaveBeenCalledTimes(1)
     bunExpect(promptArgs.body.model).toEqual({
-      providerID: "openai",
-      modelID: "gpt-5.4",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
+      modelID: SUPPORTED_MODELS.GPT_5_4,
     })
     bunExpect(promptArgs.body.variant).toBe("low")
     bunExpect(promptArgs.body.options).toEqual({
@@ -366,8 +367,8 @@ bunDescribe("sendSyncPrompt", () => {
       },
       systemContent: undefined,
       categoryModel: {
-        providerID: "openai",
-        modelID: "gpt-5.4",
+        providerID: SUPPORTED_PROVIDERS.OPENAI,
+        modelID: SUPPORTED_MODELS.GPT_5_4,
         temperature: 0.25,
       },
       toastManager: null,

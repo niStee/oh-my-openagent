@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS } from "@oh-my-opencode/model-core";
 import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import { mkdirSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
@@ -328,8 +329,8 @@ describe("createPluginInterface - chat.params variant injection", () => {
     const input = {
       sessionID: "ses-variant-inject",
       agent: "sisyphus",
-      model: { providerID: "anthropic", modelID: "claude-opus-4-6" },
-      provider: { id: "anthropic" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4-6" },
+      provider: { id: SUPPORTED_PROVIDERS.ANTHROPIC },
       message: {} as { variant?: string },
     }
     const output = { options: {} }
@@ -363,8 +364,8 @@ describe("createPluginInterface - chat.params variant injection", () => {
     const input = {
       sessionID: "ses-variant-keep",
       agent: "sisyphus",
-      model: { providerID: "anthropic", modelID: "claude-opus-4-6" },
-      provider: { id: "anthropic" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4-6" },
+      provider: { id: SUPPORTED_PROVIDERS.ANTHROPIC },
       message: { variant: "high" } as { variant?: string },
     }
     const output = { options: {} }

@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { describe, expect, test } from "bun:test"
 import { normalizeModelToCanonicalString } from "./normalize-model"
 import { unsafeTestValue } from "../../../../../test-support/unsafe-test-value"
@@ -30,7 +31,7 @@ describe("normalizeModelToCanonicalString", () => {
   describe("#given an object-shaped model from session.created", () => {
     test("#when it has id + providerID #then it returns the canonical provider/id string", () => {
       // given
-      const model = unsafeTestValue<unknown>({ id: "gpt-5.5-codex", providerID: "openai", variant: "medium" })
+      const model = unsafeTestValue<unknown>({ id: "gpt-5.5-codex", providerID: SUPPORTED_PROVIDERS.OPENAI, variant: "medium" })
 
       // when
       const result = normalizeModelToCanonicalString(model)
@@ -41,7 +42,7 @@ describe("normalizeModelToCanonicalString", () => {
 
     test("#when it exposes modelID instead of id #then it still resolves", () => {
       // given
-      const model = unsafeTestValue<unknown>({ modelID: "claude-opus-4-7", providerID: "anthropic" })
+      const model = unsafeTestValue<unknown>({ modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, providerID: SUPPORTED_PROVIDERS.ANTHROPIC })
 
       // when
       const result = normalizeModelToCanonicalString(model)

@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { describe, it, expect } from "bun:test"
 import { mkdirSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
@@ -103,7 +104,7 @@ describe("config check", () => {
         writeFileSync(
           join(xdgCacheDir, "opencode", "models.json"),
           JSON.stringify({
-            openai: { models: { "gpt-5.4": {} } },
+            openai: { models: { [SUPPORTED_MODELS.GPT_5_4]: {} } },
           }, null, 2) + "\n",
           "utf-8",
         )

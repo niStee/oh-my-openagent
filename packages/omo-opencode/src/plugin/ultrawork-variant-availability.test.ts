@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { describe, expect, spyOn, test } from "bun:test"
 import * as dbOverrideModule from "./ultrawork-db-model-override"
 import { applyUltraworkModelOverrideOnMessage } from "./ultrawork-model-override"
@@ -23,7 +24,7 @@ describe("resolveValidUltraworkVariant", () => {
     // given
     const client = createClient({
       anthropic: {
-        "claude-opus-4-7": {
+        [SUPPORTED_MODELS.CLAUDE_OPUS_4_7]: {
           variants: {
             max: {},
             high: {},
@@ -35,7 +36,7 @@ describe("resolveValidUltraworkVariant", () => {
     // when
     const result = await resolveValidUltraworkVariant(
       client,
-      { providerID: "anthropic", modelID: "claude-opus-4-7" },
+      { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 },
       "max",
     )
 
@@ -47,7 +48,7 @@ describe("resolveValidUltraworkVariant", () => {
     // given
     const client = createClient({
       anthropic: {
-        "claude-opus-4-7": {
+        [SUPPORTED_MODELS.CLAUDE_OPUS_4_7]: {
           variants: {
             high: {},
           },
@@ -58,7 +59,7 @@ describe("resolveValidUltraworkVariant", () => {
     // when
     const result = await resolveValidUltraworkVariant(
       client,
-      { providerID: "anthropic", modelID: "claude-opus-4-7" },
+      { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 },
       "max",
     )
 
@@ -87,7 +88,7 @@ describe("applyUltraworkModelOverrideOnMessage variant guard", () => {
     // given
     const client = createClient({
       anthropic: {
-        "claude-opus-4-7": {
+        [SUPPORTED_MODELS.CLAUDE_OPUS_4_7]: {
           variants: {
             high: {},
           },
@@ -110,7 +111,7 @@ describe("applyUltraworkModelOverrideOnMessage variant guard", () => {
     const output = {
       message: {
         id: "msg_123",
-        model: { providerID: "anthropic", modelID: "claude-sonnet-4-6" },
+        model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 },
       } as Record<string, unknown>,
       parts: [{ type: "text", text: "ultrawork do something" }],
     }
@@ -130,7 +131,7 @@ describe("applyUltraworkModelOverrideOnMessage variant guard", () => {
     expect(output.message["thinking"]).toBeUndefined()
     expect(dbOverrideSpy).toHaveBeenCalledWith(
       "msg_123",
-      { providerID: "anthropic", modelID: "claude-opus-4-7" },
+      { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 },
       undefined,
     )
     dbOverrideSpy.mockRestore()
@@ -140,7 +141,7 @@ describe("applyUltraworkModelOverrideOnMessage variant guard", () => {
     // given
     const client = createClient({
       anthropic: {
-        "claude-sonnet-4-6": {
+        [SUPPORTED_MODELS.CLAUDE_SONNET_4_6]: {
           variants: {
             high: {},
           },
@@ -161,7 +162,7 @@ describe("applyUltraworkModelOverrideOnMessage variant guard", () => {
 
     const output = {
       message: {
-        model: { providerID: "anthropic", modelID: "claude-sonnet-4-6" },
+        model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 },
       } as Record<string, unknown>,
       parts: [{ type: "text", text: "ultrawork do something" }],
     }
@@ -180,7 +181,7 @@ describe("applyUltraworkModelOverrideOnMessage variant guard", () => {
     expect(output.message["variant"]).toBeUndefined()
     expect(output.message["thinking"]).toBeUndefined()
     expect(dbOverrideSpy).not.toHaveBeenCalled()
-    expect(output.message.model).toEqual({ providerID: "anthropic", modelID: "claude-sonnet-4-6" })
+    expect(output.message.model).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 })
     dbOverrideSpy.mockRestore()
   })
 })

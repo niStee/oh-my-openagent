@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference path="../../../../../bun-test.d.ts" />
 /// <reference types="bun-types" />
 

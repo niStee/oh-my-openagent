@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference types="bun-types" />
 
 import { afterEach, beforeEach, describe, expect, mock, spyOn, test } from "bun:test"
@@ -28,7 +29,7 @@ describe("resolveModelForDelegateTask", () => {
 				const result = resolveModelForDelegateTask({
 					categoryDefaultModel: "anthropic/claude-sonnet-4.6",
 					fallbackChain: [
-						{ providers: ["anthropic"], model: "claude-sonnet-4-6" },
+						{ providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 },
 					],
 					availableModels: new Set(),
 					systemDefaultModel: "anthropic/claude-sonnet-4.6",
@@ -44,7 +45,7 @@ describe("resolveModelForDelegateTask", () => {
 					userModel: "openai/gpt-5.4",
 					categoryDefaultModel: "anthropic/claude-sonnet-4.6",
 					fallbackChain: [
-						{ providers: ["anthropic"], model: "claude-sonnet-4-6" },
+						{ providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 },
 					],
 					availableModels: new Set(),
 					systemDefaultModel: "anthropic/claude-sonnet-4.6",
@@ -60,7 +61,7 @@ describe("resolveModelForDelegateTask", () => {
 					userFallbackModels: ["openai/gpt-5.4", "google/gemini-3.1-pro"],
 					categoryDefaultModel: "anthropic/claude-sonnet-4.6",
 					fallbackChain: [
-						{ providers: ["anthropic"], model: "claude-sonnet-4-6" },
+						{ providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 },
 					],
 					availableModels: new Set(),
 				})
@@ -78,12 +79,12 @@ describe("resolveModelForDelegateTask", () => {
 
 		describe("#when availableModels is empty (cache exists but empty)", () => {
 			test("#then keeps the category default when its provider is connected", () => {
-				const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["anthropic"])
+				const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.ANTHROPIC])
 
 				const result = resolveModelForDelegateTask({
 					categoryDefaultModel: "anthropic/claude-sonnet-4.6",
 					fallbackChain: [
-						{ providers: ["anthropic"], model: "claude-sonnet-4-6" },
+						{ providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 },
 					],
 					availableModels: new Set(),
 					systemDefaultModel: "anthropic/claude-sonnet-4.6",
@@ -94,12 +95,12 @@ describe("resolveModelForDelegateTask", () => {
 			})
 
 			test("#then skips a disconnected category default and resolves via a connected fallback", () => {
-				const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+				const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
 
 				const result = resolveModelForDelegateTask({
 					categoryDefaultModel: "anthropic/claude-sonnet-4.6",
 					fallbackChain: [
-						{ providers: ["openai"], model: "gpt-5.4", variant: "high" },
+						{ providers: [SUPPORTED_PROVIDERS.OPENAI], model: SUPPORTED_MODELS.GPT_5_4, variant: "high" },
 					],
 					availableModels: new Set(),
 					systemDefaultModel: "anthropic/claude-sonnet-4.6",
@@ -108,14 +109,14 @@ describe("resolveModelForDelegateTask", () => {
 				expect(result).toEqual({
 					model: "openai/gpt-5.4",
 					variant: "high",
-					fallbackEntry: { providers: ["openai"], model: "gpt-5.4", variant: "high" },
+					fallbackEntry: { providers: [SUPPORTED_PROVIDERS.OPENAI], model: SUPPORTED_MODELS.GPT_5_4, variant: "high" },
 					matchedFallback: true,
 				})
 				readConnectedProvidersSpy.mockRestore()
 			})
 
 			test("#then skips disconnected user fallback models and keeps the first connected fallback", () => {
-				const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+				const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
 
 				const result = resolveModelForDelegateTask({
 					userFallbackModels: ["anthropic/claude-sonnet-4.6", "openai/gpt-5.4"],
@@ -129,12 +130,12 @@ describe("resolveModelForDelegateTask", () => {
 			test("#then trusts readable connected providers even when cache presence flags are false", () => {
 				hasConnectedProvidersSpy?.mockReturnValue(false)
 				hasProviderModelsSpy?.mockReturnValue(false)
-				const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+				const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
 
 				const result = resolveModelForDelegateTask({
 					categoryDefaultModel: "anthropic/claude-sonnet-4.6",
 					fallbackChain: [
-						{ providers: ["openai"], model: "gpt-5.4", variant: "high" },
+						{ providers: [SUPPORTED_PROVIDERS.OPENAI], model: SUPPORTED_MODELS.GPT_5_4, variant: "high" },
 					],
 					availableModels: new Set(),
 					systemDefaultModel: "anthropic/claude-sonnet-4.6",
@@ -143,7 +144,7 @@ describe("resolveModelForDelegateTask", () => {
 				expect(result).toEqual({
 					model: "openai/gpt-5.4",
 					variant: "high",
-					fallbackEntry: { providers: ["openai"], model: "gpt-5.4", variant: "high" },
+					fallbackEntry: { providers: [SUPPORTED_PROVIDERS.OPENAI], model: SUPPORTED_MODELS.GPT_5_4, variant: "high" },
 					matchedFallback: true,
 				})
 				readConnectedProvidersSpy.mockRestore()
@@ -155,7 +156,7 @@ describe("resolveModelForDelegateTask", () => {
 				const result = resolveModelForDelegateTask({
 					categoryDefaultModel: "anthropic/claude-sonnet-4.6",
 					fallbackChain: [
-						{ providers: ["anthropic"], model: "claude-sonnet-4-6" },
+						{ providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 },
 					],
 					availableModels: new Set(["anthropic/claude-sonnet-4.6"]),
 				})
@@ -253,14 +254,14 @@ describe("resolveModelForDelegateTask", () => {
 
 		describe("#when availableModels is empty and fallback chain starts with unauthenticated provider", () => {
 			test("#then skips unauthenticated providers and resolves to first connected one", () => {
-				readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai", "anthropic"])
+				readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.ANTHROPIC])
 
 				const result = resolveModelForDelegateTask({
 					fallbackChain: [
 						{ providers: ["xai"], model: "grok-code-fast-1" },
-						{ providers: ["opencode-go"], model: "minimax-m2.7" },
-						{ providers: ["anthropic", "opencode"], model: "claude-haiku-4-5" },
-						{ providers: ["opencode"], model: "gpt-5-nano" },
+						{ providers: [SUPPORTED_PROVIDERS.OPENCODE_GO], model: SUPPORTED_MODELS.MINIMAX_M2_7 },
+						{ providers: [SUPPORTED_PROVIDERS.ANTHROPIC, "opencode"], model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5 },
+						{ providers: ["opencode"], model: SUPPORTED_MODELS.GPT_5_NANO },
 					],
 					availableModels: new Set(),
 				})
@@ -272,12 +273,12 @@ describe("resolveModelForDelegateTask", () => {
 			})
 
 			test("#then resolves first provider in entry that is connected", () => {
-				readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai", "github-copilot"])
+				readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.GITHUB_COPILOT])
 
 				const result = resolveModelForDelegateTask({
 					fallbackChain: [
-						{ providers: ["opencode-go"], model: "minimax-m2.7" },
-						{ providers: ["openai", "github-copilot"], model: "gpt-5.4", variant: "high" },
+						{ providers: [SUPPORTED_PROVIDERS.OPENCODE_GO], model: SUPPORTED_MODELS.MINIMAX_M2_7 },
+						{ providers: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.GITHUB_COPILOT], model: SUPPORTED_MODELS.GPT_5_4, variant: "high" },
 					],
 					availableModels: new Set(),
 				})
@@ -289,12 +290,12 @@ describe("resolveModelForDelegateTask", () => {
 			})
 
 			test("#then falls through to system default when no provider in chain is connected", () => {
-				readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["anthropic"])
+				readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.ANTHROPIC])
 
 				const result = resolveModelForDelegateTask({
 					fallbackChain: [
 						{ providers: ["xai"], model: "grok-code-fast-1" },
-						{ providers: ["opencode-go"], model: "minimax-m2.7" },
+						{ providers: [SUPPORTED_PROVIDERS.OPENCODE_GO], model: SUPPORTED_MODELS.MINIMAX_M2_7 },
 					],
 					availableModels: new Set(),
 					systemDefaultModel: "anthropic/claude-sonnet-4.6",
@@ -329,7 +330,7 @@ describe("resolveModelForDelegateTask", () => {
 					userModel: "openai/gpt-5.4 high",
 					categoryDefaultModel: "anthropic/claude-sonnet-4.6",
 					fallbackChain: [
-						{ providers: ["anthropic"], model: "claude-sonnet-4-6" },
+						{ providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: SUPPORTED_MODELS.CLAUDE_SONNET_4_6 },
 					],
 					availableModels: new Set(["openai/gpt-5.4"]),
 				})
@@ -424,19 +425,19 @@ describe("resolveModelForDelegateTask", () => {
 
 		describe("#when availableModels is empty", () => {
 			test("#then uses connected providers to avoid disconnected category defaults", () => {
-				const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+				const readConnectedProvidersSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
 
 				const result = resolveModelForDelegateTask({
 					categoryDefaultModel: "anthropic/claude-sonnet-4.6",
 					fallbackChain: [
-						{ providers: ["openai"], model: "gpt-5.4" },
+						{ providers: [SUPPORTED_PROVIDERS.OPENAI], model: SUPPORTED_MODELS.GPT_5_4 },
 					],
 					availableModels: new Set(),
 				})
 
 				expect(result).toEqual({
 					model: "openai/gpt-5.4",
-					fallbackEntry: { providers: ["openai"], model: "gpt-5.4" },
+					fallbackEntry: { providers: [SUPPORTED_PROVIDERS.OPENAI], model: SUPPORTED_MODELS.GPT_5_4 },
 					matchedFallback: true,
 				})
 				readConnectedProvidersSpy.mockRestore()

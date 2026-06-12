@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference types="bun-types" />
 
 import { afterEach, describe, expect, mock, test } from "bun:test"
@@ -23,8 +24,8 @@ import type { TeamSpec } from "./types"
 const resolveMemberMock = mock(async (member: TeamSpec["members"][number]) => ({
   agentToUse: `${member.name}-agent`,
   model: {
-    providerID: "openai",
-    modelID: "gpt-5.4-mini",
+    providerID: SUPPORTED_PROVIDERS.OPENAI,
+    modelID: SUPPORTED_MODELS.GPT_5_4_MINI,
     variant: "medium",
     reasoningEffort: "high",
     temperature: 0.1,
@@ -264,8 +265,8 @@ describe("team-mode integration", () => {
     expect(persistedWorker?.subagent_type).toBe("worker-agent")
     expect(persistedWorker?.category).toBe("quick")
     expect(persistedWorker?.model).toEqual({
-      providerID: "openai",
-      modelID: "gpt-5.4-mini",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
+      modelID: SUPPORTED_MODELS.GPT_5_4_MINI,
       variant: "medium",
       reasoningEffort: "high",
       temperature: 0.1,
@@ -277,7 +278,7 @@ describe("team-mode integration", () => {
     expect(recorded).toHaveLength(1)
     expect(recorded[0]?.sessionId).toBe(workerMember.sessionId)
     expect(recorded[0]?.agent).toBe("worker-agent")
-    expect(recorded[0]?.model).toEqual({ providerID: "openai", modelID: "gpt-5.4-mini" })
+    expect(recorded[0]?.model).toEqual({ providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4_MINI })
     expect(recorded[0]?.variant).toBe("medium")
     expect(recorded[0]?.directory).toBe(baseDir)
     expect(SessionCategoryRegistry.get(workerMember.sessionId)).toBe("quick")

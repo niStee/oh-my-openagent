@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { describe, test, expect } from "bun:test"
 import { buildRetryModelPayload } from "./retry-model-payload"
 
@@ -15,7 +16,7 @@ describe("buildRetryModelPayload", () => {
 
   test("should return undefined for model without provider prefix", () => {
     // given
-    const model = "kimi-k2.5"
+    const model = SUPPORTED_MODELS.KIMI_K2_5
 
     // when
     const result = buildRetryModelPayload(model)
@@ -33,7 +34,7 @@ describe("buildRetryModelPayload", () => {
 
     // then
     expect(result).toEqual({
-      model: { providerID: "chutes", modelID: "kimi-k2.5" },
+      model: { providerID: "chutes", modelID: SUPPORTED_MODELS.KIMI_K2_5 },
     })
   })
 
@@ -46,7 +47,7 @@ describe("buildRetryModelPayload", () => {
 
     // then
     expect(result).toEqual({
-      model: { providerID: "anthropic", modelID: "claude-sonnet-4-5" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-sonnet-4-5" },
       variant: "high",
     })
   })
@@ -61,7 +62,7 @@ describe("buildRetryModelPayload", () => {
 
     // then
     expect(result).toEqual({
-      model: { providerID: "chutes", modelID: "kimi-k2.5" },
+      model: { providerID: "chutes", modelID: SUPPORTED_MODELS.KIMI_K2_5 },
       variant: "max",
     })
   })
@@ -76,7 +77,7 @@ describe("buildRetryModelPayload", () => {
 
     // then
     expect(result).toEqual({
-      model: { providerID: "anthropic", modelID: "claude-sonnet-4-5" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-sonnet-4-5" },
       variant: "high",
     })
   })
@@ -91,7 +92,7 @@ describe("buildRetryModelPayload", () => {
 
     // then
     expect(result).toEqual({
-      model: { providerID: "openai", modelID: "gpt-5.4" },
+      model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4 },
       variant: "high",
       reasoningEffort: "xhigh",
     })
@@ -107,7 +108,7 @@ describe("buildRetryModelPayload", () => {
 
     // then
     expect(result).toEqual({
-      model: { providerID: "chutes", modelID: "kimi-k2.5" },
+      model: { providerID: "chutes", modelID: SUPPORTED_MODELS.KIMI_K2_5 },
       variant: "medium",
     })
   })

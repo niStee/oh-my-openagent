@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "./registry";
 import { describe, expect, test } from "bun:test"
 import {
   isClaudeFable5Model,
@@ -74,7 +75,7 @@ describe("model family detectors", () => {
     expect(isClaudeOpus47OrLaterModel("anthropic/claude-opus-4-8")).toBe(true)
     expect(isClaudeOpus47OrLaterModel("anthropic/claude-opus-4.8")).toBe(true)
     expect(isClaudeOpus47OrLaterModel("anthropic/claude-opus-5-0")).toBe(true)
-    expect(isClaudeOpus47OrLaterModel("claude-opus-4-7")).toBe(true)
+    expect(isClaudeOpus47OrLaterModel(SUPPORTED_MODELS.CLAUDE_OPUS_4_7)).toBe(true)
     expect(isClaudeOpus47OrLaterModel("anthropic/claude-fable-5")).toBe(true)
     expect(isClaudeOpus47OrLaterModel("anthropic/claude-fable-5[1m]")).toBe(true)
     expect(isClaudeOpus47OrLaterModel("anthropic/claude-opus-4-6")).toBe(false)
@@ -84,7 +85,7 @@ describe("model family detectors", () => {
 
   test("#given MiniMax model ids #then detects MiniMax family only", () => {
     expect(isMiniMaxModel("opencode/minimax-m2.7")).toBe(true)
-    expect(isMiniMaxModel("minimax-m2.7-highspeed")).toBe(true)
+    expect(isMiniMaxModel(SUPPORTED_MODELS.MINIMAX_M2_7_HIGHSPEED)).toBe(true)
     expect(isMiniMaxModel("moonshotai/kimi-k2.6")).toBe(false)
   })
 })

@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS } from "@oh-my-opencode/model-core";
 /// <reference path="../../../../bun-test.d.ts" />
 import { describe, it, expect, afterEach, mock, spyOn } from "bun:test"
 import type { PluginInput } from "@opencode-ai/plugin"
@@ -1464,7 +1465,7 @@ describe("createEventHandler - retry dedupe lifecycle", () => {
 						sessionID,
 						role: "user",
 						modelID: "claude-opus-4-7-thinking",
-						providerID: "anthropic",
+						providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
 						agent: "Sisyphus - Ultraworker",
 					},
 				},
@@ -1485,7 +1486,7 @@ describe("createEventHandler - retry dedupe lifecycle", () => {
 			{
 				sessionID,
 				agent: "sisyphus",
-				model: { providerID: "anthropic", modelID: "claude-opus-4-7-thinking" },
+				model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4-7-thinking" },
 			},
 			firstOutput,
 		)

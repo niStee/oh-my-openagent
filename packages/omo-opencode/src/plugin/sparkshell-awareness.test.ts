@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { describe, expect, test } from "bun:test"
 
 import { createSystemTransformHandler } from "./system-transform"
@@ -19,7 +20,7 @@ describe("OpenCode Sparkshell awareness system transform", () => {
     await handler(
       {
         sessionID: "session-sparkshell-active",
-        model: { id: "gpt-5.5", providerID: "openai" },
+        model: { id: SUPPORTED_MODELS.GPT_5_5, providerID: SUPPORTED_PROVIDERS.OPENAI },
       },
       output,
     )
@@ -37,7 +38,7 @@ describe("OpenCode Sparkshell awareness system transform", () => {
     await handler(
       {
         sessionID: "session-sparkshell-inactive",
-        model: { id: "gpt-5.5", providerID: "openai" },
+        model: { id: SUPPORTED_MODELS.GPT_5_5, providerID: SUPPORTED_PROVIDERS.OPENAI },
       },
       output,
     )
@@ -58,7 +59,7 @@ describe("OpenCode Sparkshell awareness system transform", () => {
     await handler(
       {
         sessionID: "session-sparkshell-cli-wrapper",
-        model: { id: "gpt-5.5", providerID: "openai" },
+        model: { id: SUPPORTED_MODELS.GPT_5_5, providerID: SUPPORTED_PROVIDERS.OPENAI },
       },
       output,
     )
@@ -78,7 +79,7 @@ describe("OpenCode Sparkshell awareness system transform", () => {
     await handler(
       {
         sessionID: "session-sparkshell-force-on",
-        model: { id: "gpt-5.5", providerID: "openai" },
+        model: { id: SUPPORTED_MODELS.GPT_5_5, providerID: SUPPORTED_PROVIDERS.OPENAI },
       },
       output,
     )
@@ -100,7 +101,7 @@ describe("OpenCode Sparkshell awareness system transform", () => {
     await handler(
       {
         sessionID: "session-sparkshell-force-off",
-        model: { id: "gpt-5.5", providerID: "openai" },
+        model: { id: SUPPORTED_MODELS.GPT_5_5, providerID: SUPPORTED_PROVIDERS.OPENAI },
       },
       output,
     )
@@ -125,7 +126,7 @@ describe("OpenCode Sparkshell awareness system transform", () => {
     await handler(
       {
         sessionID: "session-sparkshell-dedupe",
-        model: { id: "gpt-5.5", providerID: "openai" },
+        model: { id: SUPPORTED_MODELS.GPT_5_5, providerID: SUPPORTED_PROVIDERS.OPENAI },
       },
       output,
     )

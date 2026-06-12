@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference types="bun-types" />
 
 import { unsafeTestValue } from "../../../../../test-support/unsafe-test-value"
@@ -252,8 +253,8 @@ describe("executeSync", () => {
       run_in_background: false,
     }
     const model = {
-      providerID: "openai",
-      modelID: "gpt-5.4",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
+      modelID: SUPPORTED_MODELS.GPT_5_4,
       variant: "high",
       temperature: 0.12,
       top_p: 0.34,
@@ -276,8 +277,8 @@ describe("executeSync", () => {
     //#then
     const promptInput = recorder.getCapturedInput()
     expect(promptInput?.body.model).toEqual({
-      providerID: "openai",
-      modelID: "gpt-5.4",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
+      modelID: SUPPORTED_MODELS.GPT_5_4,
     })
     expect(promptInput?.body.variant).toBe("high")
     expect(promptInput?.body.temperature).toBe(0.12)
@@ -329,8 +330,8 @@ describe("executeSync", () => {
       run_in_background: false,
     }
     const fallbackChain = [
-      { providers: ["quotio"], model: "kimi-k2.5", variant: undefined },
-      { providers: ["openai"], model: "gpt-5.5", variant: "high" },
+      { providers: ["quotio"], model: SUPPORTED_MODELS.KIMI_K2_5, variant: undefined },
+      { providers: [SUPPORTED_PROVIDERS.OPENAI], model: SUPPORTED_MODELS.GPT_5_5, variant: "high" },
     ]
 
     //#when
@@ -376,7 +377,7 @@ describe("executeSync", () => {
       run_in_background: false,
     }
     const fallbackChain = [
-      { providers: ["openai"], model: "gpt-5.4", variant: "high" },
+      { providers: [SUPPORTED_PROVIDERS.OPENAI], model: SUPPORTED_MODELS.GPT_5_4, variant: "high" },
     ]
 
     try {
@@ -395,7 +396,7 @@ describe("executeSync", () => {
       expect(observed[0]?.tools?.task).toBe(false)
       expect(observed[0]?.bootstrap?.retryParts[0]?.text).toContain("collect bootstrap evidence")
       expect(observed[0]?.bootstrap?.tools?.question).toBe(false)
-      expect(observed[0]?.bootstrap?.fallbackChain?.[0]?.model).toBe("gpt-5.4")
+      expect(observed[0]?.bootstrap?.fallbackChain?.[0]?.model).toBe(SUPPORTED_MODELS.GPT_5_4)
       expect(getDelegatedChildSessionBootstrap("ses-call-bootstrap")).toBeUndefined()
       // session-agent state for a sync session we created must be cleared after dispatch
       expect(getSessionAgent("ses-call-bootstrap")).toBeUndefined()

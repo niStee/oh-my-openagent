@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 declare const require: (name: string) => any
 const { describe, test, expect, beforeEach, afterEach, spyOn, mock } = require("bun:test")
 import { resolveCategoryExecution } from "./category-resolver"
@@ -111,19 +112,19 @@ describe("resolveCategoryExecution", () => {
 		//#then
 		expect(result.error).toBeUndefined()
 		expect(result.fallbackChain).toEqual([
-			{ providers: ["quotio"], model: "kimi-k2.5", variant: undefined },
-			{ providers: ["openai"], model: "gpt-5.5", variant: "high" },
+			{ providers: ["quotio"], model: SUPPORTED_MODELS.KIMI_K2_5, variant: undefined },
+			{ providers: [SUPPORTED_PROVIDERS.OPENAI], model: SUPPORTED_MODELS.GPT_5_5, variant: "high" },
 		])
 	})
 
 	test("promotes object-style fallback model settings to categoryModel when fallback becomes initial model", async () => {
 		//#given
 		const cacheSpy = spyOn(connectedProvidersCache, "readProviderModelsCache").mockReturnValue({
-			models: { openai: ["gpt-5.4"] },
-			connected: ["openai"],
+			models: { openai: [SUPPORTED_MODELS.GPT_5_4] },
+			connected: [SUPPORTED_PROVIDERS.OPENAI],
 			updatedAt: "2026-03-03T00:00:00.000Z",
 		})
-		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
 		const args = {
 			category: "quick",
 			prompt: "test prompt",
@@ -157,8 +158,8 @@ describe("resolveCategoryExecution", () => {
 		expect(result.error).toBeUndefined()
 		expect(result.actualModel).toBe("openai/gpt-5.4")
 		expect(result.categoryModel).toEqual({
-			providerID: "openai",
-			modelID: "gpt-5.4",
+			providerID: SUPPORTED_PROVIDERS.OPENAI,
+			modelID: SUPPORTED_MODELS.GPT_5_4,
 			variant: "low",
 			reasoningEffort: "high",
 			temperature: 0.4,
@@ -200,8 +201,8 @@ describe("resolveCategoryExecution", () => {
 		}
 		expect(result.actualModel).toBe("openai/gpt-5.4")
 		expect(result.categoryModel).toEqual({
-			providerID: "openai",
-			modelID: "gpt-5.4",
+			providerID: SUPPORTED_PROVIDERS.OPENAI,
+			modelID: SUPPORTED_MODELS.GPT_5_4,
 			variant: "high",
 		})
 	})
@@ -210,10 +211,10 @@ describe("resolveCategoryExecution", () => {
 		//#given
 		const cacheSpy = spyOn(connectedProvidersCache, "readProviderModelsCache").mockReturnValue({
 			models: { openai: ["gpt-5.4-preview"] },
-			connected: ["openai"],
+			connected: [SUPPORTED_PROVIDERS.OPENAI],
 			updatedAt: "2026-03-03T00:00:00.000Z",
 		})
-		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
 		const args = {
 			category: "quick",
 			prompt: "test prompt",
@@ -244,7 +245,7 @@ describe("resolveCategoryExecution", () => {
 		expect(result.error).toBeUndefined()
 		expect(result.actualModel).toBe("openai/gpt-5.4-preview")
 		expect(result.categoryModel).toEqual({
-			providerID: "openai",
+			providerID: SUPPORTED_PROVIDERS.OPENAI,
 			modelID: "gpt-5.4-preview",
 			variant: undefined,
 		})
@@ -256,10 +257,10 @@ describe("resolveCategoryExecution", () => {
 		//#given
 		const cacheSpy = spyOn(connectedProvidersCache, "readProviderModelsCache").mockReturnValue({
 			models: { openai: ["gpt-5.4-preview"] },
-			connected: ["openai"],
+			connected: [SUPPORTED_PROVIDERS.OPENAI],
 			updatedAt: "2026-03-03T00:00:00.000Z",
 		})
-		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
 		const args = {
 			category: "quick",
 			prompt: "test prompt",
@@ -293,7 +294,7 @@ describe("resolveCategoryExecution", () => {
 		expect(result.error).toBeUndefined()
 		expect(result.actualModel).toBe("openai/gpt-5.4-preview")
 		expect(result.categoryModel).toEqual({
-			providerID: "openai",
+			providerID: SUPPORTED_PROVIDERS.OPENAI,
 			modelID: "gpt-5.4-preview",
 			variant: "low",
 			reasoningEffort: "high",
@@ -310,10 +311,10 @@ describe("resolveCategoryExecution", () => {
 		//#given
 		const cacheSpy = spyOn(connectedProvidersCache, "readProviderModelsCache").mockReturnValue({
 			models: { openai: ["gpt-5.4-preview"] },
-			connected: ["openai"],
+			connected: [SUPPORTED_PROVIDERS.OPENAI],
 			updatedAt: "2026-03-03T00:00:00.000Z",
 		})
-		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
 		const args = {
 			category: "quick",
 			prompt: "test prompt",
@@ -348,7 +349,7 @@ describe("resolveCategoryExecution", () => {
 		expect(result.error).toBeUndefined()
 		expect(result.actualModel).toBe("openai/gpt-5.4-preview")
 		expect(result.categoryModel).toEqual({
-			providerID: "openai",
+			providerID: SUPPORTED_PROVIDERS.OPENAI,
 			modelID: "gpt-5.4-preview",
 			variant: "max",
 			reasoningEffort: "high",
@@ -361,10 +362,10 @@ describe("resolveCategoryExecution", () => {
 		//#given
 		const cacheSpy = spyOn(connectedProvidersCache, "readProviderModelsCache").mockReturnValue({
 			models: { openai: ["gpt-5.4o"] },
-			connected: ["openai"],
+			connected: [SUPPORTED_PROVIDERS.OPENAI],
 			updatedAt: "2026-03-03T00:00:00.000Z",
 		})
-		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
 		const args = {
 			category: "quick",
 			prompt: "test prompt",
@@ -394,7 +395,7 @@ describe("resolveCategoryExecution", () => {
 		expect(result.error).toBeUndefined()
 		expect(result.actualModel).toBe("openai/gpt-5.4o")
 		expect(result.categoryModel).toEqual({
-			providerID: "openai",
+			providerID: SUPPORTED_PROVIDERS.OPENAI,
 			modelID: "gpt-5.4o",
 			variant: "low",
 			reasoningEffort: "high",
@@ -406,11 +407,11 @@ describe("resolveCategoryExecution", () => {
 	test("prefers the most specific prefix match when fallback entries share a prefix", async () => {
 		//#given
 		const cacheSpy = spyOn(connectedProvidersCache, "readProviderModelsCache").mockReturnValue({
-			models: { openai: ["gpt-4o"] },
-			connected: ["openai"],
+			models: { openai: [SUPPORTED_MODELS.GPT_4O] },
+			connected: [SUPPORTED_PROVIDERS.OPENAI],
 			updatedAt: "2026-03-03T00:00:00.000Z",
 		})
-		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+		const agentsSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
 		const args = {
 			category: "deep",
 			prompt: "test prompt",
@@ -445,8 +446,8 @@ describe("resolveCategoryExecution", () => {
 		expect(result.error).toBeUndefined()
 		expect(result.actualModel).toBe("openai/gpt-4o")
 		expect(result.categoryModel).toEqual({
-			providerID: "openai",
-			modelID: "gpt-4o",
+			providerID: SUPPORTED_PROVIDERS.OPENAI,
+			modelID: SUPPORTED_MODELS.GPT_4O,
 			variant: "max",
 			reasoningEffort: "high",
 		})
@@ -507,8 +508,8 @@ describe("resolveCategoryExecution", () => {
 		expect(result.error).toBeUndefined()
 		expect(result.actualModel).toBe("anthropic/claude-sonnet-4-6")
 		expect(result.categoryModel).toEqual({
-			providerID: "anthropic",
-			modelID: "claude-sonnet-4-6",
+			providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
+			modelID: SUPPORTED_MODELS.CLAUDE_SONNET_4_6,
 			variant: undefined,
 		})
 		expect(result.fallbackChain).toBeUndefined()

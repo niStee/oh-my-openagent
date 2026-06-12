@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference types="bun-types" />
 
 import { afterEach, describe, expect, test } from "bun:test"
@@ -490,7 +491,7 @@ describe("createTeamSendMessageTool", () => {
     const memberTwo = state.members.find((member) => member.name === "m2")
     if (!memberTwo) throw new Error("m2 runtime member missing")
     memberTwo.subagent_type = "atlas"
-    memberTwo.model = { providerID: "anthropic", modelID: "claude-opus-4-7", variant: "high" }
+    memberTwo.model = { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, variant: "high" }
     await saveState(state, fixture.config)
 
     const { client, calls } = createRecordingClient()
@@ -507,7 +508,7 @@ describe("createTeamSendMessageTool", () => {
     expect(calls).toHaveLength(1)
     expect(calls[0].sessionId).toBe(fixture.memberTwoSessionId)
     expect(calls[0].agent).toBe("atlas")
-    expect(calls[0].model).toEqual({ providerID: "anthropic", modelID: "claude-opus-4-7" })
+    expect(calls[0].model).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 })
     expect(calls[0].variant).toBe("high")
   })
 
@@ -547,8 +548,8 @@ describe("createTeamSendMessageTool", () => {
     memberTwo.subagent_type = "Sisyphus-Junior"
     memberTwo.category = "quick"
     memberTwo.model = {
-      providerID: "openai",
-      modelID: "gpt-5.4",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
+      modelID: SUPPORTED_MODELS.GPT_5_4,
       variant: "medium",
       reasoningEffort: "high",
       temperature: 0.2,
@@ -571,7 +572,7 @@ describe("createTeamSendMessageTool", () => {
     // then
     expect(calls).toHaveLength(1)
     expect(calls[0].agent).toBe("Sisyphus-Junior")
-    expect(calls[0].model).toEqual({ providerID: "openai", modelID: "gpt-5.4" })
+    expect(calls[0].model).toEqual({ providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4 })
     expect(calls[0].variant).toBe("medium")
     expect(SessionCategoryRegistry.get(fixture.memberTwoSessionId)).toBe("quick")
     expect(getSessionPromptParams(fixture.memberTwoSessionId)).toEqual({
