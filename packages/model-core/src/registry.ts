@@ -27,6 +27,8 @@ export const SUPPORTED_PROVIDERS = {
   MINIMAX_CODING_PLAN: "minimax-coding-plan",
   MINIMAX_CN_CODING_PLAN: "minimax-cn-coding-plan",
   AIHUBMIX: "aihubmix",
+  VOLCENGINE: "volcengine",
+  AZURE_OPENAI: "azure-openai",
   UNKNOWN: "unknown",
 } as const;
 
@@ -75,3 +77,15 @@ export const SUPPORTED_MODELS = {
 } as const;
 
 export type SupportedModel = typeof SUPPORTED_MODELS[keyof typeof SUPPORTED_MODELS] | (string & {});
+
+/**
+ * Standardized configuration payload for model execution options.
+ */
+export interface ModelSettings {
+  variant?: string;
+  reasoningEffort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max" | (string & {});
+  temperature?: number;
+  topP?: number;
+  maxTokens?: number;
+  thinking?: boolean;
+}
