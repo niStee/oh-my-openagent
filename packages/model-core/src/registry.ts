@@ -36,6 +36,10 @@ export const SUPPORTED_PROVIDERS = {
   ZAI: "zai",
   GOOGLE_VERTEX_ANTHROPIC: "google-vertex-anthropic",
   AWS_BEDROCK_ANTHROPIC: "aws-bedrock-anthropic",
+  NVIDIA: "nvidia",
+  MYSTERY: "mystery",
+  PROVIDER_X: "provider-x",
+  PROVIDER_Y: "provider-y",
   UNKNOWN: "unknown",
 } as const;
 
@@ -89,6 +93,8 @@ export const SUPPORTED_MODELS = {
   // Custom
   BIG_PICKLE: "big-pickle",
   DEEPSEEK_V4_PRO: "deepseek-v4-pro",
+  MYSTERY_MODEL_1: "mystery-model-1",
+  NVIDIA_STEPFUN_AI_STEP_3_5_FLASH: "nvidia/stepfun-ai/step-3.5-flash",
 } as const;
 
 export type SupportedModel = typeof SUPPORTED_MODELS[keyof typeof SUPPORTED_MODELS] | (string & {});

@@ -185,8 +185,8 @@ describe("resolveCompatibleModelSettings", () => {
 
   test("treats unknown model families conservatively by dropping unsupported settings", () => {
     const result = resolveCompatibleModelSettings({
-      providerID: "mystery",
-      modelID: "mystery-model-1",
+      providerID: SUPPORTED_PROVIDERS.MYSTERY,
+      modelID: SUPPORTED_MODELS.MYSTERY_MODEL_1,
       desired: { variant: SUPPORTED_VARIANTS.MAX, reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH },
     })
 
