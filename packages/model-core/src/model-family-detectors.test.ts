@@ -78,7 +78,7 @@ describe("model family detectors", () => {
   test("#given Claude Fable 5 model ids #then detects Fable 5 only", () => {
     expect(isClaudeFable5Model("anthropic/claude-fable-5")).toBe(true)
     expect(isClaudeFable5Model("anthropic/claude-fable-5[1m]")).toBe(true)
-    expect(isClaudeFable5Model("claude-fable-5")).toBe(true)
+    expect(isClaudeFable5Model(SUPPORTED_MODELS.CLAUDE_FABLE_5)).toBe(true)
     expect(isClaudeFable5Model("anthropic/claude-opus-4-8")).toBe(false)
     expect(isClaudeFable5Model("anthropic/claude-sonnet-4-6")).toBe(false)
   })
