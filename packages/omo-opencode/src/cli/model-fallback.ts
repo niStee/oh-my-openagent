@@ -4,7 +4,7 @@ import {
 } from "./model-fallback-requirements"
 import type { FallbackModelObject } from "../config/schema/fallback-models"
 import type { FallbackEntry } from "../shared/model-requirements"
-import { getModelCapabilities, resolveCompatibleModelSettings } from "@oh-my-opencode/model-core"
+import { getModelCapabilities, resolveCompatibleModelSettings, type Variant } from "@oh-my-opencode/model-core"
 import type { InstallConfig } from "./types"
 
 import type { AgentConfig, CategoryConfig, GeneratedOmoConfig } from "./model-fallback-types"
@@ -25,7 +25,7 @@ export const ULTIMATE_FALLBACK = "opencode/gpt-5-nano"
 const SCHEMA_URL = "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json"
 
 type CompatibleFallbackSettings = {
-  variant?: string
+  variant?: Variant
   reasoningEffort?: FallbackModelObject["reasoningEffort"]
   temperature?: number
   topP?: number

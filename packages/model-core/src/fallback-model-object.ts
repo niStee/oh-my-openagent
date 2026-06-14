@@ -1,7 +1,7 @@
-import type { SupportedModel, ModelAttributes } from "./registry";
+import type { SupportedModel, ModelAttributes, Variant, ThinkingConfig } from "./registry";
 
 export type FallbackModelObject = Readonly<ModelAttributes> & {
   readonly model: SupportedModel
-  readonly variant?: string
-  readonly thinking?: { readonly type: "enabled" | "disabled"; readonly budgetTokens?: number }
+  readonly variant?: Variant
+  readonly thinking?: ThinkingConfig
 }

@@ -1,4 +1,4 @@
-import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS , SUPPORTED_VARIANTS, SUPPORTED_REASONING_EFFORTS } from "./registry";
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS , SUPPORTED_VARIANTS, SUPPORTED_REASONING_EFFORTS, type Variant } from "./registry";
 import { describe, expect, test } from "bun:test"
 
 import { getModelCapabilities } from "./model-capabilities"
@@ -110,7 +110,7 @@ describe("resolveCompatibleModelSettings", () => {
     const result = resolveCompatibleModelSettings({
       providerID: SUPPORTED_PROVIDERS.OPENAI,
       modelID: SUPPORTED_MODELS.GPT_5_4,
-      desired: { variant: "HIGH", reasoningEffort: "HIGH" },
+      desired: { variant: "high", reasoningEffort: "HIGH" },
     })
 
     expect(result).toEqual({
@@ -271,10 +271,10 @@ describe("resolveCompatibleModelSettings", () => {
         const result = resolveCompatibleModelSettings({
           providerID: "any-provider",
           modelID,
-          desired: { variant: highest },
+          desired: { variant: highest as Variant },
         })
 
-        expect(result.variant).toBe(highest)
+        expect(result.variant).toBe(highest as Variant)
         expect(result.changes).toEqual([])
       })
 
@@ -288,10 +288,10 @@ describe("resolveCompatibleModelSettings", () => {
         const result = resolveCompatibleModelSettings({
           providerID: "any-provider",
           modelID,
-          desired: { variant: desiredVariant },
+          desired: { variant: desiredVariant as Variant },
         })
 
-        expect(result.variant).toBe(expectedDowngrade)
+        expect(result.variant).toBe(expectedDowngrade as Variant)
         expect(result.changes[0]?.reason).toBe("unsupported-by-model-family")
       })
 
@@ -337,7 +337,7 @@ describe("resolveCompatibleModelSettings", () => {
         const result = resolveCompatibleModelSettings({
           providerID: SUPPORTED_PROVIDERS.GITHUB_COPILOT,
           modelID,
-          desired: { variant: requested, reasoningEffort: requested },
+          desired: { variant: requested as Variant, reasoningEffort: requested },
           capabilities,
         })
 

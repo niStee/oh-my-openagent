@@ -129,10 +129,15 @@ export interface ModelAttributes {
   reasoningEffort?: ReasoningEffort;
 }
 
+export interface ThinkingConfig {
+  readonly type: "enabled" | "disabled";
+  readonly budgetTokens?: number;
+}
+
 /**
  * Standardized configuration payload for model execution options.
  */
 export interface ModelSettings extends ModelAttributes {
   variant?: Variant;
-  thinking?: boolean;
+  thinking?: boolean | ThinkingConfig;
 }
