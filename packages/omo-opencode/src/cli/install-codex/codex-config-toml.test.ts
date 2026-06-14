@@ -264,40 +264,6 @@ describe("codex-config-toml", () => {
     expect(content).toContain("job_max_runtime_seconds = 3600")
   })
 
-  test("#given managed agent role sections #when updating config #then preserves role config while removing only root agents max_threads", async () => {
-    // given
-    const root = await mkdtemp(join(tmpdir(), "omo-codex-config-multi-agent-role-section-"))
-    const configPath = join(root, "config.toml")
-    await writeFile(
-      configPath,
-      [
-        "[agents]",
-        "max_threads = 16",
-        "",
-        "[agents.explorer]",
-        'description = "read-only explorer"',
-        'config_file = "./agents/explorer.toml"',
-        "",
-      ].join("\n"),
-    )
-
-    // when
-    await updateCodexConfig({
-      configPath,
-      repoRoot: "/repo/packages/omo-codex",
-      marketplaceName: "debug",
-      marketplaceSource: { sourceType: "local", source: "/repo/packages/omo-codex" },
-      pluginNames: ["omo"],
-      agentConfigs: [{ name: "explorer", configFile: "./agents/explorer.toml" }],
-    })
-
-    // then
-    const content = await readFile(configPath, "utf8")
-    expect(content).not.toMatch(/^max_threads\s*=/m)
-    expect(content).toContain("[agents.explorer]")
-    expect(content).toContain('description = "read-only explorer"')
-    expect(content).toContain('config_file = "./agents/explorer.toml"')
-  })
 
   test("writes config blocks and stays idempotent", async () => {
     // given
@@ -345,11 +311,7 @@ describe("codex-config-toml", () => {
       },
       pluginNames: ["omo"],
       trustedHookStates: [{ key: "omo@sisyphuslabs:hooks/hooks.json:post_tool_use:0:0", trustedHash: "sha256:abc" }],
-      agentConfigs: [
-        { name: "explorer", configFile: "./agents/explorer.toml" },
-        { name: "librarian", configFile: "./agents/librarian.toml" },
-        { name: "plan", configFile: "./agents/plan.toml" },
-      ],
+
     })
     await updateCodexConfig({
       configPath,
@@ -361,11 +323,7 @@ describe("codex-config-toml", () => {
       },
       pluginNames: ["omo"],
       trustedHookStates: [{ key: "omo@sisyphuslabs:hooks/hooks.json:post_tool_use:0:0", trustedHash: "sha256:abc" }],
-      agentConfigs: [
-        { name: "explorer", configFile: "./agents/explorer.toml" },
-        { name: "librarian", configFile: "./agents/librarian.toml" },
-        { name: "plan", configFile: "./agents/plan.toml" },
-      ],
+
     })
 
     // then
@@ -380,50 +338,14 @@ describe("codex-config-toml", () => {
     expect(content).not.toContain('ref = "main"')
     expect(content).toContain("[plugins.\"omo@sisyphuslabs\"]")
     expect(content).toContain("[hooks.state.\"omo@sisyphuslabs:hooks/hooks.json:post_tool_use:0:0\"]")
-    expect(content).toContain("[agents.explorer]")
-    expect(content).toContain('config_file = "./agents/explorer.toml"')
-    expect(content).toContain("[agents.librarian]")
-    expect(content).toContain('config_file = "./agents/librarian.toml"')
-    expect(content).toContain("[agents.plan]")
-    expect(content).toContain('config_file = "./agents/plan.toml"')
+
     expect(content).not.toContain("[marketplaces.lazycodex]")
     expect(content).not.toContain("omo@lazycodex")
     expect(content).not.toContain("/tmp/stale-lazycodex-cache")
     expect(content).not.toContain("code-yeongyu-codex-plugins")
   })
 
-  test("repairs existing agent config_file entries without dropping descriptions", async () => {
-    // given
-    const root = await mkdtemp(join(tmpdir(), "omo-codex-config-agents-"))
-    const configPath = join(root, "config.toml")
-    await writeFile(
-      configPath,
-      [
-        "[agents.explorer]",
-        'description = "existing description"',
-        'config_file = "./agents/stale-explorer.toml"',
-        "",
-      ].join("\n"),
-    )
 
-    // when
-    await updateCodexConfig({
-      configPath,
-      repoRoot: "/repo/packages/omo-codex",
-      marketplaceName: "debug",
-      marketplaceSource: { sourceType: "local", source: "/repo/packages/omo-codex" },
-      pluginNames: ["omo"],
-      agentConfigs: [{ name: "explorer", configFile: "./agents/explorer.toml" }],
-    })
-
-    // then
-    const content = await readFile(configPath, "utf8")
-    expect(content).toContain("[agents.explorer]")
-    expect(content).toContain('description = "existing description"')
-    expect(content).toContain('config_file = "./agents/explorer.toml"')
-    expect(content).not.toContain("stale-explorer")
-    expect(content).not.toContain("ref = undefined")
-  })
 
   test("#given git marketplace source #when updating config #then writes second-precision timestamp and ref", async () => {
     // given
@@ -452,25 +374,6 @@ describe("codex-config-toml", () => {
     expect(content).toContain('ref = "main"')
   })
 
-  test("#given agent name needs quoting #when updating config #then writes quoted agent key", async () => {
-    // given
-    const root = await mkdtemp(join(tmpdir(), "omo-codex-config-quoted-agent-"))
-    const configPath = join(root, "config.toml")
 
-    // when
-    await updateCodexConfig({
-      configPath,
-      repoRoot: "/repo/packages/omo-codex",
-      marketplaceName: "debug",
-      marketplaceSource: { sourceType: "local", source: "/repo/packages/omo-codex" },
-      pluginNames: ["omo"],
-      agentConfigs: [{ name: "review.agent", configFile: "./agents/review.agent.toml" }],
-    })
-
-    // then
-    const content = await readFile(configPath, "utf8")
-    expect(content).toContain('[agents."review.agent"]')
-    expect(content).toContain('config_file = "./agents/review.agent.toml"')
-  })
 
 })

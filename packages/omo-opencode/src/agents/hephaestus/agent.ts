@@ -1,3 +1,4 @@
+import { SUPPORTED_REASONING_EFFORTS } from "@oh-my-opencode/model-core";
 import type { AgentConfig } from "@opencode-ai/sdk";
 import type { AgentMode, AgentPromptMetadata } from "../types";
 import { isGpt5_5Model } from "../types";
@@ -160,7 +161,7 @@ export function createHephaestusAgent(
       call_omo_agent: "deny",
       ...getFrontierToolSchemaPermission(model),
     } as AgentConfig["permission"],
-    reasoningEffort: "medium",
+    reasoningEffort: SUPPORTED_REASONING_EFFORTS.MEDIUM,
   };
 }
 createHephaestusAgent.mode = MODE;

@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { describe, it, expect } from "bun:test"
 import { getPrometheusPrompt, getPrometheusPromptSource } from "./system-prompt"
 
@@ -46,7 +47,7 @@ describe("getPrometheusPromptSource Claude per-model routing", () => {
     describe("#when resolving the prompt source", () => {
       it("#then should route each Claude model to its own variant", () => {
         expect(getPrometheusPromptSource("anthropic/claude-opus-4-6")).toBe("claude-opus-4-6")
-        expect(getPrometheusPromptSource("anthropic/claude-opus-4-7")).toBe("claude-opus-4-7")
+        expect(getPrometheusPromptSource("anthropic/claude-opus-4-7")).toBe(SUPPORTED_MODELS.CLAUDE_OPUS_4_7)
         expect(getPrometheusPromptSource("anthropic/claude-opus-4.8")).toBe("claude-opus-4-8")
         expect(getPrometheusPromptSource("anthropic/claude-fable-5")).toBe("claude-fable-5")
       })
@@ -62,8 +63,8 @@ describe("getPrometheusPromptSource Claude per-model routing", () => {
       it("#then should keep prior routing untouched", () => {
         expect(getPrometheusPromptSource(undefined)).toBe("default")
         expect(getPrometheusPromptSource("anthropic/claude-sonnet-4-6")).toBe("default")
-        expect(getPrometheusPromptSource("gpt-5.5")).toBe("gpt")
-        expect(getPrometheusPromptSource("gemini-3.1-pro")).toBe("gemini")
+        expect(getPrometheusPromptSource(SUPPORTED_MODELS.GPT_5_5)).toBe("gpt")
+        expect(getPrometheusPromptSource(SUPPORTED_MODELS.GEMINI_3_1_PRO)).toBe("gemini")
       })
     })
   })
@@ -94,7 +95,7 @@ describe("getPrometheusPrompt Claude per-model tuning blocks", () => {
       it("#then should include a self_knowledge block naming that model id", () => {
         const cases: ReadonlyArray<readonly [string, string]> = [
           ["anthropic/claude-opus-4-6", "claude-opus-4-6"],
-          ["anthropic/claude-opus-4-7", "claude-opus-4-7"],
+          ["anthropic/claude-opus-4-7", SUPPORTED_MODELS.CLAUDE_OPUS_4_7],
           ["anthropic/claude-opus-4-8", "claude-opus-4-8"],
           ["anthropic/claude-fable-5", "claude-fable-5"],
         ]

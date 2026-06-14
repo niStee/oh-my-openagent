@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference types="bun-types" />
 
 import { describe, expect, test } from "bun:test"
@@ -22,11 +23,11 @@ function expectKimiToolLoopGuardrail(prompt: string): void {
 
 describe("Sisyphus background task ID guidance", () => {
   const promptBuilders = [
-    ["claude-opus-4-7", buildClaudeOpus47SisyphusPrompt],
+    [SUPPORTED_MODELS.CLAUDE_OPUS_4_7, buildClaudeOpus47SisyphusPrompt],
     ["default", buildDefaultSisyphusPrompt],
-    ["gpt-5.4", buildGpt54SisyphusPrompt],
-    ["gpt-5.5", buildGpt55SisyphusPrompt],
-    ["kimi-k2.6", buildKimiK26SisyphusPrompt],
+    [SUPPORTED_MODELS.GPT_5_4, buildGpt54SisyphusPrompt],
+    [SUPPORTED_MODELS.GPT_5_5, buildGpt55SisyphusPrompt],
+    [SUPPORTED_MODELS.KIMI_K2_6, buildKimiK26SisyphusPrompt],
   ] as const
 
   for (const [name, buildPrompt] of promptBuilders) {
@@ -45,7 +46,7 @@ describe("Sisyphus background task ID guidance", () => {
 
   test("#given gpt-5.5 prompt #when waiting on background tasks #then system reminders are input-only", () => {
     // given, when
-    const prompt = buildGpt55SisyphusPrompt("gpt-5.5", [])
+    const prompt = buildGpt55SisyphusPrompt(SUPPORTED_MODELS.GPT_5_5, [])
 
     // then
     expect(prompt).toContain("System reminders are input-only signals")

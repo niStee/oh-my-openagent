@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS , SUPPORTED_VARIANTS } from "@oh-my-opencode/model-core";
 declare const require: NodeJS.Require
 const { describe, test, expect, beforeEach, afterEach, spyOn, mock } = require("bun:test")
 import { DEFAULT_CATEGORIES, CATEGORY_DESCRIPTIONS, isPlanAgent, PLAN_AGENT_NAMES, isPlanFamily, PLAN_FAMILY_NAMES } from "./constants"
@@ -27,7 +28,7 @@ function resolveCategoryConfig(...args: Parameters<typeof import("./tools").reso
 
 const SYSTEM_DEFAULT_MODEL = "anthropic/claude-sonnet-4-6"
 
-const TEST_CONNECTED_PROVIDERS = ["anthropic", "google", "openai"]
+const TEST_CONNECTED_PROVIDERS = [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.OPENAI]
 const TEST_AVAILABLE_MODELS = new Set([
   "anthropic/claude-opus-4-7",
   "anthropic/claude-sonnet-4-6",
@@ -135,14 +136,14 @@ describe("sisyphus-task", () => {
       MAX_POLL_TIME_MS: 50,
       SESSION_CONTINUATION_STABILITY_MS: 50,
     })
-    cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["anthropic", "google", "openai"])
+    cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.OPENAI])
     providerModelsSpy = spyOn(connectedProvidersCache, "readProviderModelsCache").mockReturnValue({
       models: {
-        anthropic: ["claude-opus-4-7", "claude-sonnet-4-6", "claude-haiku-4-5"],
-        google: ["gemini-3.1-pro", "gemini-3-flash"],
-        openai: ["gpt-5.5", "gpt-5.4-mini", "gpt-5.5"],
+        anthropic: [SUPPORTED_MODELS.CLAUDE_OPUS_4_7, SUPPORTED_MODELS.CLAUDE_SONNET_4_6, SUPPORTED_MODELS.CLAUDE_HAIKU_4_5],
+        google: [SUPPORTED_MODELS.GEMINI_3_1_PRO, SUPPORTED_MODELS.GEMINI_3_FLASH],
+        openai: [SUPPORTED_MODELS.GPT_5_5, SUPPORTED_MODELS.GPT_5_4_MINI, SUPPORTED_MODELS.GPT_5_5],
       },
-      connected: ["anthropic", "google", "openai"],
+      connected: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-01-01T00:00:00.000Z",
     })
   })
@@ -398,8 +399,8 @@ describe("sisyphus-task", () => {
       const mockClient = {
         app: { agents: async () => ({ data: [] }) },
         config: { get: async () => ({}) },
-        provider: { list: async () => ({ data: { connected: ["openai"] } }) },
-        model: { list: async () => ({ data: [{ provider: "openai", id: "gpt-5.5" }] }) },
+        provider: { list: async () => ({ data: { connected: [SUPPORTED_PROVIDERS.OPENAI] } }) },
+        model: { list: async () => ({ data: [{ provider: SUPPORTED_PROVIDERS.OPENAI, id: SUPPORTED_MODELS.GPT_5_5 }] }) },
         session: {
           create: async () => ({ data: { id: "test-session" } }),
           prompt: async () => ({ data: {} }),
@@ -460,8 +461,8 @@ describe("sisyphus-task", () => {
       const mockClient = {
         app: { agents: async () => ({ data: [] }) },
         config: { get: async () => ({}) },
-        provider: { list: async () => ({ data: { connected: ["openai"] } }) },
-        model: { list: async () => ({ data: [{ provider: "openai", id: "gpt-5.5" }] }) },
+        provider: { list: async () => ({ data: { connected: [SUPPORTED_PROVIDERS.OPENAI] } }) },
+        model: { list: async () => ({ data: [{ provider: SUPPORTED_PROVIDERS.OPENAI, id: SUPPORTED_MODELS.GPT_5_5 }] }) },
         session: {
           create: async () => ({ data: { id: "test-session" } }),
           prompt: async () => ({ data: {} }),
@@ -527,8 +528,8 @@ describe("sisyphus-task", () => {
       const mockClient = {
         app: { agents: async () => ({ data: [] }) },
         config: { get: async () => ({}) },
-        provider: { list: async () => ({ data: { connected: ["openai"] } }) },
-        model: { list: async () => ({ data: [{ provider: "openai", id: "gpt-5.5" }] }) },
+        provider: { list: async () => ({ data: { connected: [SUPPORTED_PROVIDERS.OPENAI] } }) },
+        model: { list: async () => ({ data: [{ provider: SUPPORTED_PROVIDERS.OPENAI, id: SUPPORTED_MODELS.GPT_5_5 }] }) },
         session: {
           create: async () => ({ data: { id: "test-session" } }),
           prompt: async () => ({ data: {} }),
@@ -595,8 +596,8 @@ describe("sisyphus-task", () => {
       const mockClient = {
         app: { agents: async () => ({ data: [] }) },
         config: { get: async () => ({}) },
-        provider: { list: async () => ({ data: { connected: ["openai"] } }) },
-        model: { list: async () => ({ data: [{ provider: "openai", id: "gpt-5.5" }] }) },
+        provider: { list: async () => ({ data: { connected: [SUPPORTED_PROVIDERS.OPENAI] } }) },
+        model: { list: async () => ({ data: [{ provider: SUPPORTED_PROVIDERS.OPENAI, id: SUPPORTED_MODELS.GPT_5_5 }] }) },
         session: {
           create: async () => ({ data: { id: "test-session" } }),
           prompt: async () => ({ data: {} }),
@@ -644,8 +645,8 @@ describe("sisyphus-task", () => {
        const mockClient = {
          app: { agents: async () => ({ data: [] }) },
          config: { get: async () => ({}) }, // No model configured
-         provider: { list: async () => ({ data: { connected: ["openai"] } }) },
-         model: { list: async () => ({ data: [{ provider: "openai", id: "gpt-5.5" }] }) },
+         provider: { list: async () => ({ data: { connected: [SUPPORTED_PROVIDERS.OPENAI] } }) },
+         model: { list: async () => ({ data: [{ provider: SUPPORTED_PROVIDERS.OPENAI, id: SUPPORTED_MODELS.GPT_5_5 }] }) },
          session: {
            create: async () => ({ data: { id: "test-session" } }),
            prompt: async () => ({ data: {} }),
@@ -758,8 +759,8 @@ describe("sisyphus-task", () => {
        const mockClient = {
          app: { agents: async () => ({ data: [{ name: "explore", mode: "subagent" }] }) },
          config: { get: async () => ({}) },
-         provider: { list: async () => ({ data: { connected: ["openai"] } }) },
-         model: { list: async () => ({ data: [{ provider: "openai", id: "gpt-5.5" }] }) },
+         provider: { list: async () => ({ data: { connected: [SUPPORTED_PROVIDERS.OPENAI] } }) },
+         model: { list: async () => ({ data: [{ provider: SUPPORTED_PROVIDERS.OPENAI, id: SUPPORTED_MODELS.GPT_5_5 }] }) },
          session: {
            create: async () => ({ data: { id: "test-session" } }),
            prompt: async () => ({ data: {} }),
@@ -1065,7 +1066,7 @@ describe("sisyphus-task", () => {
          manager: mockManager,
          client: mockClient,
          userCategories: {
-           ultrabrain: { model: "openai/gpt-5.5", variant: "xhigh" },
+           ultrabrain: { model: "openai/gpt-5.5", variant: SUPPORTED_VARIANTS.XHIGH },
          },
          connectedProvidersOverride: TEST_CONNECTED_PROVIDERS,
          availableModelsOverride: createTestAvailableModels(),
@@ -1092,9 +1093,9 @@ describe("sisyphus-task", () => {
 
       // then
       expect(launchInput.model).toEqual({
-        providerID: "openai",
-        modelID: "gpt-5.5",
-        variant: "xhigh",
+        providerID: SUPPORTED_PROVIDERS.OPENAI,
+        modelID: SUPPORTED_MODELS.GPT_5_5,
+        variant: SUPPORTED_VARIANTS.XHIGH,
       })
     })
 
@@ -1119,7 +1120,7 @@ describe("sisyphus-task", () => {
        const mockClient = {
          app: { agents: async () => ({ data: [] }) },
          config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
-         model: { list: async () => [{ provider: "anthropic", id: "claude-opus-4-7" }] },
+         model: { list: async () => [{ provider: SUPPORTED_PROVIDERS.ANTHROPIC, id: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 }] },
          session: {
            create: async () => ({ data: { id: "test-session" } }),
            prompt: async () => ({ data: {} }),
@@ -1157,9 +1158,9 @@ describe("sisyphus-task", () => {
 
       // then - claude-opus-4-7 should be passed with max variant
       expect(launchInput.model).toEqual({
-        providerID: "anthropic",
-        modelID: "claude-opus-4-7",
-        variant: "max",
+        providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
+        modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
+        variant: SUPPORTED_VARIANTS.MAX,
       })
     }, { timeout: 20000 })
 
@@ -1178,7 +1179,7 @@ describe("sisyphus-task", () => {
        const mockClient = {
          app: { agents: async () => ({ data: [] }) },
          config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
-         model: { list: async () => [{ provider: "anthropic", id: "claude-opus-4-7" }] },
+         model: { list: async () => [{ provider: SUPPORTED_PROVIDERS.ANTHROPIC, id: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 }] },
          session: {
            get: async () => ({ data: { directory: "/project" } }),
            create: async () => ({ data: { id: "ses_sync_default_variant" } }),
@@ -1218,8 +1219,8 @@ describe("sisyphus-task", () => {
 
       // then - claude-opus-4-7 should be passed with max variant
       expect(promptBody.model).toEqual({
-        providerID: "anthropic",
-        modelID: "claude-opus-4-7",
+        providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
+        modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
       })
       expect(promptBody.variant).toBe("max")
     }, { timeout: 20000 })
@@ -1677,7 +1678,7 @@ describe("sisyphus-task", () => {
       let promptCalled = false
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "oracle", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-opus-4-7" } }] }) },
+        app: { agents: async () => ({ data: [{ name: "oracle", mode: "subagent", model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 } }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
@@ -1962,8 +1963,8 @@ describe("sisyphus-task", () => {
           id: "msg_001",
           role: "user",
           agent: "sisyphus-junior",
-          model: { providerID: "anthropic", modelID: "claude-opus-4-7" },
-          variant: "max",
+          model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 },
+          variant: SUPPORTED_VARIANTS.MAX,
           time: { created: baseTime },
         },
         parts: [{ type: "text", text: "previous message" }],
@@ -2044,7 +2045,7 @@ describe("sisyphus-task", () => {
     const callArgs = promptMock.mock.calls[0][0]
     expect(callArgs.body.variant).toBe("max")
     expect(callArgs.body.agent).toBe("sisyphus-junior")
-    expect(callArgs.body.model).toEqual({ providerID: "anthropic", modelID: "claude-opus-4-7" })
+    expect(callArgs.body.model).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 })
   }, { timeout: 10000 })
 
   test("task_id with background=true should return immediately without waiting", async () => {
@@ -2436,7 +2437,7 @@ describe("sisyphus-task", () => {
        const mockClient = {
          app: { agents: async () => ({ data: [] }) },
          config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
-         model: { list: async () => [{ provider: "google", id: "gemini-3.1-pro" }] },
+         model: { list: async () => [{ provider: SUPPORTED_PROVIDERS.GOOGLE, id: SUPPORTED_MODELS.GEMINI_3_1_PRO }] },
          session: {
            get: async () => ({ data: { directory: "/project" } }),
            create: async () => ({ data: { id: "ses_unstable_gemini" } }),
@@ -2699,7 +2700,7 @@ describe("sisyphus-task", () => {
        const mockClient = {
          app: { agents: async () => ({ data: [] }) },
          config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
-         model: { list: async () => [{ provider: "google", id: "gemini-3.1-pro" }] },
+         model: { list: async () => [{ provider: SUPPORTED_PROVIDERS.GOOGLE, id: SUPPORTED_MODELS.GEMINI_3_1_PRO }] },
          session: {
            get: async () => ({ data: { directory: "/project" } }),
            create: async () => ({ data: { id: "ses_artistry_gemini" } }),
@@ -2749,15 +2750,15 @@ describe("sisyphus-task", () => {
       // Override provider cache to include kimi-for-coding provider
       providerModelsSpy.mockReturnValue({
         models: {
-          anthropic: ["claude-opus-4-7", "claude-sonnet-4-6", "claude-haiku-4-5"],
-          google: ["gemini-3.1-pro", "gemini-3-flash"],
-        openai: ["gpt-5.5", "gpt-5.5", "gpt-5.5"],
-          "kimi-for-coding": ["k2p5"],
+          anthropic: [SUPPORTED_MODELS.CLAUDE_OPUS_4_7, SUPPORTED_MODELS.CLAUDE_SONNET_4_6, SUPPORTED_MODELS.CLAUDE_HAIKU_4_5],
+          google: [SUPPORTED_MODELS.GEMINI_3_1_PRO, SUPPORTED_MODELS.GEMINI_3_FLASH],
+        openai: [SUPPORTED_MODELS.GPT_5_5, SUPPORTED_MODELS.GPT_5_5, SUPPORTED_MODELS.GPT_5_5],
+          [SUPPORTED_PROVIDERS.KIMI_FOR_CODING]: [SUPPORTED_MODELS.KIMI_K2P5],
         },
-        connected: ["anthropic", "google", "openai", "kimi-for-coding"],
+        connected: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.KIMI_FOR_CODING],
         updatedAt: "2026-01-01T00:00:00.000Z",
       })
-      cacheSpy.mockReturnValue(["anthropic", "google", "openai", "kimi-for-coding"])
+      cacheSpy.mockReturnValue([SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GOOGLE, SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.KIMI_FOR_CODING])
 
       const { createDelegateTask } = require("./tools")
       let launchCalled = false
@@ -2958,8 +2959,8 @@ describe("sisyphus-task", () => {
 
       // then - model should be openai/gpt-5.4-mini from DEFAULT_CATEGORIES
       //         NOT anthropic/claude-sonnet-4-6 (system default)
-      expect(launchInput.model.providerID).toBe("openai")
-      expect(launchInput.model.modelID).toBe("gpt-5.4-mini")
+      expect(launchInput.model.providerID).toBe(SUPPORTED_PROVIDERS.OPENAI)
+      expect(launchInput.model.modelID).toBe(SUPPORTED_MODELS.GPT_5_4_MINI)
     })
 
     test("category delegation ignores UI-selected (Kimi) system default model", async () => {
@@ -3022,8 +3023,8 @@ describe("sisyphus-task", () => {
       )
 
       // then - category model must win (not Kimi)
-      expect(launchInput.model.providerID).toBe("openai")
-      expect(launchInput.model.modelID).toBe("gpt-5.4-mini")
+      expect(launchInput.model.providerID).toBe(SUPPORTED_PROVIDERS.OPENAI)
+      expect(launchInput.model.modelID).toBe(SUPPORTED_MODELS.GPT_5_4_MINI)
     })
 
     test("sisyphus-junior model override takes precedence over category model", async () => {
@@ -3083,8 +3084,8 @@ describe("sisyphus-task", () => {
       )
 
       // then - override model should be used instead of category model
-      expect(launchInput.model.providerID).toBe("anthropic")
-      expect(launchInput.model.modelID).toBe("claude-sonnet-4-6")
+      expect(launchInput.model.providerID).toBe(SUPPORTED_PROVIDERS.ANTHROPIC)
+      expect(launchInput.model.modelID).toBe(SUPPORTED_MODELS.CLAUDE_SONNET_4_6)
     })
 
     test("explicit category model takes precedence over sisyphus-junior model", async () => {
@@ -3148,8 +3149,8 @@ describe("sisyphus-task", () => {
       )
 
       // then - explicit category model should win
-      expect(launchInput.model.providerID).toBe("openai")
-      expect(launchInput.model.modelID).toBe("gpt-5.5")
+      expect(launchInput.model.providerID).toBe(SUPPORTED_PROVIDERS.OPENAI)
+      expect(launchInput.model.modelID).toBe(SUPPORTED_MODELS.GPT_5_5)
     })
 
     test("sisyphus-junior model override works with quick category (#1295)", async () => {
@@ -3209,8 +3210,8 @@ describe("sisyphus-task", () => {
       )
 
       // then - sisyphus-junior override model should be used, not category default
-      expect(launchInput.model.providerID).toBe("anthropic")
-      expect(launchInput.model.modelID).toBe("claude-sonnet-4-6")
+      expect(launchInput.model.providerID).toBe(SUPPORTED_PROVIDERS.ANTHROPIC)
+      expect(launchInput.model.modelID).toBe(SUPPORTED_MODELS.CLAUDE_SONNET_4_6)
       expect(launchInput.fallbackChain).toBeUndefined()
     })
 
@@ -3272,8 +3273,8 @@ describe("sisyphus-task", () => {
       )
 
       // then - sisyphus-junior override model should be used as fallback
-      expect(launchInput.model.providerID).toBe("openai")
-      expect(launchInput.model.modelID).toBe("gpt-5.5")
+      expect(launchInput.model.providerID).toBe(SUPPORTED_PROVIDERS.OPENAI)
+      expect(launchInput.model.modelID).toBe(SUPPORTED_MODELS.GPT_5_5)
     })
   })
 
@@ -4049,7 +4050,7 @@ describe("sisyphus-task", () => {
          app: {
            agents: async () => ({
              data: [
-               { name: "explore", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-haiku-4-5" } },
+               { name: "explore", mode: "subagent", model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5 } },
              ],
            }),
          },
@@ -4088,8 +4089,8 @@ describe("sisyphus-task", () => {
 
       // then - matched agent's model should be passed to manager.launch
       expect(launchInput.model).toEqual({
-        providerID: "anthropic",
-        modelID: "claude-haiku-4-5",
+        providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
+        modelID: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5,
       })
     })
 
@@ -4109,7 +4110,7 @@ describe("sisyphus-task", () => {
          app: {
            agents: async () => ({
              data: [
-               { name: "oracle", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-opus-4-7" } },
+               { name: "oracle", mode: "subagent", model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 } },
              ],
            }),
          },
@@ -4151,8 +4152,8 @@ describe("sisyphus-task", () => {
       )
 
       expect(promptBody.model).toEqual({
-        providerID: "anthropic",
-        modelID: "claude-opus-4-7",
+        providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
+        modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
       })
     }, { timeout: 20000 })
 
@@ -4233,7 +4234,7 @@ describe("sisyphus-task", () => {
          app: {
            agents: async () => ({
              data: [
-               { name: "oracle", mode: "subagent", model: { providerID: "openai", modelID: "gpt-5.5" } },
+               { name: "oracle", mode: "subagent", model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_5 } },
              ],
            }),
          },
@@ -4279,8 +4280,8 @@ describe("sisyphus-task", () => {
 
       // then - user-configured model should take priority over matchedAgent.model
       expect(promptBody.model).toEqual({
-        providerID: "anthropic",
-        modelID: "claude-opus-4-7",
+        providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
+        modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
       })
     }, { timeout: 20000 })
 
@@ -4300,7 +4301,7 @@ describe("sisyphus-task", () => {
          app: {
            agents: async () => ({
              data: [
-               { name: "oracle", mode: "subagent", model: { providerID: "openai", modelID: "gpt-5.5" } },
+               { name: "oracle", mode: "subagent", model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_5 } },
              ],
            }),
          },
@@ -4321,7 +4322,7 @@ describe("sisyphus-task", () => {
          manager: mockManager,
          client: mockClient,
          agentOverrides: {
-           oracle: { model: "anthropic/claude-opus-4-7", variant: "max" },
+           oracle: { model: "anthropic/claude-opus-4-7", variant: SUPPORTED_VARIANTS.MAX },
          },
        })
 
@@ -4412,8 +4413,8 @@ describe("sisyphus-task", () => {
       // oracle fallback chain: gpt-5.5 (openai) > gemini-3.1-pro (google) > claude-opus-4-7 (anthropic)
       // Since openai is in connectedProviders, should resolve to openai/gpt-5.5
       expect(promptBody.model).toBeDefined()
-      expect(promptBody.model.providerID).toBe("openai")
-      expect(promptBody.model.modelID).toContain("gpt-5.5")
+      expect(promptBody.model.providerID).toBe(SUPPORTED_PROVIDERS.OPENAI)
+      expect(promptBody.model.modelID).toContain(SUPPORTED_MODELS.GPT_5_5)
     }, { timeout: 20000 })
   })
 

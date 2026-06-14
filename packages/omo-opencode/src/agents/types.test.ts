@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { describe, test, expect } from "bun:test";
 import {
   isGptModel,
@@ -108,8 +109,8 @@ describe("isMiniMaxModel", () => {
   });
 
   test("detects minimax models without provider prefix", () => {
-    expect(isMiniMaxModel("minimax-m2.7")).toBe(true);
-    expect(isMiniMaxModel("minimax-m2.7-highspeed")).toBe(true);
+    expect(isMiniMaxModel(SUPPORTED_MODELS.MINIMAX_M2_7)).toBe(true);
+    expect(isMiniMaxModel(SUPPORTED_MODELS.MINIMAX_M2_7_HIGHSPEED)).toBe(true);
     expect(isMiniMaxModel("minimax-m2.5")).toBe(true);
   });
 
@@ -130,7 +131,7 @@ describe("isGlmModel", () => {
   });
 
   test("#given GLM models without provider prefix #then returns true", () => {
-    expect(isGlmModel("glm-5")).toBe(true);
+    expect(isGlmModel(SUPPORTED_MODELS.GLM_5)).toBe(true);
     expect(isGlmModel("glm-5-turbo")).toBe(true);
   });
 

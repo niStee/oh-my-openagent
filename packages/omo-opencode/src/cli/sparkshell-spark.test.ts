@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { describe, expect, test } from "bun:test"
 
 import {
@@ -88,7 +89,7 @@ describe("sparkshell spark gating", () => {
     expect(DEFAULT_SPARK_MODEL).toBe("gpt-5.3-codex-spark")
     expect(resolveSparkModel({})).toBe(DEFAULT_SPARK_MODEL)
     expect(resolveSparkModel({ OMO_SPARKSHELL_SPARK_MODEL: "  " })).toBe(DEFAULT_SPARK_MODEL)
-    expect(resolveSparkModel({ OMO_SPARKSHELL_SPARK_MODEL: "gpt-5.4-mini" })).toBe("gpt-5.4-mini")
+    expect(resolveSparkModel({ OMO_SPARKSHELL_SPARK_MODEL: SUPPORTED_MODELS.GPT_5_4_MINI })).toBe(SUPPORTED_MODELS.GPT_5_4_MINI)
   })
 
   test("#given timeout env overrides #when resolving the timeout #then ignores junk values", () => {

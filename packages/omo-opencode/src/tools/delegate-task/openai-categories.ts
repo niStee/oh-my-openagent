@@ -1,3 +1,4 @@
+import { SUPPORTED_VARIANTS } from "@oh-my-opencode/model-core";
 import { isGpt5_5Model } from "../../agents/types"
 import type { BuiltinCategoryDefinition } from "./builtin-category-definition"
 
@@ -127,13 +128,13 @@ If your prompt lacks this structure, REWRITE IT before delegating.
 export const OPENAI_CATEGORIES: BuiltinCategoryDefinition[] = [
   {
     name: "ultrabrain",
-    config: { model: "openai/gpt-5.5", variant: "xhigh" },
+    config: { model: "openai/gpt-5.5", variant: SUPPORTED_VARIANTS.XHIGH },
     description: "Use ONLY for genuinely hard, logic-heavy tasks. Give clear goals only, not step-by-step instructions.",
     promptAppend: ULTRABRAIN_CATEGORY_PROMPT_APPEND,
   },
   {
     name: "deep",
-    config: { model: "openai/gpt-5.5", variant: "medium" },
+    config: { model: "openai/gpt-5.5", variant: SUPPORTED_VARIANTS.MEDIUM },
     description: "Goal-oriented autonomous problem-solving on hairy problems requiring deep research. ONE goal + ONE deliverable per call — multiple goals must fan out as parallel `deep` calls, never bundled into one.",
     promptAppend: DEEP_CATEGORY_PROMPT_APPEND,
     resolvePromptAppend: resolveDeepCategoryPromptAppend,

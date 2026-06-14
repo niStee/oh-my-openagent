@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS } from "./registry";
 declare const require: (name: string) => any
 const { describe, expect, test, beforeEach, afterEach, mock, spyOn } = require("bun:test")
 import * as connectedProvidersCache from "./connected-providers-cache"
@@ -43,13 +44,13 @@ describe("model-error-classifier", () => {
 
   test("selectFallbackProvider prefers first connected provider in preference order", () => {
     //#given
-    readConnectedProvidersCacheSpy?.mockReturnValue(["anthropic", "nvidia"])
+    readConnectedProvidersCacheSpy?.mockReturnValue([SUPPORTED_PROVIDERS.ANTHROPIC, "nvidia"])
 
     //#when
-    const provider = selectFallbackProvider(["anthropic", "nvidia"], "nvidia")
+    const provider = selectFallbackProvider([SUPPORTED_PROVIDERS.ANTHROPIC, "nvidia"], "nvidia")
 
     //#then
-    expect(provider).toBe("anthropic")
+    expect(provider).toBe(SUPPORTED_PROVIDERS.ANTHROPIC)
   })
 
   test("selectFallbackProvider falls back to next connected provider when first is disconnected", () => {
@@ -57,7 +58,7 @@ describe("model-error-classifier", () => {
     readConnectedProvidersCacheSpy?.mockReturnValue(["nvidia"])
 
     //#when
-    const provider = selectFallbackProvider(["anthropic", "nvidia"])
+    const provider = selectFallbackProvider([SUPPORTED_PROVIDERS.ANTHROPIC, "nvidia"])
 
     //#then
     expect(provider).toBe("nvidia")
@@ -67,10 +68,10 @@ describe("model-error-classifier", () => {
     //#given - no cache file
 
     //#when
-    const provider = selectFallbackProvider(["anthropic", "nvidia"], "nvidia")
+    const provider = selectFallbackProvider([SUPPORTED_PROVIDERS.ANTHROPIC, "nvidia"], "nvidia")
 
     //#then
-    expect(provider).toBe("anthropic")
+    expect(provider).toBe(SUPPORTED_PROVIDERS.ANTHROPIC)
   })
 
   test("selectFallbackProvider uses connected preferred provider when fallback providers are unavailable", () => {

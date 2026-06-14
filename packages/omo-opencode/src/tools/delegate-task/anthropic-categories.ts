@@ -1,3 +1,4 @@
+import { SUPPORTED_VARIANTS } from "@oh-my-opencode/model-core";
 import type { BuiltinCategoryDefinition } from "./builtin-category-definition"
 
 const UNSPECIFIED_LOW_CATEGORY_PROMPT_APPEND = `<Category_Context>
@@ -47,7 +48,7 @@ export const ANTHROPIC_CATEGORIES: BuiltinCategoryDefinition[] = [
   },
   {
     name: "unspecified-high",
-    config: { model: "anthropic/claude-opus-4-7", variant: "max" },
+    config: { model: "anthropic/claude-opus-4-7", variant: SUPPORTED_VARIANTS.MAX },
     description: "Tasks that don't fit other categories, high effort required",
     promptAppend: UNSPECIFIED_HIGH_CATEGORY_PROMPT_APPEND,
   },

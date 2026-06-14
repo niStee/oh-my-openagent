@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 /// <reference types="bun-types" />
 
 import { describe, expect, test } from "bun:test"
@@ -45,24 +46,24 @@ describe("updateConnectedProvidersCache", () => {
 				provider: {
 					list: async () => ({
 						data: {
-							connected: ["openai", "anthropic"],
+							connected: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.ANTHROPIC],
 							all: [
 								{
-									id: "openai",
+									id: SUPPORTED_PROVIDERS.OPENAI,
 									name: "OpenAI",
 									env: [],
 									models: {
-										"gpt-5.5": { id: "gpt-5.5", name: "GPT-5.5" },
-										"gpt-5.4": { id: "gpt-5.4", name: "GPT-5.4" },
+										[SUPPORTED_MODELS.GPT_5_5]: { id: SUPPORTED_MODELS.GPT_5_5, name: "GPT-5.5" },
+										[SUPPORTED_MODELS.GPT_5_4]: { id: SUPPORTED_MODELS.GPT_5_4, name: "GPT-5.4" },
 									},
 								},
 								{
-									id: "anthropic",
+									id: SUPPORTED_PROVIDERS.ANTHROPIC,
 									name: "Anthropic",
 									env: [],
 									models: {
-										"claude-opus-4-7": { id: "claude-opus-4-7", name: "Claude Opus 4.7" },
-										"claude-sonnet-4-6": { id: "claude-sonnet-4-6", name: "Claude Sonnet 4.6" },
+										[SUPPORTED_MODELS.CLAUDE_OPUS_4_7]: { id: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, name: "Claude Opus 4.7" },
+										[SUPPORTED_MODELS.CLAUDE_SONNET_4_6]: { id: SUPPORTED_MODELS.CLAUDE_SONNET_4_6, name: "Claude Sonnet 4.6" },
 									},
 								},
 							],
@@ -77,15 +78,15 @@ describe("updateConnectedProvidersCache", () => {
 			//#then
 			const cache = testCacheStore.readProviderModelsCache()
 			expect(cache).not.toBeNull()
-			expect(cache!.connected).toEqual(["openai", "anthropic"])
+			expect(cache!.connected).toEqual([SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.ANTHROPIC])
 			expect(cache!.models).toEqual({
 				openai: [
-					{ id: "gpt-5.5", name: "GPT-5.5" },
-					{ id: "gpt-5.4", name: "GPT-5.4" },
+					{ id: SUPPORTED_MODELS.GPT_5_5, name: "GPT-5.5" },
+					{ id: SUPPORTED_MODELS.GPT_5_4, name: "GPT-5.4" },
 				],
 				anthropic: [
-					{ id: "claude-opus-4-7", name: "Claude Opus 4.7" },
-					{ id: "claude-sonnet-4-6", name: "Claude Sonnet 4.6" },
+					{ id: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, name: "Claude Opus 4.7" },
+					{ id: SUPPORTED_MODELS.CLAUDE_SONNET_4_6, name: "Claude Sonnet 4.6" },
 				],
 			})
 		} finally {
@@ -139,7 +140,7 @@ describe("updateConnectedProvidersCache", () => {
 				provider: {
 					list: async () => ({
 						data: {
-							connected: ["openai"],
+							connected: [SUPPORTED_PROVIDERS.OPENAI],
 						},
 					}),
 				},
@@ -190,12 +191,12 @@ describe("updateConnectedProvidersCache", () => {
 			provider: {
 				list: async () => ({
 					data: {
-						connected: ["openai"],
+						connected: [SUPPORTED_PROVIDERS.OPENAI],
 						all: [
 							{
-								id: "openai",
+								id: SUPPORTED_PROVIDERS.OPENAI,
 								models: {
-									"gpt-5.4": { id: "gpt-5.4" },
+									[SUPPORTED_MODELS.GPT_5_4]: { id: SUPPORTED_MODELS.GPT_5_4 },
 								},
 							},
 						],
@@ -209,7 +210,7 @@ describe("updateConnectedProvidersCache", () => {
 			await testCacheStore.updateConnectedProvidersCache(mockClient)
 
 			//#then
-			expect(testCacheStore.readConnectedProvidersCache()).toEqual(["openai"])
+			expect(testCacheStore.readConnectedProvidersCache()).toEqual([SUPPORTED_PROVIDERS.OPENAI])
 			expect(existsSync(sentinelPath)).toBe(true)
 			expect(readFileSync(sentinelPath, "utf-8")).toBe(JSON.stringify({ keep: true }))
 		} finally {
@@ -233,13 +234,13 @@ describe("updateConnectedProvidersCache", () => {
 				provider: {
 					list: async () => ({
 						data: {
-							connected: ["openai"],
+							connected: [SUPPORTED_PROVIDERS.OPENAI],
 							all: [
 								{
-									id: "openai",
+									id: SUPPORTED_PROVIDERS.OPENAI,
 									models: {
-										"gpt-5.4": {
-											id: "gpt-5.4",
+										[SUPPORTED_MODELS.GPT_5_4]: {
+											id: SUPPORTED_MODELS.GPT_5_4,
 											name: "GPT-5.4",
 											temperature: false,
 											variants: {
@@ -260,11 +261,11 @@ describe("updateConnectedProvidersCache", () => {
 			const cache = testCacheStore.readProviderModelsCache()
 
 			//#when
-			const result = findProviderModelMetadata("openai", "gpt-5.4", cache)
+			const result = findProviderModelMetadata(SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_MODELS.GPT_5_4, cache)
 
 			//#then
 			expect(result).toEqual({
-				id: "gpt-5.4",
+				id: SUPPORTED_MODELS.GPT_5_4,
 				name: "GPT-5.4",
 				temperature: false,
 				variants: {
@@ -290,10 +291,10 @@ describe("updateConnectedProvidersCache", () => {
 				provider: {
 					list: async () => ({
 						data: {
-							connected: ["openai"],
+							connected: [SUPPORTED_PROVIDERS.OPENAI],
 							all: [
 								{
-									id: "openai",
+									id: SUPPORTED_PROVIDERS.OPENAI,
 									models: {
 										"o3-mini": {
 											id: 123,
@@ -313,7 +314,7 @@ describe("updateConnectedProvidersCache", () => {
 			expect(cache?.models.openai).toEqual([
 				{ id: "o3-mini", name: "o3-mini" },
 			])
-			expect(findProviderModelMetadata("openai", "o3-mini", cache)).toEqual({
+			expect(findProviderModelMetadata(SUPPORTED_PROVIDERS.OPENAI, "o3-mini", cache)).toEqual({
 				id: "o3-mini",
 				name: "o3-mini",
 			})

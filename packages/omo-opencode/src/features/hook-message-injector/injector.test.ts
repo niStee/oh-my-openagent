@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS } from "@oh-my-opencode/model-core";
 import { describe, it, expect, beforeEach, afterEach, vi } from "bun:test"
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
@@ -72,28 +73,28 @@ function createMockClient(messages: Array<{
 describe("findNearestMessageWithFieldsFromSDK", () => {
   it("returns message with all fields when available", async () => {
     const mockClient = createMockClient([
-      { info: { agent: "sisyphus", model: { providerID: "anthropic", modelID: "claude-opus-4" } } },
+      { info: { agent: "sisyphus", model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4" } } },
     ])
 
     const result = await findNearestMessageWithFieldsFromSDK(unsafeTestValue(mockClient), "ses_123")
 
     expect(result).toEqual({
       agent: "sisyphus",
-      model: { providerID: "anthropic", modelID: "claude-opus-4" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4" },
       tools: undefined,
     })
   })
 
   it("returns message with assistant shape (providerID/modelID directly on info)", async () => {
     const mockClient = createMockClient([
-      { info: { agent: "sisyphus", providerID: "openai", modelID: "gpt-5" } },
+      { info: { agent: "sisyphus", providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" } },
     ])
 
     const result = await findNearestMessageWithFieldsFromSDK(unsafeTestValue(mockClient), "ses_123")
 
     expect(result).toEqual({
       agent: "sisyphus",
-      model: { providerID: "openai", modelID: "gpt-5" },
+      model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" },
       tools: undefined,
     })
   })
@@ -157,7 +158,7 @@ describe("findNearestMessageWithFieldsFromSDK", () => {
       {
         info: {
           agent: "sisyphus",
-          model: { providerID: "anthropic", modelID: "claude-opus-4" },
+          model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4" },
           tools: { edit: true, write: false },
         },
       },
@@ -170,8 +171,8 @@ describe("findNearestMessageWithFieldsFromSDK", () => {
 
   it("uses message time.created rather than SDK array order when resolving nearest message", async () => {
     const mockClient = createMockClient([
-      { id: "msg_newer", info: { agent: "older-array-entry", model: { providerID: "openai", modelID: "gpt-5" }, time: { created: 10 } } },
-      { id: "msg_older", info: { agent: "newest-by-time", model: { providerID: "openai", modelID: "gpt-5" }, time: { created: 100 } } },
+      { id: "msg_newer", info: { agent: "older-array-entry", model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" }, time: { created: 10 } } },
+      { id: "msg_older", info: { agent: "newest-by-time", model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" }, time: { created: 100 } } },
     ])
 
     const result = await findNearestMessageWithFieldsFromSDK(unsafeTestValue(mockClient), "ses_123")
@@ -183,12 +184,12 @@ describe("findNearestMessageWithFieldsFromSDK", () => {
     const mockClient = createMockClient([
       {
         id: "msg_compaction",
-        info: { agent: "atlas", model: { providerID: "openai", modelID: "gpt-5" }, time: { created: 200 } },
+        info: { agent: "atlas", model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" }, time: { created: 200 } },
         parts: [{ type: "compaction" }],
       },
       {
         id: "msg_real",
-        info: { agent: "sisyphus", model: { providerID: "anthropic", modelID: "claude-opus-4" }, time: { created: 100 } },
+        info: { agent: "sisyphus", model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4" }, time: { created: 100 } },
       },
     ])
 
@@ -204,12 +205,12 @@ describe("findNearestMessageWithFields JSON backend ordering", () => {
     const messageDir = createMessageDir()
     writeFileSync(join(messageDir, "msg_ffff0000_000001.json"), JSON.stringify({
       agent: "older-by-time",
-      model: { providerID: "openai", modelID: "gpt-5" },
+      model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" },
       time: { created: 10 },
     }))
     writeFileSync(join(messageDir, "msg_00000000_000999.json"), JSON.stringify({
       agent: "newest-by-time",
-      model: { providerID: "openai", modelID: "gpt-5" },
+      model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" },
       time: { created: 100 },
     }))
 
@@ -228,7 +229,7 @@ describe("findNearestMessageWithFields JSON backend ordering", () => {
     writeFileSync(join(messageDir, "msg_0001.json"), JSON.stringify({
       id: compactionMessageID,
       agent: "atlas",
-      model: { providerID: "openai", modelID: "gpt-5" },
+      model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" },
       time: { created: 200 },
     }))
     mkdirSync(partDir, { recursive: true })
@@ -237,7 +238,7 @@ describe("findNearestMessageWithFields JSON backend ordering", () => {
     writeFileSync(join(messageDir, "msg_0002.json"), JSON.stringify({
       id: "msg_0002",
       agent: "sisyphus",
-      model: { providerID: "anthropic", modelID: "claude-opus-4" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4" },
       time: { created: 100 },
     }))
 
@@ -326,7 +327,7 @@ describe("findMessageContextFromSDK", () => {
         id: "msg_late",
         info: {
           agent: "latest-agent",
-          model: { providerID: "openai", modelID: "gpt-5" },
+          model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" },
           tools: { edit: true },
           time: { created: 100 },
         },
@@ -335,7 +336,7 @@ describe("findMessageContextFromSDK", () => {
         id: "msg_early",
         info: {
           agent: "first-agent",
-          model: { providerID: "anthropic", modelID: "claude-opus-4" },
+          model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4" },
           time: { created: 10 },
         },
       },
@@ -354,7 +355,7 @@ describe("findMessageContextFromSDK", () => {
     expect(result).toEqual({
       prevMessage: {
         agent: "latest-agent",
-        model: { providerID: "openai", modelID: "gpt-5" },
+        model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" },
         tools: { edit: true },
       },
       firstMessageAgent: "first-agent",
@@ -411,7 +412,7 @@ describe("injectHookMessage", () => {
 
     const result = injectHookMessage("ses_123", "test content", {
       agent: "sisyphus",
-      model: { providerID: "anthropic", modelID: "claude-opus-4" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4" },
     })
 
     expect(result).toBe(false)
@@ -423,7 +424,7 @@ describe("injectHookMessage", () => {
 
     const result = injectHookMessage("ses_123", "", {
       agent: "sisyphus",
-      model: { providerID: "anthropic", modelID: "claude-opus-4" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4" },
     })
 
     expect(result).toBe(false)
@@ -434,7 +435,7 @@ describe("injectHookMessage", () => {
 
     const result = injectHookMessage("ses_123", "   \n\t  ", {
       agent: "sisyphus",
-      model: { providerID: "anthropic", modelID: "claude-opus-4" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4" },
     })
 
     expect(result).toBe(false)

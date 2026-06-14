@@ -123,7 +123,7 @@ const RuntimeStateMemberModelSchema = z.object({
   variant: z.string().optional(),
   reasoningEffort: z.string().optional(),
   temperature: z.number().optional(),
-  top_p: z.number().optional(),
+  topP: z.number().optional(),
   maxTokens: z.number().optional(),
   thinking: z.object({
     type: z.enum(["enabled", "disabled"]),

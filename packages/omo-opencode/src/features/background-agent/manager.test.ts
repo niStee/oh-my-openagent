@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS , SUPPORTED_VARIANTS , SUPPORTED_REASONING_EFFORTS } from "@oh-my-opencode/model-core";
 import { tmpdir } from "node:os"
 import { describe, test, expect, beforeEach, afterEach, afterAll, spyOn, mock } from "bun:test"
 import type { PluginInput } from "@opencode-ai/plugin"
@@ -523,8 +524,8 @@ describe("BackgroundManager delegated child-session bootstrap", () => {
       agent: "sisyphus-junior",
       skillContent: "background delegated skill system",
       category: "quick",
-      model: { providerID: "anthropic", modelID: "claude-haiku-4-5" },
-      fallbackChain: [{ model: "gpt-5.4", providers: ["openai"], variant: "high" }],
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5 },
+      fallbackChain: [{ model: SUPPORTED_MODELS.GPT_5_4, providers: [SUPPORTED_PROVIDERS.OPENAI], variant: SUPPORTED_VARIANTS.HIGH }],
     })
     getTaskMap(manager).set(task.id, task)
     const input = {
@@ -615,8 +616,8 @@ describe("BackgroundManager prompt rejection fallback routing", () => {
       agent: "sisyphus-junior",
       parentSessionId: "parent-session",
       parentMessageId: "parent-message",
-      model: { providerID: "genai-proxy-openai", modelID: "gpt-5.4-mini" },
-      fallbackChain: [{ model: "claude-haiku-4-5", providers: ["anthropic"] }],
+      model: { providerID: "genai-proxy-openai", modelID: SUPPORTED_MODELS.GPT_5_4_MINI },
+      fallbackChain: [{ model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5, providers: [SUPPORTED_PROVIDERS.ANTHROPIC] }],
     })
     await flushBackgroundNotifications()
 
@@ -677,7 +678,7 @@ describe("BackgroundManager prompt rejection fallback routing", () => {
       agent: "sisyphus-junior",
       parentSessionId: "parent-session",
       parentMessageId: "parent-message",
-      fallbackChain: [{ model: "claude-haiku-4-5", providers: ["anthropic"] }],
+      fallbackChain: [{ model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5, providers: [SUPPORTED_PROVIDERS.ANTHROPIC] }],
     })
     await flushBackgroundNotifications()
 
@@ -715,8 +716,8 @@ describe("BackgroundManager prompt rejection fallback routing", () => {
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
-      model: { providerID: "genai-proxy-openai", modelID: "gpt-5.4-mini" },
-      fallbackChain: [{ model: "claude-haiku-4-5", providers: ["anthropic"] }],
+      model: { providerID: "genai-proxy-openai", modelID: SUPPORTED_MODELS.GPT_5_4_MINI },
+      fallbackChain: [{ model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5, providers: [SUPPORTED_PROVIDERS.ANTHROPIC] }],
       concurrencyGroup: "genai-proxy-openai/gpt-5.4-mini",
     }
     getTaskMap(manager).set(task.id, task)
@@ -777,7 +778,7 @@ describe("BackgroundManager prompt rejection fallback routing", () => {
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
-      fallbackChain: [{ model: "claude-haiku-4-5", providers: ["anthropic"] }],
+      fallbackChain: [{ model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5, providers: [SUPPORTED_PROVIDERS.ANTHROPIC] }],
       concurrencyGroup: "anthropic/claude-haiku-4-5",
     }
     getTaskMap(manager).set(task.id, task)
@@ -816,9 +817,9 @@ describe("BackgroundManager retry observability", () => {
             info: {
               agent: "hephaestus",
               model: {
-                providerID: "openai",
+                providerID: SUPPORTED_PROVIDERS.OPENAI,
                 modelID: "gpt-5",
-                variant: "xhigh",
+                variant: SUPPORTED_VARIANTS.XHIGH,
               },
               tools: { bash: "allow", edit: "deny" },
             },
@@ -831,7 +832,7 @@ describe("BackgroundManager retry observability", () => {
     const task = createMockTask({
       id: "bg_retry_observable",
       parentSessionId: "parent-session",
-      fallbackChain: [{ model: "claude-haiku-4-5", providers: ["anthropic"] }],
+      fallbackChain: [{ model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5, providers: [SUPPORTED_PROVIDERS.ANTHROPIC] }],
       attemptCount: 0,
       status: "running",
       attempts: [
@@ -840,7 +841,7 @@ describe("BackgroundManager retry observability", () => {
           attemptNumber: 1,
           sessionId: "ses_retry_visibility",
           providerId: "genai-proxy-openai",
-          modelId: "gpt-5.4-mini",
+          modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
           status: "running",
         },
       ],
@@ -878,8 +879,8 @@ describe("BackgroundManager retry observability", () => {
     expect(sessionID).toBe("parent-session")
     expect(promptContext).toEqual({
       agent: "hephaestus",
-      model: { providerID: "openai", modelID: "gpt-5" },
-      variant: "xhigh",
+      model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" },
+      variant: SUPPORTED_VARIANTS.XHIGH,
       tools: { bash: true, edit: false },
     })
     expect(shouldReply).toBe(false)
@@ -905,7 +906,7 @@ describe("BackgroundManager retry observability", () => {
       parentSessionId: "parent-session-agent-fallback",
       parentAgent: "hephaestus",
       parentTools: { bash: true },
-      fallbackChain: [{ model: "claude-haiku-4-5", providers: ["anthropic"] }],
+      fallbackChain: [{ model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5, providers: [SUPPORTED_PROVIDERS.ANTHROPIC] }],
       attemptCount: 0,
       status: "running",
       attempts: [
@@ -914,7 +915,7 @@ describe("BackgroundManager retry observability", () => {
           attemptNumber: 1,
           sessionId: "ses_retry_parent_agent_fallback",
           providerId: "genai-proxy-openai",
-          modelId: "gpt-5.4-mini",
+          modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
           status: "running",
         },
       ],
@@ -964,7 +965,7 @@ describe("BackgroundManager retry observability", () => {
     const task = createMockTask({
       id: "bg_retry_no_parent_context",
       parentSessionId: "parent-session-no-context",
-      fallbackChain: [{ model: "claude-haiku-4-5", providers: ["anthropic"] }],
+      fallbackChain: [{ model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5, providers: [SUPPORTED_PROVIDERS.ANTHROPIC] }],
       attemptCount: 0,
       status: "running",
       attempts: [
@@ -973,7 +974,7 @@ describe("BackgroundManager retry observability", () => {
           attemptNumber: 1,
           sessionId: "ses_retry_no_parent_context",
           providerId: "genai-proxy-openai",
-          modelId: "gpt-5.4-mini",
+          modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
           status: "running",
         },
       ],
@@ -1018,9 +1019,9 @@ describe("BackgroundManager retry observability", () => {
             info: {
               agent: "hephaestus",
               model: {
-                providerID: "openai",
+                providerID: SUPPORTED_PROVIDERS.OPENAI,
                 modelID: "gpt-5",
-                variant: "xhigh",
+                variant: SUPPORTED_VARIANTS.XHIGH,
               },
               tools: { bash: "allow", edit: "deny" },
             },
@@ -1045,8 +1046,8 @@ describe("BackgroundManager retry observability", () => {
       status: "pending",
       attemptCount: 1,
       queuedAt: new Date(),
-      model: { providerID: "anthropic", modelID: "claude-haiku-4.5" },
-      fallbackChain: [{ model: "claude-haiku-4-5", providers: ["anthropic"] }],
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-haiku-4.5" },
+      fallbackChain: [{ model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5, providers: [SUPPORTED_PROVIDERS.ANTHROPIC] }],
       concurrencyGroup: "anthropic/claude-haiku-4.5",
       retryNotification: {
         nextModel: "anthropic/claude-haiku-4.5",
@@ -1057,14 +1058,14 @@ describe("BackgroundManager retry observability", () => {
           attemptNumber: 1,
           sessionId: "ses_retry_visibility",
           providerId: "genai-proxy-openai",
-          modelId: "gpt-5.4-mini",
+          modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
           status: "error",
           error: "Forbidden: Selected provider is forbidden",
         },
         {
           attemptId: "att_retry_ready",
           attemptNumber: 2,
-          providerId: "anthropic",
+          providerId: SUPPORTED_PROVIDERS.ANTHROPIC,
           modelId: "claude-haiku-4.5",
           status: "pending",
         },
@@ -1107,8 +1108,8 @@ describe("BackgroundManager retry observability", () => {
     expect(retryReadyNotification).toBeDefined()
     expect(retryReadyCall?.[2]).toEqual({
       agent: "hephaestus",
-      model: { providerID: "openai", modelID: "gpt-5" },
-      variant: "xhigh",
+      model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: "gpt-5" },
+      variant: SUPPORTED_VARIANTS.XHIGH,
       tools: { bash: true, edit: false },
     })
     expect(retryReadyNotification).toContain("**Retry attempt:** 2")
@@ -1147,7 +1148,7 @@ describe("BackgroundManager retry observability", () => {
       status: "pending",
       attemptCount: 1,
       queuedAt: new Date(),
-      model: { providerID: "anthropic", modelID: "claude-haiku-4.5" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-haiku-4.5" },
       retryNotification: {
         nextModel: "anthropic/claude-haiku-4.5",
       },
@@ -1157,14 +1158,14 @@ describe("BackgroundManager retry observability", () => {
           attemptNumber: 1,
           sessionId: "ses_retry_failed_parent_dir",
           providerId: "genai-proxy-openai",
-          modelId: "gpt-5.4-mini",
+          modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
           status: "error",
           error: "Forbidden: Selected provider is forbidden",
         },
         {
           attemptId: "att_retry_ready_parent_dir",
           attemptNumber: 2,
-          providerId: "anthropic",
+          providerId: SUPPORTED_PROVIDERS.ANTHROPIC,
           modelId: "claude-haiku-4.5",
           status: "pending",
         },
@@ -1641,7 +1642,7 @@ describe("BackgroundManager.resume", () => {
       prompt: "new prompt",
       parentSessionId: "new-parent",
       parentMessageId: "new-msg",
-      parentModel: { providerID: "anthropic", modelID: "claude-opus" },
+      parentModel: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus" },
     })
 
     // then
@@ -1649,7 +1650,7 @@ describe("BackgroundManager.resume", () => {
     expect(result.sessionId).toBe("session-a")
     expect(result.description).toBe("original description")
     expect(result.agent).toBe("explore")
-    expect(result.parentModel).toEqual({ providerID: "anthropic", modelID: "claude-opus" })
+    expect(result.parentModel).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus" })
   })
 
   test("should track resume calls with prompt", () => {
@@ -1782,13 +1783,13 @@ describe("BackgroundManager.notifyParentSession - dynamic message lookup", () =>
             {
               info: {
                 agent: "sisyphus",
-                model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+                model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
               },
             },
             {
               info: {
                 agent: "compaction",
-                model: { providerID: "anthropic", modelID: "claude-sonnet-4.6" },
+                model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-sonnet-4.6" },
               },
             },
           ],
@@ -1818,7 +1819,7 @@ describe("BackgroundManager.notifyParentSession - dynamic message lookup", () =>
 
     //#then
     expect(capturedBody?.agent).toBe("sisyphus")
-    expect(capturedBody?.model).toEqual({ providerID: "anthropic", modelID: "claude-opus-4.7" })
+    expect(capturedBody?.model).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" })
 
     manager.shutdown()
   })
@@ -1841,7 +1842,7 @@ describe("BackgroundManager.notifyParentSession - dynamic message lookup", () =>
     }
     const currentMessage: CurrentMessage = {
       agent: "sisyphus",
-      model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
     }
 
     // when
@@ -1849,7 +1850,7 @@ describe("BackgroundManager.notifyParentSession - dynamic message lookup", () =>
 
     // then
     expect(promptBody.agent).toBe("sisyphus")
-    expect(promptBody.model).toEqual({ providerID: "anthropic", modelID: "claude-opus-4.7" })
+    expect(promptBody.model).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" })
   })
 
   test("should fallback to parentAgent when currentMessage.agent is undefined", async () => {
@@ -1892,11 +1893,11 @@ describe("BackgroundManager.notifyParentSession - dynamic message lookup", () =>
       startedAt: new Date(),
       completedAt: new Date(),
       parentAgent: "sisyphus",
-      parentModel: { providerID: "anthropic", modelID: "claude-opus" },
+      parentModel: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus" },
     }
     const currentMessage: CurrentMessage = {
       agent: "sisyphus",
-      model: { providerID: "anthropic" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC },
     }
 
     // when
@@ -1921,7 +1922,7 @@ describe("BackgroundManager.notifyParentSession - dynamic message lookup", () =>
       startedAt: new Date(),
       completedAt: new Date(),
       parentAgent: "sisyphus",
-      parentModel: { providerID: "anthropic", modelID: "claude-opus" },
+      parentModel: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus" },
     }
 
     // when
@@ -2085,9 +2086,9 @@ describe("BackgroundManager.notifyParentSession - notifications toggle", () => {
             info: {
               agent: "explore",
               model: {
-                providerID: "anthropic",
+                providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
                 modelID: "claude-opus-4.7",
-                variant: "high",
+                variant: SUPPORTED_VARIANTS.HIGH,
               },
             },
           }],
@@ -2139,9 +2140,9 @@ describe("BackgroundManager.notifyParentSession - variant propagation", () => {
             info: {
               agent: "explore",
               model: {
-                providerID: "anthropic",
+                providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
                 modelID: "claude-opus-4.7",
-                variant: "max",
+                variant: SUPPORTED_VARIANTS.MAX,
               },
             },
           }],
@@ -2160,7 +2161,7 @@ describe("BackgroundManager.notifyParentSession - variant propagation", () => {
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
-      model: { providerID: "anthropic", modelID: "claude-opus-4.7", variant: "high" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7", variant: SUPPORTED_VARIANTS.HIGH },
     }
     getPendingByParent(manager).set("session-parent", new Set([task.id]))
 
@@ -2202,7 +2203,7 @@ describe("BackgroundManager.notifyParentSession - variant propagation", () => {
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
-      model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
     }
     getPendingByParent(manager).set("session-parent", new Set([task.id]))
 
@@ -2528,7 +2529,7 @@ describe("BackgroundManager.tryCompleteTask", () => {
       agent: task.agent,
       parentSessionId: task.parentSessionId,
       parentMessageId: task.parentMessageId,
-      model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
     }
     getTaskMap(manager).set(task.id, task)
     getQueuesByKey(manager).set(concurrencyKey, [{ task, input }])
@@ -2565,7 +2566,7 @@ describe("BackgroundManager.tryCompleteTask", () => {
       agent: task.agent,
       parentSessionId: task.parentSessionId,
       parentMessageId: task.parentMessageId,
-      model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
     }
     getTaskMap(manager).set(task.id, task)
     getQueuesByKey(manager).set(concurrencyKey, [{ task, input }])
@@ -2605,7 +2606,7 @@ describe("BackgroundManager.tryCompleteTask", () => {
       agent: task.agent,
       parentSessionId: task.parentSessionId,
       parentMessageId: task.parentMessageId,
-      model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
     }
     getTaskMap(manager).set(task.id, task)
     getQueuesByKey(manager).set(concurrencyKey, [{ task, input }])
@@ -2816,8 +2817,8 @@ describe("BackgroundManager.resume concurrency key", () => {
 
     // then
     const concurrencyManager = getConcurrencyManager(manager)
-    expect(concurrencyManager.getCount("anthropic")).toBe(1)
-    expect(task.concurrencyKey).toBe("anthropic")
+    expect(concurrencyManager.getCount(SUPPORTED_PROVIDERS.ANTHROPIC)).toBe(1)
+    expect(task.concurrencyKey).toBe(SUPPORTED_PROVIDERS.ANTHROPIC)
   })
 })
 
@@ -2981,7 +2982,7 @@ describe("BackgroundManager.resume model persistence", () => {
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
-      model: { providerID: "anthropic", modelID: "claude-sonnet-4-20250514" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-sonnet-4-20250514" },
       concurrencyGroup: "explore",
     }
     getTaskMap(manager).set(taskWithModel.id, taskWithModel)
@@ -2996,7 +2997,7 @@ describe("BackgroundManager.resume model persistence", () => {
 
     // then
     expect(promptCalls).toHaveLength(1)
-    expect(promptCalls[0].body.model).toEqual({ providerID: "anthropic", modelID: "claude-sonnet-4-20250514" })
+    expect(promptCalls[0].body.model).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-sonnet-4-20250514" })
     expect(promptCalls[0].body.agent).toBe("explore")
   })
 
@@ -3014,12 +3015,12 @@ describe("BackgroundManager.resume model persistence", () => {
       startedAt: new Date(),
       completedAt: new Date(),
       model: {
-        providerID: "openai",
+        providerID: SUPPORTED_PROVIDERS.OPENAI,
         modelID: "gpt-5.4-preview",
         variant: "minimal",
-        reasoningEffort: "high",
+        reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
         temperature: 0.25,
-        top_p: 0.55,
+        topP: 0.55,
         maxTokens: 8192,
         thinking: { type: "disabled" },
       },
@@ -3038,7 +3039,7 @@ describe("BackgroundManager.resume model persistence", () => {
     // then
     expect(promptCalls).toHaveLength(1)
     expect(promptCalls[0].body.model).toEqual({
-      providerID: "openai",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
       modelID: "gpt-5.4-preview",
     })
     expect(promptCalls[0].body.variant).toBe("minimal")
@@ -3048,7 +3049,7 @@ describe("BackgroundManager.resume model persistence", () => {
       topP: 0.55,
       maxOutputTokens: 8192,
       options: {
-        reasoningEffort: "high",
+        reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
         thinking: { type: "disabled" },
       },
     })
@@ -3264,9 +3265,9 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         parentSessionId: "parent-session",
         parentMessageId: "parent-message",
         model: {
-          providerID: "openai",
-          modelID: "gpt-5.4-mini",
-          variant: "medium",
+          providerID: SUPPORTED_PROVIDERS.OPENAI,
+          modelID: SUPPORTED_MODELS.GPT_5_4_MINI,
+          variant: SUPPORTED_VARIANTS.MEDIUM,
         },
       }
 
@@ -3279,9 +3280,9 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
       expect(task.attempts?.[0]).toEqual({
         attemptId: task.currentAttemptID,
         attemptNumber: 1,
-        providerId: "openai",
-        modelId: "gpt-5.4-mini",
-        variant: "medium",
+        providerId: SUPPORTED_PROVIDERS.OPENAI,
+        modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
+        variant: SUPPORTED_VARIANTS.MEDIUM,
         status: "pending",
       })
 
@@ -3359,7 +3360,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
       agent: "test-agent",
       parentSessionId: "parent-session",
       parentMessageId: "parent-message",
-      model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
     }
     const launchInputWithoutModel = {
       description: "Test task without model",
@@ -3379,7 +3380,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
     expect(taskWithModel.status).toBe("pending")
     expect(taskWithoutModel.status).toBe("pending")
     expect(promptBodies).toHaveLength(2)
-    expect(promptBodies[0].model).toEqual({ providerID: "anthropic", modelID: "claude-opus-4.7" })
+    expect(promptBodies[0].model).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" })
     expect(promptBodies[0].agent).toBe("test-agent")
     expect(promptBodies[1].agent).toBe("test-agent")
     expect("model" in promptBodies[1]).toBe(false)
@@ -4477,7 +4478,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         description: "Task 1",
         prompt: "Do something",
         agent: "test-agent",
-        model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+        model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
         parentSessionId: "parent-session",
         parentMessageId: "parent-message",
       }
@@ -4486,7 +4487,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         description: "Task 2",
         prompt: "Do something else",
         agent: "test-agent",
-        model: { providerID: "openai", modelID: "gpt-5.4" },
+        model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4 },
         parentSessionId: "parent-session",
         parentMessageId: "parent-message",
       }
@@ -4514,7 +4515,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         description: "Task 1",
         prompt: "Do something",
         agent: "test-agent",
-        model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+        model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
         parentSessionId: "parent-session",
         parentMessageId: "parent-message",
       }
@@ -4523,7 +4524,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         description: "Task 2",
         prompt: "Do something else",
         agent: "test-agent",
-        model: { providerID: "anthropic", modelID: "claude-sonnet-4.6" },
+        model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-sonnet-4.6" },
         parentSessionId: "parent-session",
         parentMessageId: "parent-message",
       }
@@ -4539,7 +4540,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
 
       expect(updatedTask1?.status).toBe("running")
       expect(updatedTask2?.status).toBe("pending")
-      expect(updatedTask1?.concurrencyKey).toBe("anthropic")
+      expect(updatedTask1?.concurrencyKey).toBe(SUPPORTED_PROVIDERS.ANTHROPIC)
       expect(updatedTask2?.concurrencyKey).toBeUndefined()
     })
 
@@ -4556,7 +4557,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         description: "Task 1",
         prompt: "Do something",
         agent: "test-agent",
-        model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+        model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
         parentSessionId: "parent-session",
         parentMessageId: "parent-message",
       }
@@ -4565,7 +4566,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         description: "Task 2",
         prompt: "Do something else",
         agent: "test-agent",
-        model: { providerID: "anthropic", modelID: "claude-sonnet-4.6" },
+        model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-sonnet-4.6" },
         parentSessionId: "parent-session",
         parentMessageId: "parent-message",
       }
@@ -4582,10 +4583,10 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
 
       expect(updatedTask1?.status).toBe("running")
       expect(updatedTask2?.status).toBe("pending")
-      expect(updatedTask1?.concurrencyKey).toBe("anthropic")
+      expect(updatedTask1?.concurrencyKey).toBe(SUPPORTED_PROVIDERS.ANTHROPIC)
       expect(updatedTask2?.concurrencyKey).toBeUndefined()
-      expect(concurrencyManager.getCount("anthropic")).toBe(1)
-      expect(concurrencyManager.getQueueLength("anthropic")).toBe(1)
+      expect(concurrencyManager.getCount(SUPPORTED_PROVIDERS.ANTHROPIC)).toBe(1)
+      expect(concurrencyManager.getQueueLength(SUPPORTED_PROVIDERS.ANTHROPIC)).toBe(1)
     })
 
     test("should remove cancelled pending model task from provider queue", async () => {
@@ -4598,7 +4599,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         description: "Task 1",
         prompt: "Do something",
         agent: "test-agent",
-        model: { providerID: "anthropic", modelID: "claude-opus-4.7" },
+        model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7" },
         parentSessionId: "parent-session",
         parentMessageId: "parent-message",
       }
@@ -4607,7 +4608,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         description: "Task 2",
         prompt: "Do something else",
         agent: "test-agent",
-        model: { providerID: "anthropic", modelID: "claude-sonnet-4.6" },
+        model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-sonnet-4.6" },
         parentSessionId: "parent-session",
         parentMessageId: "parent-message",
       }
@@ -4616,7 +4617,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         description: "Task 3",
         prompt: "Do a third thing",
         agent: "test-agent",
-        model: { providerID: "anthropic", modelID: "claude-haiku-4.5" },
+        model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-haiku-4.5" },
         parentSessionId: "parent-session",
         parentMessageId: "parent-message",
       }
@@ -4630,7 +4631,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
       const cancelled = await manager.cancelTask(task3.id, { abortSession: false, skipNotification: true })
 
       // then
-      const providerQueue = getQueuesByKey(manager).get("anthropic")
+      const providerQueue = getQueuesByKey(manager).get(SUPPORTED_PROVIDERS.ANTHROPIC)
       const providerQueuedTaskIds = providerQueue?.map(item => item.task.id) ?? []
       expect(cancelled).toBe(true)
       expect(providerQueuedTaskIds).not.toContain(task3.id)
@@ -5593,8 +5594,8 @@ describe("BackgroundManager.handleEvent - session.deleted cascade", () => {
 
 describe("BackgroundManager.handleEvent - session.error", () => {
   const defaultRetryFallbackChain = [
-    { providers: ["anthropic"], model: "claude-opus-4-7", variant: "max" },
-    { providers: ["anthropic"], model: "gpt-5.5", variant: "high" },
+    { providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, variant: SUPPORTED_VARIANTS.MAX },
+    { providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: SUPPORTED_MODELS.GPT_5_5, variant: SUPPORTED_VARIANTS.HIGH },
   ]
 
   let logCalls: Array<{ message: string; data?: unknown }> = []
@@ -5643,7 +5644,7 @@ describe("BackgroundManager.handleEvent - session.error", () => {
       agent: "sisyphus",
       status: "running",
       concurrencyKey: input.concurrencyKey,
-      model: { providerID: "anthropic", modelID: "claude-opus-4.7-thinking" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-opus-4.7-thinking" },
       fallbackChain: input.fallbackChain ?? defaultRetryFallbackChain,
       attemptCount: 0,
     })
@@ -6591,8 +6592,8 @@ describe("BackgroundManager.handleEvent - session.error", () => {
       description: "task that should retry",
       concurrencyKey,
       fallbackChain: [
-        { providers: ["anthropic"], model: "claude-opus-4-7", variant: "max" },
-        { providers: ["anthropic"], model: "claude-opus-4-5", variant: "max" },
+        { providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: SUPPORTED_MODELS.CLAUDE_OPUS_4_7, variant: SUPPORTED_VARIANTS.MAX },
+        { providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: "claude-opus-4-5", variant: SUPPORTED_VARIANTS.MAX },
       ],
     })
 
@@ -6615,9 +6616,9 @@ describe("BackgroundManager.handleEvent - session.error", () => {
     expect(task.status).toBe("pending")
     expect(task.attemptCount).toBe(1)
     expect(task.model).toEqual({
-      providerID: "anthropic",
-      modelID: "claude-opus-4-7",
-      variant: "max",
+      providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
+      modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
+      variant: SUPPORTED_VARIANTS.MAX,
     })
     expect(task.concurrencyKey).toBeUndefined()
     expect(concurrencyManager.getCount(concurrencyKey)).toBe(0)
@@ -6653,9 +6654,9 @@ describe("BackgroundManager.handleEvent - session.error", () => {
     expect(task.status).toBe("pending")
     expect(task.attemptCount).toBe(1)
     expect(task.model).toEqual({
-      providerID: "anthropic",
-      modelID: "claude-opus-4-7",
-      variant: "max",
+      providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
+      modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
+      variant: SUPPORTED_VARIANTS.MAX,
     })
 
     manager.shutdown()
@@ -6698,9 +6699,9 @@ describe("BackgroundManager.handleEvent - session.error", () => {
     expect(task.status).toBe("pending")
     expect(task.attemptCount).toBe(1)
     expect(task.model).toEqual({
-      providerID: "anthropic",
-      modelID: "claude-opus-4-7",
-      variant: "max",
+      providerID: SUPPORTED_PROVIDERS.ANTHROPIC,
+      modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
+      variant: SUPPORTED_VARIANTS.MAX,
     })
 
     manager.shutdown()
@@ -7877,7 +7878,7 @@ describe("BackgroundManager - tool permission spread order", () => {
       agent: "sisyphus-junior",
       parentSessionId: "parent-session",
       parentMessageId: "parent-message",
-      model: { providerID: "openai", modelID: "gpt-5.4", variant: "medium" },
+      model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4, variant: SUPPORTED_VARIANTS.MEDIUM },
     }
     const input: import("./types").LaunchInput = {
       description: task.description,
@@ -7895,7 +7896,7 @@ describe("BackgroundManager - tool permission spread order", () => {
     //#then
     expect(promptCalls).toHaveLength(1)
     expect(promptCalls[0].body.agent).toBe("sisyphus-junior")
-    expect(promptCalls[0].body.model).toEqual({ providerID: "openai", modelID: "gpt-5.4" })
+    expect(promptCalls[0].body.model).toEqual({ providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4 })
     expect(promptCalls[0].body.variant).toBe("medium")
 
     manager.shutdown()
@@ -8026,7 +8027,7 @@ describe("BackgroundManager - tool permission spread order", () => {
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
-      model: { providerID: "anthropic", modelID: "claude-sonnet-4-20250514" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-sonnet-4-20250514" },
     }
     getTaskMap(manager).set(task.id, task)
 
@@ -8041,7 +8042,7 @@ describe("BackgroundManager - tool permission spread order", () => {
     //#then
     expect(promptCall).toBeDefined()
     expect(promptCall?.body.agent).toBe("explore")
-    expect(promptCall?.body.model).toEqual({ providerID: "anthropic", modelID: "claude-sonnet-4-20250514" })
+    expect(promptCall?.body.model).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-sonnet-4-20250514" })
 
     manager.shutdown()
   })
@@ -8072,7 +8073,7 @@ describe("BackgroundManager.launch - attempt state initialization", () => {
       agent: "explore",
       parentSessionId: "parent-session",
       parentMessageId: "parent-message",
-      model: { providerID: "anthropic", modelID: "claude-haiku-4.5" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-haiku-4.5" },
     })
 
     //#then
@@ -8084,7 +8085,7 @@ describe("BackgroundManager.launch - attempt state initialization", () => {
     const firstAttempt = stored?.attempts?.[0]
     expect(firstAttempt?.attemptNumber).toBe(1)
     expect(firstAttempt?.status).toBe("pending")
-    expect(firstAttempt?.providerId).toBe("anthropic")
+    expect(firstAttempt?.providerId).toBe(SUPPORTED_PROVIDERS.ANTHROPIC)
     expect(firstAttempt?.modelId).toBe("claude-haiku-4.5")
 
     expect(stored?.currentAttemptID).toBeDefined()
@@ -8120,14 +8121,14 @@ describe("BackgroundManager attempt lifecycle bindings", () => {
       agent: "sisyphus-junior",
       parentSessionId: "parent-session",
       parentMessageId: "parent-message",
-      model: { providerID: "anthropic", modelID: "claude-haiku-4.5", variant: "max" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-haiku-4.5", variant: SUPPORTED_VARIANTS.MAX },
       attempts: [
         {
           attemptId: "attempt-1",
           attemptNumber: 1,
           sessionId: "session-attempt-1",
-          providerId: "openai",
-          modelId: "gpt-5.4-mini",
+          providerId: SUPPORTED_PROVIDERS.OPENAI,
+          modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
           status: "error",
           error: "first attempt failed",
           startedAt: new Date("2026-04-27T00:00:00.000Z"),
@@ -8136,9 +8137,9 @@ describe("BackgroundManager attempt lifecycle bindings", () => {
         {
           attemptId: "attempt-2",
           attemptNumber: 2,
-          providerId: "anthropic",
+          providerId: SUPPORTED_PROVIDERS.ANTHROPIC,
           modelId: "claude-haiku-4.5",
-          variant: "max",
+          variant: SUPPORTED_VARIANTS.MAX,
           status: "pending",
         },
       ],
@@ -8201,12 +8202,12 @@ describe("BackgroundManager attempt lifecycle bindings", () => {
       agent: "sisyphus-junior",
       parentSessionId: "parent-session",
       parentMessageId: "parent-message",
-      model: { providerID: "anthropic", modelID: "claude-haiku-4.5" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-haiku-4.5" },
       attempts: [
         {
           attemptId: "attempt-1",
           attemptNumber: 1,
-          providerId: "anthropic",
+          providerId: SUPPORTED_PROVIDERS.ANTHROPIC,
           modelId: "claude-haiku-4.5",
           status: "pending",
         },
@@ -8254,14 +8255,14 @@ describe("BackgroundManager attempt lifecycle bindings", () => {
       agent: "explore",
       parentSessionId: "parent-session",
       parentMessageId: "parent-message",
-      model: { providerID: "anthropic", modelID: "claude-haiku-4.5" },
+      model: { providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: "claude-haiku-4.5" },
       attempts: [
         {
           attemptId: "attempt-1",
           attemptNumber: 1,
           sessionId: "session-attempt-1",
-          providerId: "openai",
-          modelId: "gpt-5.4-mini",
+          providerId: SUPPORTED_PROVIDERS.OPENAI,
+          modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
           status: "error",
           error: "first attempt failed",
           startedAt: new Date("2026-04-27T00:00:00.000Z"),
@@ -8271,7 +8272,7 @@ describe("BackgroundManager attempt lifecycle bindings", () => {
           attemptId: "attempt-2",
           attemptNumber: 2,
           sessionId: "session-attempt-2",
-          providerId: "anthropic",
+          providerId: SUPPORTED_PROVIDERS.ANTHROPIC,
           modelId: "claude-haiku-4.5",
           status: "running",
           startedAt: new Date("2026-04-27T00:00:10.000Z"),
@@ -8343,13 +8344,13 @@ describe("BackgroundManager attempt lifecycle bindings", () => {
       agent: "sisyphus-junior",
       parentSessionId: "parent-session",
       parentMessageId: "parent-message",
-      model: { providerID: "openai", modelID: "gpt-5.4-mini" },
+      model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_4_MINI },
       attempts: [
         {
           attemptId: "attempt-1",
           attemptNumber: 1,
-          providerId: "openai",
-          modelId: "gpt-5.4-mini",
+          providerId: SUPPORTED_PROVIDERS.OPENAI,
+          modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
           status: "pending",
         },
       ],
@@ -8374,8 +8375,8 @@ describe("BackgroundManager attempt lifecycle bindings", () => {
         attemptId: "attempt-1",
         attemptNumber: 1,
         sessionId: "session-attempt-1",
-        providerId: "openai",
-        modelId: "gpt-5.4-mini",
+        providerId: SUPPORTED_PROVIDERS.OPENAI,
+        modelId: SUPPORTED_MODELS.GPT_5_4_MINI,
         status: "error",
         error: "first attempt failed",
         startedAt: new Date("2026-04-27T00:00:00.000Z"),
@@ -8385,7 +8386,7 @@ describe("BackgroundManager attempt lifecycle bindings", () => {
         attemptId: "attempt-2",
         attemptNumber: 2,
         sessionId: "session-attempt-2",
-        providerId: "anthropic",
+        providerId: SUPPORTED_PROVIDERS.ANTHROPIC,
         modelId: "claude-haiku-4.5",
         status: "running",
         startedAt: new Date("2026-04-27T00:00:10.000Z"),

@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "@oh-my-opencode/model-core";
 import { afterEach, beforeEach, describe, expect, it, spyOn } from "bun:test"
 import * as p from "@clack/prompts"
 import * as configManager from "./config-manager"
@@ -279,7 +280,7 @@ describe("runTuiInstaller", () => {
     const warnMessages = warnSpy.mock.calls.map((call) => String(call[0]))
     expect(warnMessages.some((m) => m.includes(getNoModelProvidersWarning()))).toBe(true)
     expect(warnMessages.some((m) => m.includes(ULTIMATE_FALLBACK))).toBe(true)
-    expect(warnMessages.some((m) => m.includes("big-pickle"))).toBe(false)
+    expect(warnMessages.some((m) => m.includes(SUPPORTED_MODELS.BIG_PICKLE))).toBe(false)
 
     for (const spy of restoreSpies) {
       spy.mockRestore()

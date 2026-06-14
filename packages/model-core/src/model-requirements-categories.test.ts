@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS , SUPPORTED_VARIANTS } from "./registry";
 import { describe, expect, test } from "bun:test"
 import { CATEGORY_MODEL_REQUIREMENTS } from "./model-requirements"
 
@@ -12,8 +13,8 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
     // then
     expect(ultrabrain.fallbackChain.length).toBeGreaterThan(0)
     expect(primary?.variant).toBe("xhigh")
-    expect(primary?.model).toBe("gpt-5.5")
-    expect(primary?.providers[0]).toBe("openai")
+    expect(primary?.model).toBe(SUPPORTED_MODELS.GPT_5_5)
+    expect(primary?.providers[0]).toBe(SUPPORTED_PROVIDERS.OPENAI)
   })
 
   test("deep has gpt-5.5 medium as primary", () => {
@@ -26,9 +27,9 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
     // then
     expect(deep.fallbackChain.length).toBeGreaterThan(0)
     expect(primary?.variant).toBe("medium")
-    expect(primary?.model).toBe("gpt-5.5")
-    expect(primary?.providers).toContain("openai")
-    expect(primary?.providers).toContain("github-copilot")
+    expect(primary?.model).toBe(SUPPORTED_MODELS.GPT_5_5)
+    expect(primary?.providers).toContain(SUPPORTED_PROVIDERS.OPENAI)
+    expect(primary?.providers).toContain(SUPPORTED_PROVIDERS.GITHUB_COPILOT)
   })
 
   test("visual-engineering keeps gemini, glm, opus, opencode-go, and k2p5 fallback order", () => {
@@ -40,17 +41,17 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
 
     // then
     expect(visualEngineering.fallbackChain).toHaveLength(5)
-    expect(primary?.providers[0]).toBe("google")
-    expect(primary?.model).toBe("gemini-3.1-pro")
+    expect(primary?.providers[0]).toBe(SUPPORTED_PROVIDERS.GOOGLE)
+    expect(primary?.model).toBe(SUPPORTED_MODELS.GEMINI_3_1_PRO)
     expect(primary?.variant).toBe("high")
-    expect(second?.providers[0]).toBe("zai-coding-plan")
-    expect(second?.model).toBe("glm-5")
-    expect(third?.model).toBe("claude-opus-4-7")
+    expect(second?.providers[0]).toBe(SUPPORTED_PROVIDERS.ZAI_CODING_PLAN)
+    expect(second?.model).toBe(SUPPORTED_MODELS.GLM_5)
+    expect(third?.model).toBe(SUPPORTED_MODELS.CLAUDE_OPUS_4_7)
     expect(third?.variant).toBe("max")
-    expect(fourth?.providers[0]).toBe("opencode-go")
-    expect(fourth?.model).toBe("glm-5.1")
-    expect(fifth?.providers[0]).toBe("kimi-for-coding")
-    expect(fifth?.model).toBe("k2p5")
+    expect(fourth?.providers[0]).toBe(SUPPORTED_PROVIDERS.OPENCODE_GO)
+    expect(fourth?.model).toBe(SUPPORTED_MODELS.GLM_5_1)
+    expect(fifth?.providers[0]).toBe(SUPPORTED_PROVIDERS.KIMI_FOR_CODING)
+    expect(fifth?.model).toBe(SUPPORTED_MODELS.KIMI_K2P5)
   })
 
   test("quick keeps gpt-5.4-mini primary before claude-haiku-4-5", () => {
@@ -62,10 +63,10 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
 
     // then
     expect(quick.fallbackChain.length).toBeGreaterThan(1)
-    expect(primary?.model).toBe("gpt-5.4-mini")
-    expect(primary?.providers).toContain("openai")
-    expect(secondary?.model).toBe("claude-haiku-4-5")
-    expect(secondary?.providers).toContain("anthropic")
+    expect(primary?.model).toBe(SUPPORTED_MODELS.GPT_5_4_MINI)
+    expect(primary?.providers).toContain(SUPPORTED_PROVIDERS.OPENAI)
+    expect(secondary?.model).toBe(SUPPORTED_MODELS.CLAUDE_HAIKU_4_5)
+    expect(secondary?.providers).toContain(SUPPORTED_PROVIDERS.ANTHROPIC)
   })
 
   test("unspecified-low has claude-sonnet-4-6 as primary", () => {
@@ -77,8 +78,8 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
 
     // then
     expect(unspecifiedLow.fallbackChain.length).toBeGreaterThan(0)
-    expect(primary?.model).toBe("claude-sonnet-4-6")
-    expect(primary?.providers[0]).toBe("anthropic")
+    expect(primary?.model).toBe(SUPPORTED_MODELS.CLAUDE_SONNET_4_6)
+    expect(primary?.providers[0]).toBe(SUPPORTED_PROVIDERS.ANTHROPIC)
   })
 
   test("unspecified-high keeps opus primary before gpt-5.5 high", () => {
@@ -91,14 +92,14 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
     // then
     expect(unspecifiedHigh.fallbackChain.length).toBeGreaterThan(1)
     expect(primary).toEqual({
-      providers: ["anthropic", "github-copilot", "opencode", "vercel"],
-      model: "claude-opus-4-7",
-      variant: "max",
+      providers: [SUPPORTED_PROVIDERS.ANTHROPIC, SUPPORTED_PROVIDERS.GITHUB_COPILOT, "opencode", SUPPORTED_PROVIDERS.VERCEL],
+      model: SUPPORTED_MODELS.CLAUDE_OPUS_4_7,
+      variant: SUPPORTED_VARIANTS.MAX,
     })
     expect(secondary).toEqual({
-      providers: ["openai", "github-copilot", "opencode", "vercel"],
-      model: "gpt-5.5",
-      variant: "high",
+      providers: [SUPPORTED_PROVIDERS.OPENAI, SUPPORTED_PROVIDERS.GITHUB_COPILOT, "opencode", SUPPORTED_PROVIDERS.VERCEL],
+      model: SUPPORTED_MODELS.GPT_5_5,
+      variant: SUPPORTED_VARIANTS.HIGH,
     })
   })
 
@@ -111,9 +112,9 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
 
     // then
     expect(artistry.fallbackChain.length).toBeGreaterThan(0)
-    expect(primary?.model).toBe("gemini-3.1-pro")
+    expect(primary?.model).toBe(SUPPORTED_MODELS.GEMINI_3_1_PRO)
     expect(primary?.variant).toBe("high")
-    expect(primary?.providers[0]).toBe("google")
+    expect(primary?.providers[0]).toBe(SUPPORTED_PROVIDERS.GOOGLE)
   })
 
   test("writing keeps gemini, kimi, sonnet, and minimax fallback order", () => {
@@ -125,20 +126,20 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
 
     // then
     expect(writing.fallbackChain).toHaveLength(6)
-    expect(primary?.model).toBe("gemini-3-flash")
-    expect(primary?.providers[0]).toBe("google")
-    expect(second?.model).toBe("kimi-k2.6")
-    expect(second?.providers[0]).toBe("opencode-go")
-    expect(third?.model).toBe("claude-sonnet-4-6")
-    expect(third?.providers[0]).toBe("anthropic")
-    expect(fourth?.model).toBe("minimax-m3")
-    expect(fourth?.providers[0]).toBe("opencode-go")
+    expect(primary?.model).toBe(SUPPORTED_MODELS.GEMINI_3_FLASH)
+    expect(primary?.providers[0]).toBe(SUPPORTED_PROVIDERS.GOOGLE)
+    expect(second?.model).toBe(SUPPORTED_MODELS.KIMI_K2_6)
+    expect(second?.providers[0]).toBe(SUPPORTED_PROVIDERS.OPENCODE_GO)
+    expect(third?.model).toBe(SUPPORTED_MODELS.CLAUDE_SONNET_4_6)
+    expect(third?.providers[0]).toBe(SUPPORTED_PROVIDERS.ANTHROPIC)
+    expect(fourth?.model).toBe(SUPPORTED_MODELS.MINIMAX_M3)
+    expect(fourth?.providers[0]).toBe(SUPPORTED_PROVIDERS.OPENCODE_GO)
     expect(fifth).toEqual({
-      providers: ["minimax-coding-plan", "minimax-cn-coding-plan"],
-      model: "MiniMax-M3",
+      providers: [SUPPORTED_PROVIDERS.MINIMAX_CODING_PLAN, SUPPORTED_PROVIDERS.MINIMAX_CN_CODING_PLAN],
+      model: SUPPORTED_MODELS.MINIMAX_M3_CAP,
     })
-    expect(sixth?.model).toBe("minimax-m2.7")
-    expect(sixth?.providers[0]).toBe("opencode-go")
+    expect(sixth?.model).toBe(SUPPORTED_MODELS.MINIMAX_M2_7)
+    expect(sixth?.providers[0]).toBe(SUPPORTED_PROVIDERS.OPENCODE_GO)
   })
 
   test("deep and artistry no longer hard-require primary models", () => {

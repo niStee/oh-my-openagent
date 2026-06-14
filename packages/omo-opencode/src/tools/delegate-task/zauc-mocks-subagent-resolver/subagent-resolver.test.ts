@@ -1,3 +1,4 @@
+import { SUPPORTED_PROVIDERS, SUPPORTED_MODELS , SUPPORTED_VARIANTS , SUPPORTED_REASONING_EFFORTS } from "@oh-my-opencode/model-core";
 /// <reference types="bun-types" />
 
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test"
@@ -176,8 +177,8 @@ describe("resolveSubagentExecution", () => {
   test("allows delegating to a primary agent when allowPrimaryAgentDelegation is enabled (team-mode path)", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { anthropic: ["claude-opus-4-7"] },
-      connected: ["anthropic"],
+      models: { anthropic: [SUPPORTED_MODELS.CLAUDE_OPUS_4_7] },
+      connected: [SUPPORTED_PROVIDERS.ANTHROPIC],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
     const args = createBaseArgs({ subagent_type: "sisyphus" })
@@ -199,8 +200,8 @@ describe("resolveSubagentExecution", () => {
   test("allows delegating to Sisyphus-Junior when allowSisyphusJuniorDirect is enabled (team-mode path)", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { anthropic: ["claude-sonnet-4-6"] },
-      connected: ["anthropic"],
+      models: { anthropic: [SUPPORTED_MODELS.CLAUDE_SONNET_4_6] },
+      connected: [SUPPORTED_PROVIDERS.ANTHROPIC],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
     const args = createBaseArgs({ subagent_type: "sisyphus-junior" })
@@ -306,8 +307,8 @@ describe("resolveSubagentExecution", () => {
   test("preserves hidden sort-prefixed plan agent model instead of using fallback", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { anthropic: ["claude-opus-4-7"] },
-      connected: ["anthropic"],
+      models: { anthropic: [SUPPORTED_MODELS.CLAUDE_OPUS_4_7] },
+      connected: [SUPPORTED_PROVIDERS.ANTHROPIC],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
     const args = createBaseArgs({ subagent_type: "plan" })
@@ -322,7 +323,7 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.agentToUse).toBe("plan")
-    expect(result.categoryModel).toEqual({ providerID: "anthropic", modelID: "claude-opus-4-7" })
+    expect(result.categoryModel).toEqual({ providerID: SUPPORTED_PROVIDERS.ANTHROPIC, modelID: SUPPORTED_MODELS.CLAUDE_OPUS_4_7 })
   })
 
   test("allows OpenCode-hidden-list plan fallback when planner_enabled and replace_plan are true", async () => {
@@ -356,8 +357,8 @@ describe("resolveSubagentExecution", () => {
     async ({ loader, aliasName }) => {
       //#given
       readProviderModelsCacheMock.mockReturnValue({
-        models: { openai: ["gpt-5.5"] },
-        connected: ["openai"],
+        models: { openai: [SUPPORTED_MODELS.GPT_5_5] },
+        connected: [SUPPORTED_PROVIDERS.OPENAI],
         updatedAt: "2026-03-03T00:00:00.000Z",
       })
 
@@ -519,8 +520,8 @@ describe("resolveSubagentExecution", () => {
   test("preserves a visible server plan agent instead of using fallback", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { openai: ["gpt-5.5"] },
-      connected: ["openai"],
+      models: { openai: [SUPPORTED_MODELS.GPT_5_5] },
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
     const args = createBaseArgs({ subagent_type: "plan" })
@@ -540,7 +541,7 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.agentToUse).toBe("plan")
-    expect(result.categoryModel).toEqual({ providerID: "openai", modelID: "gpt-5.5" })
+    expect(result.categoryModel).toEqual({ providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_5 })
   })
 
   test.each([
@@ -662,8 +663,8 @@ describe("resolveSubagentExecution", () => {
   test("normalizes matched agent model string before returning categoryModel", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { openai: ["grok-3", "gpt-5.5"] },
-      connected: ["openai"],
+      models: { openai: ["grok-3", SUPPORTED_MODELS.GPT_5_5] },
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
     const args = createBaseArgs({ subagent_type: "oracle" })
@@ -676,14 +677,14 @@ describe("resolveSubagentExecution", () => {
 
     //#then
     expect(result.error).toBeUndefined()
-    expect(result.categoryModel).toEqual({ providerID: "openai", modelID: "gpt-5.5" })
+    expect(result.categoryModel).toEqual({ providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_5 })
   })
 
   test("normalizes matched agent object model before returning categoryModel", async () => {
     //#given
     const args = createBaseArgs({ subagent_type: "oracle" })
     const executorCtx = createExecutorContext(async () => ([
-      { name: "oracle", mode: "subagent", model: { providerID: "openai", modelID: "gpt-5.5" } },
+      { name: "oracle", mode: "subagent", model: { providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_5 } },
     ]))
 
     //#when
@@ -691,7 +692,7 @@ describe("resolveSubagentExecution", () => {
 
     //#then
     expect(result.error).toBeUndefined()
-    expect(result.categoryModel).toEqual({ providerID: "openai", modelID: "gpt-5.5" })
+    expect(result.categoryModel).toEqual({ providerID: SUPPORTED_PROVIDERS.OPENAI, modelID: SUPPORTED_MODELS.GPT_5_5 })
   })
 
   test("matches agents even when zero-width characters are present in the requested name", async () => {
@@ -712,7 +713,7 @@ describe("resolveSubagentExecution", () => {
   test("uses agent override fallback_models for subagent runtime fallback chain", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { quotio: ["claude-haiku-4-5"] },
+      models: { quotio: [SUPPORTED_MODELS.CLAUDE_HAIKU_4_5] },
       connected: ["quotio"],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
@@ -736,16 +737,16 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.fallbackChain).toEqual([
-      { providers: ["quotio"], model: "gpt-5.5", variant: undefined },
-      { providers: ["quotio"], model: "glm-5", variant: "max" },
+      { providers: ["quotio"], model: SUPPORTED_MODELS.GPT_5_5, variant: undefined },
+      { providers: ["quotio"], model: SUPPORTED_MODELS.GLM_5, variant: SUPPORTED_VARIANTS.MAX },
     ])
   })
 
   test("uses category fallback_models when agent override points at category", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { anthropic: ["claude-haiku-4-5"] },
-      connected: ["anthropic"],
+      models: { anthropic: [SUPPORTED_MODELS.CLAUDE_HAIKU_4_5] },
+      connected: [SUPPORTED_PROVIDERS.ANTHROPIC],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
     const args = createBaseArgs({ subagent_type: "explore" })
@@ -773,18 +774,18 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.fallbackChain).toEqual([
-      { providers: ["anthropic"], model: "claude-haiku-4-5", variant: undefined },
+      { providers: [SUPPORTED_PROVIDERS.ANTHROPIC], model: SUPPORTED_MODELS.CLAUDE_HAIKU_4_5, variant: undefined },
     ])
   })
 
   test("promotes object-style fallback model settings to categoryModel when subagent fallback becomes initial model", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { openai: ["gpt-5.4"] },
-      connected: ["openai"],
+      models: { openai: [SUPPORTED_MODELS.GPT_5_4] },
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
-    readConnectedProvidersCacheMock.mockReturnValue(["openai"])
+    readConnectedProvidersCacheMock.mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
     const args = createBaseArgs({ subagent_type: "explore" })
     const executorCtx = createExecutorContext(
       async () => ([
@@ -797,9 +798,9 @@ describe("resolveSubagentExecution", () => {
               {
                 model: "openai/gpt-5.4 high",
                 variant: "low",
-                reasoningEffort: "high",
+                reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
                 temperature: 0.2,
-                top_p: 0.8,
+                topP: 0.8,
                 maxTokens: 2048,
                 thinking: { type: "disabled" },
               },
@@ -815,12 +816,12 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.categoryModel).toEqual({
-      providerID: "openai",
-      modelID: "gpt-5.4",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
+      modelID: SUPPORTED_MODELS.GPT_5_4,
       variant: "low",
-      reasoningEffort: "high",
+      reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
       temperature: 0.2,
-      top_p: 0.8,
+      topP: 0.8,
       maxTokens: 2048,
       thinking: { type: "disabled" },
     })
@@ -830,10 +831,10 @@ describe("resolveSubagentExecution", () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
       models: { openai: ["gpt-5.4-preview"] },
-      connected: ["openai"],
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
-    readConnectedProvidersCacheMock.mockReturnValue(["openai"])
+    readConnectedProvidersCacheMock.mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
     const args = createBaseArgs({ subagent_type: "explore" })
     const executorCtx = createExecutorContext(
       async () => ([
@@ -846,7 +847,7 @@ describe("resolveSubagentExecution", () => {
               {
                 model: "openai/gpt-5.4",
                 variant: "low",
-                reasoningEffort: "high",
+                reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
               },
             ],
           },
@@ -860,7 +861,7 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.categoryModel).toEqual({
-      providerID: "openai",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
       modelID: "gpt-5.4-preview",
     })
   })
@@ -869,10 +870,10 @@ describe("resolveSubagentExecution", () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
       models: { openai: ["gpt-5.4-preview"] },
-      connected: ["openai"],
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
-    readConnectedProvidersCacheMock.mockReturnValue(["openai"])
+    readConnectedProvidersCacheMock.mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
     const args = createBaseArgs({ subagent_type: "explore" })
     const executorCtx = createExecutorContext(
       async () => ([
@@ -885,9 +886,9 @@ describe("resolveSubagentExecution", () => {
               {
                 model: "openai/gpt-5.4",
                 variant: "low",
-                reasoningEffort: "high",
+                reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
                 temperature: 0.3,
-                top_p: 0.4,
+                topP: 0.4,
                 maxTokens: 2222,
                 thinking: { type: "disabled" },
               },
@@ -903,12 +904,12 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.categoryModel).toEqual({
-      providerID: "openai",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
       modelID: "gpt-5.4-preview",
       variant: "low",
-      reasoningEffort: "high",
+      reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
       temperature: 0.3,
-      top_p: 0.4,
+      topP: 0.4,
       maxTokens: 2222,
       thinking: { type: "disabled" },
     })
@@ -918,10 +919,10 @@ describe("resolveSubagentExecution", () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
       models: { openai: ["gpt-5.4-preview"] },
-      connected: ["openai"],
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
-    readConnectedProvidersCacheMock.mockReturnValue(["openai"])
+    readConnectedProvidersCacheMock.mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
     const args = createBaseArgs({ subagent_type: "explore" })
     const executorCtx = createExecutorContext(
       async () => ([
@@ -934,12 +935,12 @@ describe("resolveSubagentExecution", () => {
               {
                 model: "openai/gpt-5.4",
                 variant: "low",
-                reasoningEffort: "medium",
+                reasoningEffort: SUPPORTED_REASONING_EFFORTS.MEDIUM,
               },
               {
                 model: "openai/gpt-5.4-preview",
-                variant: "max",
-                reasoningEffort: "high",
+                variant: SUPPORTED_VARIANTS.MAX,
+                reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
               },
             ],
           },
@@ -953,10 +954,10 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.categoryModel).toEqual({
-      providerID: "openai",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
       modelID: "gpt-5.4-preview",
-      variant: "max",
-      reasoningEffort: "high",
+      variant: SUPPORTED_VARIANTS.MAX,
+      reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
     })
   })
 
@@ -964,10 +965,10 @@ describe("resolveSubagentExecution", () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
       models: { openai: ["gpt-5.4o"] },
-      connected: ["openai"],
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
-    readConnectedProvidersCacheMock.mockReturnValue(["openai"])
+    readConnectedProvidersCacheMock.mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
     const args = createBaseArgs({ subagent_type: "explore" })
     const executorCtx = createExecutorContext(
       async () => ([
@@ -980,7 +981,7 @@ describe("resolveSubagentExecution", () => {
               {
                 model: "openai/gpt-5.4",
                 variant: "low",
-                reasoningEffort: "high",
+                reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
               },
             ],
           },
@@ -994,10 +995,10 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.categoryModel).toEqual({
-      providerID: "openai",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
       modelID: "gpt-5.4o",
       variant: "low",
-      reasoningEffort: "high",
+      reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
     })
   })
 
@@ -1051,10 +1052,10 @@ describe("resolveSubagentExecution", () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
       models: { openai: ["gpt-4o-preview"] },
-      connected: ["openai"],
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
-    readConnectedProvidersCacheMock.mockReturnValue(["openai"])
+    readConnectedProvidersCacheMock.mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
     const args = createBaseArgs({ subagent_type: "explore" })
     const executorCtx = createExecutorContext(
       async () => ([
@@ -1067,12 +1068,12 @@ describe("resolveSubagentExecution", () => {
               {
                 model: "openai/gpt-4",
                 variant: "low",
-                reasoningEffort: "medium",
+                reasoningEffort: SUPPORTED_REASONING_EFFORTS.MEDIUM,
               },
               {
                 model: "openai/gpt-4o",
-                variant: "max",
-                reasoningEffort: "high",
+                variant: SUPPORTED_VARIANTS.MAX,
+                reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
               },
             ],
           },
@@ -1086,21 +1087,21 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.categoryModel).toEqual({
-      providerID: "openai",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
       modelID: "gpt-4o-preview",
-      variant: "max",
-      reasoningEffort: "high",
+      variant: SUPPORTED_VARIANTS.MAX,
+      reasoningEffort: SUPPORTED_REASONING_EFFORTS.HIGH,
     })
   })
 
   test("preserves category temperature when fallback entry leaves temperature undefined", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { openai: ["gpt-5.4"] },
-      connected: ["openai"],
+      models: { openai: [SUPPORTED_MODELS.GPT_5_4] },
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
-    readConnectedProvidersCacheMock.mockReturnValue(["openai"])
+    readConnectedProvidersCacheMock.mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
     const args = createBaseArgs({ subagent_type: "explore" })
     const executorCtx = createExecutorContext(
       async () => ([
@@ -1117,11 +1118,11 @@ describe("resolveSubagentExecution", () => {
             fallback_models: [
               {
                 model: "openai/gpt-5.4",
-                variant: "max",
+                variant: SUPPORTED_VARIANTS.MAX,
               },
             ],
             temperature: 0.55,
-            top_p: 0.45,
+            topP: 0.45,
           },
         } as ExecutorContext["userCategories"],
       }
@@ -1133,11 +1134,11 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.categoryModel).toEqual({
-      providerID: "openai",
-      modelID: "gpt-5.4",
-      variant: "max",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
+      modelID: SUPPORTED_MODELS.GPT_5_4,
+      variant: SUPPORTED_VARIANTS.MAX,
       temperature: 0.55,
-      top_p: 0.45,
+      topP: 0.45,
     })
   })
 
@@ -1163,11 +1164,11 @@ describe("resolveSubagentExecution", () => {
         userCategories: {
           research: {
             model: "openai/gpt-5.4",
-            variant: "high",
+            variant: SUPPORTED_VARIANTS.HIGH,
             temperature: 0.61,
-            top_p: 0.62,
+            topP: 0.62,
             maxTokens: 3200,
-            reasoningEffort: "medium",
+            reasoningEffort: SUPPORTED_REASONING_EFFORTS.MEDIUM,
             thinking: { type: "disabled" },
           },
         } as ExecutorContext["userCategories"],
@@ -1180,13 +1181,13 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.categoryModel).toEqual({
-      providerID: "openai",
-      modelID: "gpt-5.4",
-      variant: "high",
+      providerID: SUPPORTED_PROVIDERS.OPENAI,
+      modelID: SUPPORTED_MODELS.GPT_5_4,
+      variant: SUPPORTED_VARIANTS.HIGH,
       temperature: 0.61,
-      top_p: 0.62,
+      topP: 0.62,
       maxTokens: 3200,
-      reasoningEffort: "medium",
+      reasoningEffort: SUPPORTED_REASONING_EFFORTS.MEDIUM,
       thinking: { type: "disabled" },
     })
   })
@@ -1194,11 +1195,11 @@ describe("resolveSubagentExecution", () => {
   test("resolves user agent from loadUserAgents when calling task(subagent_type=...)", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { openai: ["gpt-5.4"] },
-      connected: ["openai"],
+      models: { openai: [SUPPORTED_MODELS.GPT_5_4] },
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
-    readConnectedProvidersCacheMock.mockReturnValue(["openai"])
+    readConnectedProvidersCacheMock.mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
     loadUserAgentsMock.mockImplementation(() => ({
       "my-user-agent": {
         description: "A user agent",
@@ -1216,17 +1217,17 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.agentToUse).toBe("my-user-agent")
-    expect(result.categoryModel?.modelID).toBe("gpt-5.4")
+    expect(result.categoryModel?.modelID).toBe(SUPPORTED_MODELS.GPT_5_4)
   })
 
   test("resolves project agent from loadProjectAgents when calling task(subagent_type=...)", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
       models: { anthropic: ["claude-sonnet-4"] },
-      connected: ["anthropic"],
+      connected: [SUPPORTED_PROVIDERS.ANTHROPIC],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
-    readConnectedProvidersCacheMock.mockReturnValue(["anthropic"])
+    readConnectedProvidersCacheMock.mockReturnValue([SUPPORTED_PROVIDERS.ANTHROPIC])
     loadProjectAgentsMock.mockImplementation(() => ({
       "my-project-agent": {
         description: "A project agent",
@@ -1250,11 +1251,11 @@ describe("resolveSubagentExecution", () => {
   test("server agent takes precedence over user agent with same name", async () => {
     //#given
     readProviderModelsCacheMock.mockReturnValue({
-      models: { openai: ["gpt-5.4", "gpt-3.5"] },
-      connected: ["openai"],
+      models: { openai: [SUPPORTED_MODELS.GPT_5_4, "gpt-3.5"] },
+      connected: [SUPPORTED_PROVIDERS.OPENAI],
       updatedAt: "2026-03-03T00:00:00.000Z",
     })
-    readConnectedProvidersCacheMock.mockReturnValue(["openai"])
+    readConnectedProvidersCacheMock.mockReturnValue([SUPPORTED_PROVIDERS.OPENAI])
     loadUserAgentsMock.mockImplementation(() => ({
       "explore": {
         description: "User explore agent",
@@ -1274,7 +1275,7 @@ describe("resolveSubagentExecution", () => {
     //#then
     expect(result.error).toBeUndefined()
     expect(result.agentToUse).toBe("explore")
-    expect(result.categoryModel?.modelID).toBe("gpt-5.4")
+    expect(result.categoryModel?.modelID).toBe(SUPPORTED_MODELS.GPT_5_4)
   })
 
   test("project agent takes precedence over user agent with same name", async () => {

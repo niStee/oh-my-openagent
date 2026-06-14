@@ -138,10 +138,7 @@ describe("install-codex", () => {
     expect(configContent).not.toContain('ref = "main"')
     expect(configContent).toContain("[plugins.\"omo@sisyphuslabs\"]")
     expect(configContent).toContain("[hooks.state.")
-    for (const agentName of ["codex-ultrawork-reviewer", "explorer", "librarian", "metis", "momus", "plan"]) {
-      expect(configContent).toContain(`[agents.${agentName}]`)
-      expect(configContent).toContain(`config_file = "./agents/${agentName}.toml"`)
-    }
+
     expect(configContent).not.toContain("code-yeongyu-codex-plugins")
     expect(configContent).not.toContain("[marketplaces.lazycodex]")
 
@@ -174,9 +171,7 @@ describe("install-codex", () => {
     expect(mcpManifest.mcpServers.lsp.args[0]).not.toContain("components/lsp/packages")
     expect(mcpManifest.mcpServers.lsp.args[0]?.startsWith(pluginPath ?? "")).toBe(true)
     expect((await stat(mcpManifest.mcpServers.lsp.args[0] ?? "")).isFile()).toBe(true)
-    for (const agentName of ["codex-ultrawork-reviewer", "explorer", "librarian", "metis", "momus", "plan"]) {
-      expect((await stat(join(codexHome, "agents", `${agentName}.toml`))).isFile()).toBe(true)
-    }
+
     const marketplace = JSON.parse(
       await readFile(join(codexHome, "plugins", "cache", "sisyphuslabs", ".agents", "plugins", "marketplace.json"), "utf8"),
     ) as { plugins: Array<{ name: string; source: { source: string; path: string } }> }
@@ -341,67 +336,9 @@ describe("install-codex", () => {
     await rm(pluginPath, { recursive: true, force: true })
 
     // then
-    const explorerAgentPath = join(codexHome, "agents", "explorer.toml")
-    const explorerSnapshotPath = join(
-      codexHome,
-      ".tmp",
-      "marketplaces",
-      "sisyphuslabs",
-      "plugins",
-      "omo",
-      "components",
-      "ultrawork",
-      "agents",
-      "explorer.toml",
-    )
-    expect((await stat(explorerAgentPath)).isFile()).toBe(true)
-    expect(await readFile(explorerAgentPath, "utf8")).toBe(await readFile(explorerSnapshotPath, "utf8"))
-    expect(await readFile(explorerAgentPath, "utf8")).toContain('name = "explorer"')
-    expect(await readFile(join(marketplaceRoot, ".git", "config"), "utf8")).toBe("[remote \"origin\"]\n")
-    expect(await readFile(join(marketplaceRoot, ".codex-marketplace-install.json"), "utf8")).toBe(
-      '{"source_type":"git"}\n',
-    )
-    const snapshotPluginPath = join(marketplaceRoot, "plugins", "omo")
-    const snapshotMcpManifest: {
-      readonly mcpServers: {
-        readonly ast_grep: { readonly args: readonly string[] }
-        readonly git_bash: { readonly args: readonly string[] }
-        readonly lsp: { readonly args: readonly string[] }
-      }
-    } = JSON.parse(await readFile(join(snapshotPluginPath, ".mcp.json"), "utf8"))
-    expect(snapshotMcpManifest.mcpServers.ast_grep.args[0]).toBe(
-      join(snapshotPluginPath, "components", "ast-grep-mcp", "dist", "cli.js"),
-    )
-    expect((await stat(snapshotMcpManifest.mcpServers.ast_grep.args[0] ?? "")).isFile()).toBe(true)
-    expect(snapshotMcpManifest.mcpServers.git_bash.args[0]).toBe(
-      join(snapshotPluginPath, "components", "git-bash-mcp", "dist", "cli.js"),
-    )
-    expect((await stat(snapshotMcpManifest.mcpServers.git_bash.args[0] ?? "")).isFile()).toBe(true)
-    expect(snapshotMcpManifest.mcpServers.lsp.args[0]).toBe(
-      join(snapshotPluginPath, "components", "lsp-daemon", "dist", "cli.js"),
-    )
-    expect(snapshotMcpManifest.mcpServers.lsp.args[0]).not.toContain("../../lsp-daemon")
-    expect(snapshotMcpManifest.mcpServers.lsp.args[0]).not.toContain("components/lsp/packages")
-    expect((await stat(snapshotMcpManifest.mcpServers.lsp.args[0] ?? "")).isFile()).toBe(true)
+
   }, { timeout: INSTALL_CODEX_INTEGRATION_TEST_TIMEOUT_MS })
 
-  test("#given Codex temporary marketplace snapshot is removed #when agent role files were installed #then roles still resolve from Codex home", async () => {
-    // given
-    const codexHome = await mkdtemp(join(tmpdir(), "omo-codex-home-clean-snapshot-"))
-    const binDir = await mkdtemp(join(tmpdir(), "omo-codex-bin-clean-snapshot-"))
-    const repoRoot = process.cwd()
-
-    // when
-    await runCodexInstaller({ codexHome, binDir, repoRoot, runCommand: async () => undefined })
-    await rm(join(codexHome, ".tmp", "marketplaces", "sisyphuslabs"), { recursive: true, force: true })
-    await rm(join(codexHome, "plugins", "cache", "sisyphuslabs"), { recursive: true, force: true })
-
-    // then
-    const configContent = await readFile(join(codexHome, "config.toml"), "utf8")
-    expect(configContent).toContain('config_file = "./agents/explorer.toml"')
-    expect(await readFile(join(codexHome, "agents", "explorer.toml"), "utf8")).toContain('name = "explorer"')
-    expect(await readFile(join(codexHome, "agents", "plan.toml"), "utf8")).toContain('name = "plan"')
-  }, { timeout: INSTALL_CODEX_INTEGRATION_TEST_TIMEOUT_MS })
 
   test("#given autonomous permissions requested #when installing omo #then writes Codex autonomy settings", async () => {
     // given

@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname } from "node:path"
-import { ensureAgentConfig, removeStaleManagedAgentBlocks } from "./codex-config-agents"
+
 import { ensureFeatureEnabled } from "./codex-config-features"
 import {
   ensureMarketplaceBlock,
@@ -11,8 +11,6 @@ import {
 } from "./codex-config-marketplaces"
 import { ensureAutonomousPermissions } from "./codex-config-permissions"
 import { ensureHookTrusted, ensureOmoBuiltinMcpPolicies, ensurePluginEnabled } from "./codex-config-plugins"
-import { ensureCodexReasoningConfig } from "./codex-config-reasoning"
-import { readCodexModelCatalog } from "./codex-model-catalog"
 import { ensureCodexMultiAgentV2Config } from "./codex-multi-agent-v2-config"
 import type { CodexAgentConfig, CodexInstallPlatform, CodexMarketplaceSource, TrustedHookState } from "./types"
 
@@ -25,7 +23,6 @@ export async function updateCodexConfig(input: {
   readonly platform?: CodexInstallPlatform
   readonly gitBashEnabled?: boolean
   readonly trustedHookStates?: readonly TrustedHookState[]
-  readonly agentConfigs?: readonly CodexAgentConfig[]
   readonly autonomousPermissions?: boolean
 }): Promise<void> {
   await mkdir(dirname(input.configPath), { recursive: true })
@@ -40,15 +37,10 @@ export async function updateCodexConfig(input: {
   }
   config = removeStaleMarketplacePluginBlocks(config, input.marketplaceName, pluginSet)
   config = removeStaleMarketplaceHookStateBlocks(config, input.marketplaceName, pluginSet)
-  config = removeStaleManagedAgentBlocks(
-    config,
-    new Set((input.agentConfigs ?? []).map((agentConfig) => agentConfig.name)),
-  )
   config = ensureFeatureEnabled(config, "plugins")
   config = ensureFeatureEnabled(config, "plugin_hooks")
   config = ensureFeatureEnabled(config, "multi_agent")
   config = ensureFeatureEnabled(config, "child_agents_md")
-  config = ensureCodexReasoningConfig(config, await readCodexModelCatalog(input.repoRoot))
   config = ensureCodexMultiAgentV2Config(config)
   if (input.autonomousPermissions === true) config = ensureAutonomousPermissions(config)
   config = ensureMarketplaceBlock(config, input.marketplaceName, input.marketplaceSource)
@@ -58,9 +50,6 @@ export async function updateCodexConfig(input: {
   config = ensureOmoBuiltinMcpPolicies(config, input)
   for (const state of input.trustedHookStates ?? []) {
     config = ensureHookTrusted(config, state)
-  }
-  for (const agentConfig of input.agentConfigs ?? []) {
-    config = ensureAgentConfig(config, agentConfig)
   }
 
   await writeFile(input.configPath, `${config.trimEnd()}\n`)
