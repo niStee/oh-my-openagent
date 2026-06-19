@@ -31,6 +31,9 @@ function collectFiles(root: string, relativePrefix = ""): string[] {
   for (const entry of readdirSync(join(root, relativePrefix), { withFileTypes: true })) {
     const relativePath = join(relativePrefix, entry.name)
     const fullPath = join(root, relativePath)
+    if (entry.name === "node_modules") {
+      continue
+    }
     if (entry.isDirectory()) {
       files.push(...collectFiles(root, relativePath))
     } else if (statSync(fullPath).isFile()) {

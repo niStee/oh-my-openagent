@@ -11,8 +11,14 @@ type CapturedPostHogMessage = {
 
 type PostHogModule = typeof import("./posthog")
 
+let activeCapturedMessages: CapturedPostHogMessage[] | null = null
+
 async function importPostHogModule(): Promise<PostHogModule> {
-  return import(`./posthog?test=${Date.now()}-${Math.random()}`)
+  const m = await import(`./posthog?test=${Date.now()}-${Math.random()}`)
+  if (activeCapturedMessages) {
+    m.__setTransportFactoryForTesting(createCapturingTransportFactory(activeCapturedMessages))
+  }
+  return m
 }
 
 function clearTelemetryEnv(): void {
@@ -24,16 +30,22 @@ function clearTelemetryEnv(): void {
   delete process.env.POSTHOG_HOST
 }
 
-function mockPostHogNode(capturedMessages: CapturedPostHogMessage[]): void {
-  mock.module("posthog-node", () => ({
-    PostHog: class {
-      capture(message: CapturedPostHogMessage): void {
+function createCapturingTransportFactory(
+  capturedMessages: CapturedPostHogMessage[],
+) {
+  return () => {
+    return {
+      capture: (message: CapturedPostHogMessage) => {
         capturedMessages.push(message)
-      }
+      },
+      shutdown: async () => undefined,
+      flush: async () => undefined,
+    }
+  }
+}
 
-      async shutdown(): Promise<void> {}
-    },
-  }))
+function mockPostHogNode(capturedMessages: CapturedPostHogMessage[]): void {
+  activeCapturedMessages = capturedMessages
 }
 
 function setMatrix(
@@ -56,6 +68,7 @@ describe("omo-codex posthog telemetry", () => {
   beforeEach(() => {
     mock.restore()
     clearTelemetryEnv()
+    activeCapturedMessages = null
   })
 
   afterEach(() => {

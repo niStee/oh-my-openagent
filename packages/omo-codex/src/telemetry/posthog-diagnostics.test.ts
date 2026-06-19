@@ -16,8 +16,14 @@ type PostHogModule = typeof import("./posthog")
 const originalXdgDataHome = process.env.XDG_DATA_HOME
 const tempPaths: string[] = []
 
+let activeTransportFactory: any = null
+
 async function importPostHogModule(): Promise<PostHogModule> {
-  return import(`./posthog?test=${Date.now()}-${Math.random()}`)
+  const m = await import(`./posthog?test=${Date.now()}-${Math.random()}`)
+  if (activeTransportFactory) {
+    m.__setTransportFactoryForTesting(activeTransportFactory)
+  }
+  return m
 }
 
 function clearTelemetryEnv(): void {
@@ -40,48 +46,49 @@ function getDiagnosticsFilePath(dataHomePath: string): string {
 }
 
 function mockPostHogCaptureFailure(): void {
-  mock.module("posthog-node", () => ({
-    PostHog: class {
-      capture(): void {
+  activeTransportFactory = () => {
+    return {
+      capture: () => {
         throw new Error("capture failed")
-      }
-
-      async shutdown(): Promise<void> {}
-    },
-  }))
+      },
+      shutdown: async () => undefined,
+      flush: async () => undefined,
+    }
+  }
 }
 
 function mockPostHogCaptureSymbolFailure(): void {
   const failure = Symbol("capture failed")
-  mock.module("posthog-node", () => ({
-    PostHog: class {
-      capture(): void {
+  activeTransportFactory = () => {
+    return {
+      capture: () => {
         throw failure
-      }
-
-      async shutdown(): Promise<void> {}
-    },
-  }))
+      },
+      shutdown: async () => undefined,
+      flush: async () => undefined,
+    }
+  }
 }
 
 function mockPostHogShutdownFailure(capturedMessages: CapturedPostHogMessage[]): void {
-  mock.module("posthog-node", () => ({
-    PostHog: class {
-      capture(message: CapturedPostHogMessage): void {
+  activeTransportFactory = () => {
+    return {
+      capture: (message: CapturedPostHogMessage) => {
         capturedMessages.push(message)
-      }
-
-      async shutdown(): Promise<void> {
+      },
+      shutdown: async () => {
         throw new Error("shutdown failed")
-      }
-    },
-  }))
+      },
+      flush: async () => undefined,
+    }
+  }
 }
 
 describe("omo-codex posthog telemetry diagnostics", () => {
   beforeEach(() => {
     mock.restore()
     clearTelemetryEnv()
+    activeTransportFactory = null
   })
 
   afterEach(() => {
