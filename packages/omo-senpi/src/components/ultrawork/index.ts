@@ -1,10 +1,11 @@
 import type { ComponentContext, OmoSenpiComponent, SenpiExtensionAPI } from "../../extension/types"
+import { stripQuotedRegions } from "../skill-pointers/strip-quoted-regions"
 import { SENPI_ULTRAWORK_DIRECTIVE } from "./generated-directive"
 
-// `ulw(?!-)` keeps generous matching ("하이ulw", "ulw_helper.ts") while skipping the
-// `ulw-` skill-name family (ulw-plan, ulw-loop, ulw-research): typing a skill name
-// must not arm ultrawork mode on top of the skill itself.
-const ULTRAWORK_CURRENT_PROMPT_PATTERN = /(?:ultrawork|ulw(?!-))/i
+// Match complete words so prose such as "ulwfoo" and identifiers such as "ulw_helper" do not
+// arm ultrawork. Hyphens and spaces remain boundaries, so skill names like "ulw-loop" and phrases
+// like "ulw loop" still arm. Quoted and injected regions are blanked before this pattern runs.
+const ULTRAWORK_CURRENT_PROMPT_PATTERN = /\b(?:ultrawork|ulw)\b/i
 const ULTRAWORK_DISABLED_FLAG = "omo-senpi-ultrawork-disabled"
 const ULTRAWORK_MODE_OPEN_TAG = "<ultrawork-mode>"
 const ULTRAWORK_MODE_CLOSE_TAG = "</ultrawork-mode>"
@@ -141,7 +142,7 @@ export function createUltraworkComponent(arming: SessionArming = sharedSessionAr
 }
 
 export function isUltraworkInput(text: string): boolean {
-  return ULTRAWORK_CURRENT_PROMPT_PATTERN.test(text)
+  return ULTRAWORK_CURRENT_PROMPT_PATTERN.test(stripQuotedRegions(text))
 }
 
 export function armingSnapshot(sessionId: string | undefined): ArmingSnapshot {
@@ -157,7 +158,8 @@ export function classifyUltraworkInput(
   input: { readonly text: string; readonly source: SenpiInputEvent["source"] },
   snapshot: ArmingSnapshot,
 ): UltraworkClassification {
-  const matches = [...input.text.matchAll(new RegExp(ULTRAWORK_CURRENT_PROMPT_PATTERN.source, "gi"))]
+  const visibleText = stripQuotedRegions(input.text)
+  const matches = [...visibleText.matchAll(new RegExp(ULTRAWORK_CURRENT_PROMPT_PATTERN.source, "gi"))]
   let matchedUlw = false
   let matchedUltrawork = false
   for (const match of matches) {
