@@ -1,3 +1,15 @@
+## 2026-09-09 — Preserve Windows omob executable suffixes
+
+Windows omob builds now retain the `.exe` suffix through installation, cache/provenance lookup, and direct refresh. The test fixtures use native compiled executables and platform-native paths while preserving the POSIX launcher contract and all refresh assertions.
+
+## 2026-09-08 — Persist child_session_id on senpi-task records
+
+Spawned senpi-task children now persist `child_session_id` (the child's own session id from the spawn handle) on their `st_*.json` record. Reattach/resume rewrites keep the field. `packages/team-core/AGENTS.md` documents the on-disk `st_*.json` identity fields so external readers can join a grandchild session (`parent_session_id`) back to its parent task.
+
+## 2026-09-08 — Expose team runtime layout and member linkage
+
+Team member task records now carry durable team identity fields, and `packages/team-core/AGENTS.md` documents the runtime state, tasklist, and mailbox paths and JSON shapes consumed by external readers.
+
 ## 2026-09-07 — Make the two Windows-flaky tests from #7898 deterministic
 
 Both tests raced the wall clock and lost on the slowest CI runner. The team-mode case
