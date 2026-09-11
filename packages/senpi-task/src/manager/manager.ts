@@ -101,6 +101,30 @@ function ownerLockPath(stateDir: string, owner: DagTaskOwnerKey): string {
   return join(ownerDir, digest)
 }
 
+/**
+ * The safe, structured slice of a start failure for the internal event log.
+ *
+ * `publicStartFailureMessage` reduces every failure to one fixed sentence, pinned by
+ * start-failure-security.test.ts, because `RunnerFailure.message` is stderr-derived untrusted child
+ * output and `store/redaction.ts` only redacts by KEY name - a free-text value carrying a credential
+ * would be persisted verbatim. So the message stays collapsed, and only these closed enums and
+ * numbers are recorded. `rejected_while` is captured by RpcProcessRunner BEFORE cleanup: `alive`
+ * means the command rejected while the child was live, while `exited` means the child had already
+ * supplied the real exit outcome. That ordering prevents cleanup's kill from being misreported as
+ * the rejection cause.
+ */
+function startFailureFacts(error: unknown): Record<string, unknown> | undefined {
+  if (!RunnerError.is(error)) return undefined
+  const { kind, rejected_while: rejectedWhile, exit } = error.failure
+  return {
+    failure_kind: kind,
+    ...(rejectedWhile === undefined ? {} : { rejected_while: rejectedWhile }),
+    ...(exit === undefined
+      ? {}
+      : { exit_kind: exit.kind, exit_code: exit.code, exit_signal: exit.signal }),
+  }
+}
+
 function publicStartFailureMessage(error: unknown): string {
   try {
     if (!RunnerError.is(error)) return GENERIC_START_FAILURE_MESSAGE
@@ -671,7 +695,10 @@ class TaskManagerImpl implements TaskManager {
       const message = publicStartFailureMessage(error)
       this.#releaseSlot(record.task_id, model, record.notification.run_epoch)
       this.#options.store.transition(record.task_id, { type: "fail", timestamp: nowIso(this.#now), error_message: message })
-      this.#options.store.appendEvent(record.task_id, { type: "task_start_failed", payload: { error_message: message } })
+      this.#options.store.appendEvent(record.task_id, {
+        type: "task_start_failed",
+        payload: { error_message: message, ...startFailureFacts(error) },
+      })
       this.#steering.dropPending(record.task_id)
       this.#settleWaiters(record.task_id)
       return { ok: false, error: message }
@@ -883,6 +910,12 @@ class TaskManagerImpl implements TaskManager {
         type: "fail",
         timestamp: nowIso(this.#now),
         error_message: message,
+      })
+      // The primary launch path records this breadcrumb; a fallback launch that dies must not be the
+      // one failure that leaves the event log with no cause at all.
+      this.#options.store.appendEvent(context.record.task_id, {
+        type: "task_start_failed",
+        payload: { error_message: message, ...startFailureFacts(error) },
       })
       this.#settleWaiters(context.record.task_id)
       return
