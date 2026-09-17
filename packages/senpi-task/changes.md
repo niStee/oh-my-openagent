@@ -1,4 +1,42 @@
 
+## 2026-09-16 — Scope a child's kernel-tool grant with the engine's per-call invoke scope
+
+`kernel-tools/contract.ts` gained the optional per-call execution scope the producer accepts
+(`invoke(request, signal | { signal?, scope? })`), the `kernel_tool_host_denied` code, and
+`supportsInvokeScope(capability)` — a runtime duck-type of `capabilities.invokeScope === true`, so
+the package still compiles and behaves against an engine pin that predates senpi#1731. When the
+marker is present, `resolveKernelToolGrant` no longer refuses a child whose allow/deny narrows the
+parent: it attaches `childInvokeScope(...)` to the grant, `buildChildKernelTools` recomputes that
+scope against the child's REAL installed surface, and every wrapper invoke carries
+`{ scope: { tools: { allow, deny? } } }` beside the turn's signal. Without the marker the grant is
+refused exactly as before and the wrapper posts the bare signal it always did.
+`TaskKernelToolsDetail` reports `scoped: true` plus the allow/deny summary so the caller can see a
+grant is child-permissioned, and a nested call the engine refuses arrives on the child's own tool
+channel as a `kernel_tool_host_denied` envelope instead of failing the parent's cell. Curated
+read-only agents, team members, process children and non-JavaScript parents are untouched.
+
+## 2026-09-14 — Re-mirror the curated agent chains from model-core and guard the mirror
+
+`agents/builtin/fallback-chains.ts` had drifted from the `model-core` table it claims to mirror: `plan-consultant`
+still headed with `claude-sonnet-4-6` (no reasoning variant) although the source moved off that head on 2026-07-26,
+and `explore` / `librarian` carried `qwen3.5-plus` where the source has `qwen3.7-plus` (#8259). The consultant chain is
+now `claude-fable-5-1 (max)` -> `claude-opus-5 (max)` -> `kimi-k3 (max)`, with `claude-sdk-oauth` still heading the
+Claude rungs (#8051), and the utility rungs match the source again. `AGENT_FALLBACK_CHAINS` is exported from the
+`./agents-builtin` subpath so `omo-senpi` can hold a parity test that compares every curated chain with its model-core
+source rung for rung (modulo the `claude-sdk-oauth` head); the pin test here keeps catching transcription drift, the
+parity test catches source drift.
+
+## 2026-09-13 — Preserve layout when sanitizing recorded reports
+
+`stripTerminalControls` is exported with an opt-in `preserveWhitespace` option
+for multiline recorded reports. Tabs, line endings and ordinary spacing survive
+while terminal escape/control sequences are removed. Existing single-line
+normalizers retain their default behavior.
+
+## 2026-09-12 — Remove the retired curated agent-name alias
+
+`agents/legacy-agent-names.ts` and its exports (`LEGACY_AGENT_NAME_ALIASES`, `canonicalAgentName`, `legacyAgentNameNotice`, `CanonicalAgentName`) are deleted: the one-release window opened at 5.0.0-beta.51 and the package has since shipped through 5.0.0-beta.56. Every input boundary takes the submitted agent name verbatim — `resolveAgent`, `interactionPolicyForAgent`, `mapOmoConfigAgents` (including `allowed_subagents`), `dag/graph.ts` route compilation, `team/member-validator.ts`, the task tool's `validateTaskTarget` / `resolveSpawnItems`, and the spawn policy / invocation gate. The in-memory `legacySubagentType` → `legacyAlias` → `legacy_subagent_type` plumbing (validation, execute, execute-single, result-details, start-presentation) is removed with it, so a start text carries no deprecation line and `TaskToolDetails` never gains the extra field. `legacyOmoConfigAgentKeys` is gone; its only consumer was the omo-senpi startup notice. `resolve-agent.ts`'s `legacyFallbackChain` read-alias is deleted as dead code — `AGENT_FALLBACK_CHAINS` has been keyed by the canonical ids since the rename.
+
 ## 2026-09-10 — Retire myth agent names from test fixtures and update package documentation
 
 The builtin curated agents `metis` and `momus` are renamed to `plan-consultant` and `plan-reviewer` in
